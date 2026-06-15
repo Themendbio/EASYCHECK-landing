@@ -33,6 +33,18 @@
         "title": "Dehydration doesn't treat everyone equally.",
         "description": "Anyone can get dehydrated. For some, it happens faster — and quieter.",
         "personas": {
+            "athlete": {
+                "label": "Athletes & Active",
+                "title": "Off your game? Start with hydration.",
+                "body": "Intense training drains fluids and electrolytes fast. Just 2% down is enough to sap your strength, endurance, and focus.",
+                "quote": "“I pushed harder when my times slipped. I just needed water.”"
+            },
+            "dieter": {
+                "label": "Dieters & Wellness",
+                "title": "That craving? It might be thirst.",
+                "body": "Thirst is easy to mistake for hunger. When you're low on fluids, your metabolism slows and the snacking creeps in.",
+                "quote": "“I kept reaching for snacks. Turns out I just needed water.”"
+            },
             "outdoor": {
                 "label": "Outdoor Workers",
                 "title": "We sweat the small stuff. So you don't have to.",

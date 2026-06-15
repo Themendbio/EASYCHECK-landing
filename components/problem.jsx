@@ -6,6 +6,7 @@ import {
     IconSun,
     IconUsers,
     IconHeart,
+    IconTarget,
     IconBuilding2,
 } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -87,7 +88,6 @@ function PersonaCard({ persona }) {
 /* ─── 모바일/태블릿(<lg): 가로 스와이프 캐러셀 ─── */
 function PersonaSwipe({ personas }) {
     const { t } = useLanguage();
-    const trackRef = useRef(null);
 
     return (
         <section
@@ -114,7 +114,6 @@ function PersonaSwipe({ personas }) {
 
                 {/* 가로 스와이프 트랙 — 네이티브 터치 스크롤 + 스냅 */}
                 <div
-                    ref={trackRef}
                     className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 pb-2 scroll-smooth"
                     style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
                     role="group"
@@ -229,13 +228,15 @@ function PersonaCarousel({ personas }) {
             raf = 0;
             const cards = el.children;
             if (!cards.length) return;
-            const center = el.scrollLeft + el.clientWidth / 2;
+            // 카드는 snap-start + scroll-padding-left 기준으로 정렬되므로
+            // 좌측 패딩만큼 들어온 스냅 기준선에 가장 가까운 카드가 활성 카드다.
+            const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+            const snapLine = el.scrollLeft + padLeft;
             let best = 0;
             let bestDist = Infinity;
             for (let i = 0; i < cards.length; i++) {
-                const c = cards[i];
-                const cCenter = c.offsetLeft + c.offsetWidth / 2;
-                const d = Math.abs(cCenter - center);
+                const cStart = cards[i].offsetLeft - el.offsetLeft;
+                const d = Math.abs(cStart - snapLine);
                 if (d < bestDist) {
                     bestDist = d;
                     best = i;
@@ -265,7 +266,9 @@ function PersonaCarousel({ personas }) {
         const idx = clamp(i, 0, N - 1);
         const card = el.children[idx];
         if (!card) return;
-        el.scrollTo({ left: card.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+        // scroll-padding-left만큼 빼야 카드가 스냅 시작선에 정확히 정렬된다.
+        const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+        el.scrollTo({ left: card.offsetLeft - el.offsetLeft - padLeft, behavior: 'smooth' });
     };
 
     const prev = () => scrollToCard(active - 1);
@@ -367,13 +370,37 @@ function PersonaCarousel({ personas }) {
 
 /* ─── Section ─── */
 function ProblemSection() {
-    const { t } = useLanguage();
+    const { t, locale } = useLanguage();
+
+    // 로케일별 이미지 경로 — en 버전이 없는 경우 hasEn=false로 두면 placeholder가 렌더됨
+    const localeImage = (base, hasEn = true) =>
+        locale === 'en' && !hasEn ? null : `/images/persona-${base}-${locale}.png`;
 
     const personas = [
         {
+            ImageIcon: IconHeart,
+            LabelIcon: IconHeart,
+            image: localeImage('athlete'),
+            imageCaption: t('problem.personas.athlete.label'),
+            label: t('problem.personas.athlete.label'),
+            title: t('problem.personas.athlete.title'),
+            body: t('problem.personas.athlete.body'),
+            quote: t('problem.personas.athlete.quote'),
+        },
+        {
+            ImageIcon: IconTarget,
+            LabelIcon: IconTarget,
+            image: localeImage('dieter'),
+            imageCaption: t('problem.personas.dieter.label'),
+            label: t('problem.personas.dieter.label'),
+            title: t('problem.personas.dieter.title'),
+            body: t('problem.personas.dieter.body'),
+            quote: t('problem.personas.dieter.quote'),
+        },
+        {
             ImageIcon: IconHardHat,
             LabelIcon: IconSun,
-            image: '/images/persona-outdoor.webp',
+            image: localeImage('outdoor'),
             imageCaption: t('problem.personas.outdoor.label'),
             label: t('problem.personas.outdoor.label'),
             title: t('problem.personas.outdoor.title'),
@@ -383,7 +410,7 @@ function ProblemSection() {
         {
             ImageIcon: IconHeart,
             LabelIcon: IconUsers,
-            image: '/images/persona-elderly.webp',
+            image: localeImage('elderly'),
             imageCaption: t('problem.personas.elderly.label'),
             label: t('problem.personas.elderly.label'),
             title: t('problem.personas.elderly.title'),
@@ -393,7 +420,7 @@ function ProblemSection() {
         {
             ImageIcon: IconBuilding2,
             LabelIcon: IconBuilding2,
-            image: '/images/persona-office.webp',
+            image: localeImage('office', false),
             imageCaption: t('problem.personas.office.label'),
             label: t('problem.personas.office.label'),
             title: t('problem.personas.office.title'),
