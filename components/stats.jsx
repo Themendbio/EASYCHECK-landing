@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 import { TemperatureChart } from './ui/TemperatureChart';
 
-/* 2. 통계 — 연도별 여름 평균기온 (클린 레이아웃 스타일) */
+// Section 2 — 통계: 연도별 여름 평균기온
 
 function StatsSection() {
     const { t, locale } = useLanguage();
@@ -20,12 +20,21 @@ function StatsSection() {
                 {/* 섹션 헤더 */}
                 <div className="text-left mb-8 md:mb-10">
                     {/* 제목 */}
-                    <Reveal as="h2" delay={0} className="text-[34px] md:text-[40px] lg:text-[52px] font-bold leading-tight text-text-primary mb-4" style={{ letterSpacing: locale === 'en' ? '-0.01em' : '-0.02em' }}>
+                    <Reveal
+                        as="h2"
+                        delay={0}
+                        className="text-[34px] md:text-[40px] lg:text-[52px] font-bold leading-tight text-text-primary mb-4"
+                        style={{ letterSpacing: locale === 'en' ? '-0.01em' : '-0.02em' }}
+                    >
                         {t('stats.title')}
                     </Reveal>
 
                     {/* 설명 */}
-                    <Reveal as="p" delay={100} className="text-[15px] lg:text-[17px] leading-[1.6] text-text-secondary max-w-2xl">
+                    <Reveal
+                        as="p"
+                        delay={100}
+                        className="text-[15px] lg:text-[17px] leading-[1.6] text-text-secondary max-w-2xl"
+                    >
                         {t('stats.description')}
                     </Reveal>
                 </div>
@@ -50,11 +59,18 @@ function StatsSection() {
                                     />
                                 </svg>
                             </div>
-                            <h3 className="text-[24px] lg:text-[32px] font-bold text-text-primary mb-4" style={{ letterSpacing: '-0.01em' }}>
+                            <h3
+                                className="text-[24px] lg:text-[32px] font-bold text-text-primary mb-4"
+                                style={{ letterSpacing: '-0.01em' }}
+                            >
                                 Global Climate Data
                             </h3>
-                            <p className="text-[15px] lg:text-[17px] text-text-secondary leading-[1.6]" style={{ wordBreak: 'keep-all' }}>
-                                Chart visualization with global temperature trends will be displayed here.
+                            <p
+                                className="text-[15px] lg:text-[17px] text-text-secondary leading-[1.6]"
+                                style={{ wordBreak: 'keep-all' }}
+                            >
+                                Chart visualization with global temperature trends will be displayed
+                                here.
                             </p>
                         </div>
                     </Reveal>

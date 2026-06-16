@@ -2,10 +2,9 @@
 import { IconInfo } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Easycheck — Footer (섹션 7) · 단일 페이지용 단순 버전
-// React. Tailwind (extended via index <script>). lucide-equivalent icons (icons.jsx). 정적, 모션 없음.
+// Footer — 단일 페이지용 단순 버전 (정적, 모션 없음)
 
-/* ────────────────── 면책 박스 ────────────────── */
+// 면책 박스
 function FooterDisclaimer() {
     const { t } = useLanguage();
 
@@ -45,7 +44,7 @@ function FooterDisclaimer() {
     );
 }
 
-/* ────────────────── 푸터 본체 ────────────────── */
+// 푸터 본체
 function Footer() {
     const { t } = useLanguage();
 

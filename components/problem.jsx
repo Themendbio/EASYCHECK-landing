@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     IconChevronRight,
     IconHardHat,
@@ -12,17 +12,12 @@ import {
 import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 
-// Easycheck — Section 2 "Problem / Personas"
-// React component using design-system tokens.
-// Entry animations: IntersectionObserver-driven, fade + slide-up.
-// Carousel — desktop(lg+): prev/next buttons. mobile(<lg): native horizontal swipe (scroll-snap).
+// Section 2 — Problem / Personas
+// 데스크탑(lg+)은 버튼 제어 가로 캐러셀, 모바일은 네이티브 스와이프(scroll-snap).
 
-const { useEffect, useRef, useState } = React;
-
-/* ─── small helpers ─── */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-/* ─── Persona card — 모바일 가로 스와이프 트랙용 카드 ─── */
+// Persona card — 모바일 가로 스와이프 트랙용 카드
 function PersonaCard({ persona }) {
     const { ImageIcon, LabelIcon, image, imageCaption, label, title, body, quote } = persona;
 
@@ -33,7 +28,7 @@ function PersonaCard({ persona }) {
         flex flex-col bg-white border border-border rounded-xl shadow-sm overflow-hidden
       "
         >
-            {/* A. Image — 4:3, full card width */}
+            {/* 이미지 — 4:3 */}
             {image ? (
                 <img
                     src={image}
@@ -85,7 +80,7 @@ function PersonaCard({ persona }) {
     );
 }
 
-/* ─── 모바일/태블릿(<lg): 가로 스와이프 캐러셀 ─── */
+// 모바일/태블릿(<lg): 가로 스와이프 캐러셀
 function PersonaSwipe({ personas }) {
     const { t } = useLanguage();
 
@@ -128,7 +123,7 @@ function PersonaSwipe({ personas }) {
     );
 }
 
-/* ─── 데스크탑 페르소나 카드 (세로형 — 가로 스크롤 트랙 내부) ─── */
+// 데스크탑 페르소나 카드 (세로형 — 가로 스크롤 트랙 내부)
 // Apple Health 스타일: 화면 너비보다 작은 카드 → 옆 카드가 살짝 걸쳐 보임(peek).
 function PersonaCardLg({ persona, index, total }) {
     const { ImageIcon: Img, LabelIcon, image, imageCaption, label, title, body, quote } = persona;
@@ -209,8 +204,7 @@ function PersonaCardLg({ persona, index, total }) {
     );
 }
 
-/* ─── 데스크탑(lg+): 버튼 제어 가로 스크롤 캐러셀 ─── */
-// Apple Health 스타일 — 작은 세로 카드들이 가로로 스냅 스크롤. 옆 카드 peek.
+// 데스크탑(lg+): 버튼 제어 가로 스크롤 캐러셀 — 작은 세로 카드들이 스냅 스크롤
 function PersonaCarousel({ personas }) {
     const { t } = useLanguage();
     const N = personas.length;
@@ -359,8 +353,18 @@ function PersonaCarousel({ personas }) {
                 {/* ─── 컨트롤: 이전·다음 버튼 ─── */}
                 <div className="mx-auto max-w-8xl px-20">
                     <div className="mt-12 flex items-center justify-end gap-3">
-                        <ArrowBtn dir="prev" onClick={prev} disabled={atStart} label={t('problem.controls.prev')} />
-                        <ArrowBtn dir="next" onClick={next} disabled={atEnd} label={t('problem.controls.next')} />
+                        <ArrowBtn
+                            dir="prev"
+                            onClick={prev}
+                            disabled={atStart}
+                            label={t('problem.controls.prev')}
+                        />
+                        <ArrowBtn
+                            dir="next"
+                            onClick={next}
+                            disabled={atEnd}
+                            label={t('problem.controls.next')}
+                        />
                     </div>
                 </div>
             </div>
@@ -368,7 +372,7 @@ function PersonaCarousel({ personas }) {
     );
 }
 
-/* ─── Section ─── */
+// Section
 function ProblemSection() {
     const { t, locale } = useLanguage();
 

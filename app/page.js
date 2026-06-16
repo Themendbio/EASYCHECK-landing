@@ -9,16 +9,16 @@ import { DownloadCTA } from '../components/download';
 import { Footer } from '../components/footer';
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-white">
-      <Nav />
-      <Hero />
-      <StatsSection />
-      <ProblemSection />
-      <SolutionSection />
-      <TechSection />
-      <DownloadCTA />
-      <Footer />
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-white">
+            <Nav />
+            <Hero />
+            <StatsSection />
+            <ProblemSection />
+            <SolutionSection />
+            <TechSection />
+            <DownloadCTA />
+            <Footer />
+        </div>
+    );
 }

@@ -1,9 +1,7 @@
 'use client';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 import { Reveal } from './Reveal';
-
-const { useEffect, useState } = React;
 
 const data = [
     { year: 2019, temp: 24.1 },
@@ -87,7 +85,7 @@ export function TemperatureChart({ t, locale }) {
                     </filter>
                 </defs>
 
-                {/* ─── 우측 텍스트 박스 (데스크톱만) ─── */}
+                {/* 우측 텍스트 박스 (데스크톱만) */}
                 {!isMobile && (
                     <foreignObject x={W - P.r + 44} y={P.t} width={P.r - 60} height={plotH}>
                         <div
@@ -172,7 +170,7 @@ export function TemperatureChart({ t, locale }) {
                     </foreignObject>
                 )}
 
-                {/* ─── 가로 격자선 + Y축 라벨 ─── */}
+                {/* 가로 격자선 + Y축 라벨 */}
                 {yTicks.map((tick, i) => (
                     <g
                         key={tick}
@@ -202,7 +200,7 @@ export function TemperatureChart({ t, locale }) {
                     </g>
                 ))}
 
-                {/* ─── 막대 ─── */}
+                {/* 막대 */}
                 {pts.map((p, i) => {
                     const isLast = i === pts.length - 1;
                     return (
@@ -224,7 +222,7 @@ export function TemperatureChart({ t, locale }) {
                     );
                 })}
 
-                {/* ─── 라인 ─── */}
+                {/* 라인 */}
                 <path
                     d={linePath}
                     fill="none"
@@ -237,7 +235,7 @@ export function TemperatureChart({ t, locale }) {
                     style={{ animationDelay: '0.65s' }}
                 />
 
-                {/* ─── X축 라벨 ─── */}
+                {/* X축 라벨 */}
                 {pts.map((p, i) => (
                     <text
                         key={p.year}
@@ -258,7 +256,7 @@ export function TemperatureChart({ t, locale }) {
                     </text>
                 ))}
 
-                {/* ─── 데이터 포인트 ─── */}
+                {/* 데이터 포인트 */}
                 {pts.slice(0, -1).map((p, i) => (
                     <circle
                         key={p.year}
@@ -273,7 +271,7 @@ export function TemperatureChart({ t, locale }) {
                     />
                 ))}
 
-                {/* ─── 고점 강조 (2026) ─── */}
+                {/* 고점 강조 (2026) */}
                 <g>
                     {/* 강조 점 */}
                     <circle

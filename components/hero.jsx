@@ -1,14 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { IconMenu, IconPlay, IconCheck } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Easycheck — Nav + Hero section
-// React component using design-system tokens (Tailwind extended in index <script>).
-
-const { useState } = React;
-
-/* ─────────────── NAV ─────────────── */
+// Nav
 function Nav() {
     const [open, setOpen] = useState(false);
     const { locale, setLocale, t } = useLanguage();
@@ -77,7 +72,7 @@ function Nav() {
     );
 }
 
-/* ─────────────── HERO ─────────────── */
+// Hero
 function Hero() {
     const { t } = useLanguage();
 
@@ -98,7 +93,7 @@ function Hero() {
                 data-screen-label="01 Hero"
                 className="relative overflow-hidden hero-video-section"
             >
-                {/* ─── 배경 영상 ─── */}
+                {/* 배경 영상 */}
                 <video
                     className="hero-video"
                     autoPlay
@@ -110,7 +105,7 @@ function Hero() {
                 >
                     <source src={'/video/hero-video.mp4'} type="video/mp4" />
                 </video>
-                {/* ─── 반투명 검정 오버레이 ─── */}
+                {/* 반투명 검정 오버레이 */}
                 <div className="hero-video-overlay" aria-hidden="true" />
 
                 <div
@@ -121,7 +116,7 @@ function Hero() {
             flex flex-col items-start justify-center
           "
                 >
-                    {/* ─── 텍스트 + CTA + 인증 ─── */}
+                    {/* 텍스트 + CTA + 인증 */}
                     <div className="w-full max-w-[820px] flex flex-col lg:pl-8 xl:pl-12">
                         {/* Headline */}
                         <h1
@@ -186,7 +181,7 @@ function Hero() {
                 </div>
             </section>
 
-            {/* ─── Hero 하단 신뢰 정보 띠지 (정적 한 줄) ─── */}
+            {/* Hero 하단 신뢰 정보 띠지 */}
             <div className="trust-band" aria-label="인증 및 연구 정보">
                 <div className="mx-auto max-w-8xl px-6 lg:px-12 py-5">
                     <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:gap-x-9">
