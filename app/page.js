@@ -2,6 +2,7 @@
 
 import { Nav, Hero } from '../components/hero';
 import { StatsSection } from '../components/stats';
+import { HeatmapSection } from '../components/heatmap';
 import { ProblemSection } from '../components/problem';
 import { SolutionSection } from '../components/solution';
 import { TechSection } from '../components/tech';
@@ -14,6 +15,7 @@ export default function Home() {
             <Nav />
             <Hero />
             <StatsSection />
+            <HeatmapSection />
             <ProblemSection />
             <SolutionSection />
             <TechSection />
