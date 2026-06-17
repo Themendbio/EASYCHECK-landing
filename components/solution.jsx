@@ -5,12 +5,12 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 
 // Section 3 — Solution
-// 3 STEP 영상 가로 흐름 + highlight box
+// 3 STEP 세로 타임라인 + highlight box
 
 // 세로형 STEP 영상 (흰/블루 배경 영상을 둥근 패널로)
 function StepVideo({ src }) {
     return (
-        <div className="mx-auto w-full max-w-[300px] rounded-2xl overflow-hidden shadow-md ring-1 ring-black/[0.06]">
+        <div className="mx-auto w-full max-w-[340px] rounded-2xl overflow-hidden shadow-md ring-1 ring-black/[0.06]">
             <video
                 className="block w-full aspect-[4/5] object-cover bg-white"
                 autoPlay
@@ -27,9 +27,14 @@ function StepVideo({ src }) {
 }
 
 // STEP 텍스트 (번호 배지 + 라벨 + 제목 + 본문)
-function StepText({ step }) {
+function StepText({ step, align = 'center' }) {
+    const alignClass = {
+        center: 'items-center text-center',
+        left: 'items-start text-left',
+        right: 'items-end text-right',
+    }[align];
     return (
-        <div className="flex flex-col items-center text-center">
+        <div className={`flex flex-col ${alignClass}`}>
             <div className="flex items-center gap-3 mb-4">
                 <span
                     aria-hidden="true"
@@ -46,24 +51,15 @@ function StepText({ step }) {
                     STEP {step.n}
                 </span>
             </div>
-            <h3 className="text-[22px] lg:text-[26px] font-semibold leading-[1.35] tracking-[-0.02em] text-text-primary mb-3">
+            <h3 className="text-[22px] lg:text-[28px] font-semibold leading-[1.35] tracking-[-0.02em] text-text-primary mb-3">
                 {step.title}
             </h3>
             <p
-                className="text-[15px] lg:text-[17px] leading-[1.6] text-text-secondary max-w-[28ch]"
+                className="text-[15px] lg:text-[18px] leading-[1.6] text-text-secondary max-w-[28ch]"
                 style={{ wordBreak: 'keep-all' }}
             >
                 {step.body}
             </p>
-        </div>
-    );
-}
-
-// 데스크탑 흐름 화살표 (폰 사이)
-function FlowArrow() {
-    return (
-        <div className="self-center text-text-tertiary" aria-hidden="true">
-            <IconChevronRight size={28} strokeWidth={1.8} />
         </div>
     );
 }
@@ -209,35 +205,52 @@ function SolutionSection() {
                     </p>
                 </Reveal>
 
-                {/* STEP — lg 이상: 영상 3단 가로 흐름 / lg 미만: 세로 스택 */}
-                <div className="relative">
-                    {/* Desktop flow: 영상 행 + 텍스트 행 (화살표로 연결) */}
-                    <div className="hidden lg:grid grid-cols-[1fr_auto_1fr_auto_1fr] gap-x-8 xl:gap-x-12 gap-y-8">
-                        {/* row 1 — STEP 영상 + 화살표 */}
-                        <Reveal delay={0}>
-                            <StepVideo src={steps[0].video} />
-                        </Reveal>
-                        <FlowArrow />
-                        <Reveal delay={120}>
-                            <StepVideo src={steps[1].video} />
-                        </Reveal>
-                        <FlowArrow />
-                        <Reveal delay={240}>
-                            <StepVideo src={steps[2].video} />
-                        </Reveal>
-
-                        {/* row 2 — 텍스트 (화살표 칸은 빈 셀) */}
-                        <Reveal delay={80}>
-                            <StepText step={steps[0]} />
-                        </Reveal>
-                        <span aria-hidden="true" />
-                        <Reveal delay={200}>
-                            <StepText step={steps[1]} />
-                        </Reveal>
-                        <span aria-hidden="true" />
-                        <Reveal delay={320}>
-                            <StepText step={steps[2]} />
-                        </Reveal>
+                {/* STEP — lg 이상: 중앙선 따라 좌우 교차 세로 타임라인 / lg 미만: 세로 스택 */}
+                <div>
+                    {/* Desktop vertical zigzag timeline */}
+                    <div className="hidden lg:block relative max-w-4xl mx-auto">
+                        {/* center spine */}
+                        <div
+                            aria-hidden="true"
+                            className="absolute left-1/2 top-2 bottom-2 w-0.5 -translate-x-1/2 bg-brand-primary/30"
+                        />
+                        <div className="flex flex-col gap-16">
+                            {steps.map((s, i) => {
+                                const videoLeft = i % 2 === 0;
+                                return (
+                                    <Reveal key={s.n} delay={i * 120} className="relative">
+                                        {/* badge on spine */}
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute left-1/2 top-3 -translate-x-1/2 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand-primary text-white text-[16px] font-bold ring-[6px] ring-white"
+                                        >
+                                            {s.n}
+                                        </span>
+                                        <div className="grid grid-cols-2 gap-x-16 items-center">
+                                            {videoLeft ? (
+                                                <>
+                                                    <div className="flex justify-end [&>div]:!mx-0">
+                                                        <StepVideo src={s.video} />
+                                                    </div>
+                                                    <div className="flex">
+                                                        <StepText step={s} align="left" />
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className="flex justify-end">
+                                                        <StepText step={s} align="right" />
+                                                    </div>
+                                                    <div className="flex [&>div]:!mx-0">
+                                                        <StepVideo src={s.video} />
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    </Reveal>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Mobile stack w/ connectors */}
