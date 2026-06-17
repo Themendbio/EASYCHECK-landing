@@ -1,7 +1,10 @@
 {
     "nav": {
-        "download": "다운로드",
+        "contact": "문의하기",
         "menuOpen": "메뉴 열기"
+    },
+    "contact": {
+        "close": "닫기"
     },
     "hero": {
         "headline1": "몸이 보내는 SOS,",

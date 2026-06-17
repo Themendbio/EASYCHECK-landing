@@ -2,10 +2,12 @@
 import React, { useState } from 'react';
 import { IconMenu, IconPlay, IconCheck } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ContactModal } from './contact-modal';
 
 // Nav
 function Nav() {
     const [open, setOpen] = useState(false);
+    const [contactOpen, setContactOpen] = useState(false);
     const { locale, setLocale, t } = useLanguage();
 
     return (
@@ -48,13 +50,14 @@ function Nav() {
                         </button>
                     </div>
 
-                    <a
-                        href="#"
+                    <button
+                        type="button"
+                        onClick={() => setContactOpen(true)}
                         className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold text-[14px] px-4 py-2.5 rounded-lg shadow-sm hover:bg-brand-accent-hover hover:-translate-y-px hover:shadow-md transition-all duration-200 focus-ring"
-                        aria-label={t('nav.download')}
+                        aria-label={t('nav.contact')}
                     >
-                        {t('nav.download')}
-                    </a>
+                        {t('nav.contact')}
+                    </button>
                 </nav>
 
                 {/* Mobile hamburger */}
@@ -68,6 +71,8 @@ function Nav() {
                     <IconMenu size={22} />
                 </button>
             </div>
+
+            <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
         </header>
     );
 }

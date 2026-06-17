@@ -1,7 +1,10 @@
 {
     "nav": {
-        "download": "Download",
+        "contact": "Contact",
         "menuOpen": "Open menu"
+    },
+    "contact": {
+        "close": "Close"
     },
     "hero": {
         "headline1": "What you don't feel",
