@@ -97,51 +97,7 @@
     },
     "tech": {
         "title": "Why EASYCHECK is different",
-        "description": "Other wearables count your steps. EASYCHECK reads what's inside.",
-        "stats": {
-            "accuracy": {
-                "value": "89.5%",
-                "label": "Hydration index accuracy",
-                "caption": "research-validated"
-            },
-            "data": {
-                "value": "36,000+",
-                "label": "Multi-center clinical PPG records",
-                "caption": "accumulated data"
-            },
-            "severance": {
-                "value": "195",
-                "label": "Severance Hospital study participants",
-                "caption": "clinical research"
-            },
-            "participants": {
-                "value": "600+",
-                "label": "Total research participants",
-                "caption": "cumulative subjects"
-            }
-        },
-        "cards": {
-            "ai": {
-                "pill": "Accuracy 0.895",
-                "title": "PPG-to-spectrogram AI",
-                "body": "A multi-model deep learning ensemble using time-frequency transforms (STFT/CWT) — not simple waveform analysis."
-            },
-            "severance": {
-                "pill": "Hospital Research",
-                "title": "Built on hospital research",
-                "body": "Developed and validated with the Department of Emergency Medicine at Severance Hospital, Seoul."
-            },
-            "watch": {
-                "pill": "Smartwatch-only",
-                "title": "Optimized for smartwatches",
-                "body": "A signal pipeline tuned for wrist-worn PPG sensors. Accurate readings during everyday wear."
-            },
-            "alert": {
-                "pill": "Proactive Alert",
-                "title": "Alerts that come first",
-                "body": "An alert-driven algorithm that notifies you the moment your index crosses the threshold — before thirst does."
-            }
-        }
+        "description": "Other wearables count your steps. EASYCHECK reads what's inside."
     },
     "download": {
         "title": "It’s what’s inside that counts. Now you can count it.",
