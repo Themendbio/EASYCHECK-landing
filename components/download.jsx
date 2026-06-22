@@ -3,7 +3,7 @@ import { IconPlay } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 
-// Easycheck — Final CTA (다운로드 유도) · 마지막 섹션
+// EASYCHECK — Final CTA (다운로드 유도) · 마지막 섹션
 // 브랜드 컬러 패널 안에 헤드라인 + Google Play 버튼. 컴팩트.
 
 function DownloadCTA() {

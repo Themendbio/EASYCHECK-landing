@@ -14,7 +14,7 @@ function Nav() {
         <header className="sticky top-0 z-30 nav-blur border-b border-border">
             <div className="mx-auto max-w-8xl container-x flex items-center justify-between h-16 lg:h-[72px]">
                 {/* Wordmark */}
-                <a href="#" className="focus-ring rounded-md" aria-label="Easycheck 홈으로">
+                <a href="#" className="focus-ring rounded-md" aria-label="EASYCHECK 홈으로">
                     <img
                         src="/images/easycheck-logo.webp"
                         alt="EASYCHECK"
