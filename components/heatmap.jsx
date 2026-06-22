@@ -12,9 +12,9 @@ function HeatmapSection() {
             id="heatmap"
             data-screen-label="03 지역별 폭염지수"
             aria-label="지역별 폭염지수 지도"
-            className="px-6 lg:px-20 py-24 md:py-32 bg-white"
+            className="relative z-10 px-6 lg:px-20 py-24 md:py-32"
         >
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-7xl rounded-3xl bg-white/85 backdrop-blur-sm shadow-xl ring-1 ring-white/60 px-6 py-10 md:px-12 md:py-14">
                 <div className="text-left mb-10 md:mb-14">
                     <Reveal
                         as="h2"

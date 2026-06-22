@@ -14,9 +14,9 @@ function StatsSection() {
             id="stats"
             data-screen-label="02 통계"
             aria-label="연도별 여름 평균기온"
-            className="px-6 lg:px-20 py-24 md:py-32 bg-bg-subtle border-y border-border"
+            className="relative z-10 px-6 lg:px-20 py-24 md:py-32"
         >
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-7xl rounded-3xl bg-white/85 backdrop-blur-sm shadow-xl ring-1 ring-white/60 px-6 py-10 md:px-12 md:py-14">
                 {/* 섹션 헤더 */}
                 <div className="text-left mb-8 md:mb-10">
                     {/* 제목 */}
