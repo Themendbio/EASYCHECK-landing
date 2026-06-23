@@ -17,6 +17,42 @@ import { Reveal } from './ui/Reveal';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
+// 페르소나 카드 공통 조각 — 모바일/데스크탑 카드가 동일하게 렌더하는 부분만 추출.
+// 두 카드의 래퍼·라벨 레이아웃은 서로 달라 유지하고, 차이나는 토큰만 props로 받는다.
+
+// 이미지 — 4:3 (이미지 또는 줄무늬 placeholder)
+function PersonaImage({ image, imageCaption, Icon, iconSize, iconStroke, captionClassName }) {
+    return image ? (
+        <img
+            src={image}
+            alt={imageCaption}
+            loading="lazy"
+            className="w-full aspect-[4/3] object-cover"
+        />
+    ) : (
+        <div
+            className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
+            role="img"
+            aria-label={imageCaption}
+        >
+            <Icon size={iconSize} strokeWidth={iconStroke} aria-hidden="true" />
+            <span className={captionClassName}>{imageCaption}</span>
+        </div>
+    );
+}
+
+// 인용 — 좌측 보더 강조
+function PersonaQuote({ quote, className }) {
+    return (
+        <blockquote
+            className={className}
+            style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
+        >
+            {quote}
+        </blockquote>
+    );
+}
+
 // Persona card — 모바일 가로 스와이프 트랙용 카드
 function PersonaCard({ persona }) {
     const { ImageIcon, LabelIcon, image, imageCaption, label, title, body, quote } = persona;
@@ -29,23 +65,14 @@ function PersonaCard({ persona }) {
       "
         >
             {/* 이미지 — 4:3 */}
-            {image ? (
-                <img
-                    src={image}
-                    alt={imageCaption}
-                    loading="lazy"
-                    className="w-full aspect-[4/3] object-cover"
-                />
-            ) : (
-                <div
-                    className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
-                    role="img"
-                    aria-label={imageCaption}
-                >
-                    <ImageIcon size={32} strokeWidth={1.6} aria-hidden="true" />
-                    <span className="text-[12px] font-medium tracking-normal">{imageCaption}</span>
-                </div>
-            )}
+            <PersonaImage
+                image={image}
+                imageCaption={imageCaption}
+                Icon={ImageIcon}
+                iconSize={32}
+                iconStroke={1.6}
+                captionClassName="text-[12px] font-medium tracking-normal"
+            />
 
             {/* Body */}
             <div className="flex flex-col p-6">
@@ -69,12 +96,10 @@ function PersonaCard({ persona }) {
                 >
                     {body}
                 </p>
-                <blockquote
+                <PersonaQuote
+                    quote={quote}
                     className="mt-6 pl-4 text-[14px] leading-[1.6] italic text-text-tertiary"
-                    style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
-                >
-                    {quote}
-                </blockquote>
+                />
             </div>
         </article>
     );
@@ -137,23 +162,14 @@ function PersonaCardLg({ persona, index, total }) {
             aria-label={`${index + 1} / ${total} — ${label}`}
         >
             {/* 이미지 — 4:3 */}
-            {image ? (
-                <img
-                    src={image}
-                    alt={imageCaption}
-                    loading="lazy"
-                    className="w-full aspect-[4/3] object-cover"
-                />
-            ) : (
-                <div
-                    className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
-                    role="img"
-                    aria-label={imageCaption}
-                >
-                    <Img size={48} strokeWidth={1.4} aria-hidden="true" />
-                    <span className="text-[13px] font-medium">{imageCaption}</span>
-                </div>
-            )}
+            <PersonaImage
+                image={image}
+                imageCaption={imageCaption}
+                Icon={Img}
+                iconSize={48}
+                iconStroke={1.4}
+                captionClassName="text-[13px] font-medium"
+            />
 
             {/* 본문 */}
             <div className="flex flex-col flex-1 p-7 xl:p-8">
@@ -193,12 +209,10 @@ function PersonaCardLg({ persona, index, total }) {
                 </p>
 
                 {/* 인용 — 카드 하단 고정 */}
-                <blockquote
+                <PersonaQuote
+                    quote={quote}
                     className="mt-auto pl-4 text-[15px] leading-[1.6] italic text-text-tertiary"
-                    style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
-                >
-                    {quote}
-                </blockquote>
+                />
             </div>
         </article>
     );
