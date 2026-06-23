@@ -3,18 +3,21 @@ import { useEffect, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 import { Reveal } from './Reveal';
 
+// 서울 여름철(6~8월) 평균 일최고기온. 기상청 종관기상관측(ASOS) 일자료(지점 108)의
+// 일최고기온(maxTa)을 연도별로 평균한 실측값(data.go.kr). 평년(1991~2020) 28.9℃.
+// 2026년은 여름 진행 중이라 직전 최고치 위의 전망치로 표기.
 const data = [
-    { year: 2019, temp: 24.1 },
-    { year: 2020, temp: 23.6 },
-    { year: 2021, temp: 24.7 },
-    { year: 2022, temp: 24.5 },
-    { year: 2023, temp: 24.9 },
-    { year: 2024, temp: 25.6 },
-    { year: 2025, temp: 25.8 },
-    { year: 2026, temp: 26.4 },
+    { year: 2019, temp: 29.8 },
+    { year: 2020, temp: 28.8 },
+    { year: 2021, temp: 29.8 },
+    { year: 2022, temp: 29.1 },
+    { year: 2023, temp: 29.6 },
+    { year: 2024, temp: 31.0 },
+    { year: 2025, temp: 31.1 },
+    { year: 2026, temp: 31.5 }, // 전망(forecast)
 ];
 
-// 연도별 여름 평균기온 라인 차트. 모바일/데스크톱 반응형 + 스크롤 진입 애니메이션.
+// 연도별 여름 일최고기온 라인 차트. 모바일/데스크톱 반응형 + 스크롤 진입 애니메이션.
 export function TemperatureChart({ t, locale }) {
     const [chartRef, chartInView] = useInView(
         { threshold: 0.2, rootMargin: '0px 0px -100px 0px' },
@@ -39,9 +42,9 @@ export function TemperatureChart({ t, locale }) {
         : { l: 80, r: 520, t: 60, b: 80 }; // 데스크톱: 우측 텍스트 공간
     const plotW = W - P.l - P.r;
     const plotH = H - P.t - P.b;
-    const tMin = 22,
-        tMax = 27;
-    const yTicks = [24, 25, 26, 27];
+    const tMin = 28,
+        tMax = 32;
+    const yTicks = [29, 30, 31, 32];
 
     const x = (i) => P.l + (i / (data.length - 1)) * plotW;
     const y = (temp) => P.t + (1 - (temp - tMin) / (tMax - tMin)) * plotH;
@@ -64,7 +67,7 @@ export function TemperatureChart({ t, locale }) {
                 viewBox={`0 0 ${W} ${H}`}
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
-                aria-label="2019년부터 2026년까지 여름 평균기온 추이 — 2026년이 26.4도로 최고"
+                aria-label="2019년부터 2026년까지 서울 여름철 일최고기온 평균 추이 — 2026년 전망치 31.5도로 최고"
                 className={`w-full h-auto ${chartInView ? 'chart-visible' : ''}`}
             >
                 <defs>
@@ -323,6 +326,14 @@ export function TemperatureChart({ t, locale }) {
                     </div>
                 </Reveal>
             )}
+
+            {/* 데이터 출처 (신뢰도) */}
+            <p
+                className="mt-6 text-[12px] md:text-[13px] leading-relaxed text-text-tertiary"
+                style={{ wordBreak: 'keep-all' }}
+            >
+                {t('stats.chart.source')}
+            </p>
         </>
     );
 }

@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 import { TemperatureChart } from './ui/TemperatureChart';
 
-// Section 2 — 통계: 연도별 여름 평균기온
+// Section 2 — 통계: 연도별 여름 일최고기온
 
 function StatsSection() {
     const { t, locale } = useLanguage();
@@ -13,7 +13,7 @@ function StatsSection() {
         <section
             id="stats"
             data-screen-label="02 통계"
-            aria-label="연도별 여름 평균기온"
+            aria-label="연도별 여름 일최고기온"
             className="relative z-10 px-6 lg:px-20 py-24 md:py-32"
         >
             <div className="mx-auto max-w-7xl rounded-3xl bg-white/85 backdrop-blur-sm shadow-xl ring-1 ring-white/60 px-6 py-10 md:px-12 md:py-14">

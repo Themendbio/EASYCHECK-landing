@@ -24,12 +24,13 @@
         "title": "The hottest summer on record is coming.",
         "description": "Record heat is becoming the new normal worldwide. This summer is projected to be the hottest yet — and your body will feel it before you do.",
         "chart": {
-            "ariaLabel": "Summer average temperature trend from 2019 to 2026 — 2026 is the highest at 26.4°C",
-            "temp": "26.4°C",
+            "ariaLabel": "Seoul summer daily-high temperature trend from 2019 to 2026 — 2026 is the highest at a projected 31.5°C",
+            "temp": "31.5°C",
             "headline": "Hottest summer in 8 years",
             "comparison": "Above average",
-            "comparisonValue": "+2.3°C",
-            "message": "Time to manage hydration"
+            "comparisonValue": "+2.6°C",
+            "message": "Time to manage hydration",
+            "source": "Source: Korea Meteorological Administration (ASOS), Seoul · summer (Jun–Aug) daily-high average · 2026 projected"
         }
     },
     "heatmap": {
