@@ -93,6 +93,15 @@ function Footer() {
                     "
                 >
                     <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
+                        {t('footer.contact')}:{' '}
+                        <a
+                            href="mailto:themend_contact@mendbiosim.com"
+                            className="text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            themend_contact@mendbiosim.com
+                        </a>
+                    </p>
+                    <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
                         {t('footer.copyright')}
                     </p>
                     <p

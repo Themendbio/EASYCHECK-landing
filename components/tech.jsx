@@ -11,7 +11,7 @@ function TechSection() {
     const patents = [
         '/images/patent-contactless-biosignal.webp',
         '/images/patent-watch-vascular.webp',
-        '/images/patent-vascular-disease.webp',
+        '/images/patent-cardiovascular-risk.webp',
     ];
 
     return (
