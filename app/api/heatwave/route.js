@@ -7,7 +7,10 @@ import { REG_TO_SIDO } from '../../../components/ui/kmaRegionMap';
 
 const KMA_URL = 'https://apihub.kma.go.kr/api/typ01/url/ifs_fct_pstt.php';
 
-export const revalidate = 1800; // 30분 캐시 (영향예보는 하루 2회 갱신)
+export const revalidate = 1800; // 30분 캐시
+
+const ymd = (d) =>
+    `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
 
 export async function GET() {
     const key = process.env.KMA_API_KEY;
@@ -15,9 +18,12 @@ export async function GET() {
         return Response.json({ error: 'KMA_API_KEY not configured' }, { status: 500 });
     }
 
-    // ifpar=hw(폭염), ifarea=1(보건 일반인), ef_sn=3(내일+모레)
-    // 주의: ilvl 파라미터는 생략해야 전체 레벨이 옴 (ilvl=0 은 '영향없음'만 필터링됨)
-    const url = `${KMA_URL}?ifpar=hw&ifarea=1&ef_sn=3&authKey=${key}`;
+    // ifs_fct_pstt는 발표시각 범위(tmfc1~tmfc2)가 있어야 데이터를 반환한다.
+    // 폭염 영향예보가 매일 발표되진 않으므로 최근 14일을 받아 '최신 발표분'만 사용.
+    const now = Date.now();
+    const tmfc1 = ymd(new Date(now - 14 * 864e5));
+    const tmfc2 = ymd(new Date(now + 864e5)); // +1일 (당일 발표분 누락 방지)
+    const url = `${KMA_URL}?ifpar=hw&tmfc1=${tmfc1}&tmfc2=${tmfc2}&authKey=${key}`;
 
     let text;
     try {
@@ -30,24 +36,31 @@ export async function GET() {
         return Response.json({ error: 'KMA fetch failed', detail: String(e) }, { status: 502 });
     }
 
-    const levels = {};
-    let asOf = null;
-
+    // 1) 행 파싱 + 최신 발표시각(TM_FC) 탐색
+    //    컬럼: TM_FC, TM_EF, STN, REG_ID, IFPAR, IFAREA, ILVL, EF_SN
+    const rows = [];
+    let latestFc = '';
     for (const line of text.split('\n')) {
         if (line.startsWith('#') || !line.includes('HW')) continue;
         const f = line.split(',').map((s) => s.trim());
-        // TM_FC, TM_EF, STN, REG_ID, IFPAR, IFAREA, ILVL, EF_SN
-        if (f.length < 7) continue;
-        const regId = f[3];
+        if (f.length < 7 || f[5] !== '1') continue; // IFAREA=1(보건)만
         const ilvl = Number(f[6]);
-        const code = REG_TO_SIDO[regId];
-        if (!code || Number.isNaN(ilvl)) continue;
-        asOf = asOf ?? f[0];
-        levels[code] = Math.max(levels[code] ?? 0, ilvl);
+        if (Number.isNaN(ilvl)) continue;
+        rows.push({ tmFc: f[0], regId: f[3], ilvl });
+        if (f[0] > latestFc) latestFc = f[0];
     }
 
-    // 발효 구역이 없으면(비시즌 등) 전 지역 0으로 간주
+    // 2) 최신 발표분만 시·도별 최대 위험수준으로 롤업
+    const levels = {};
+    for (const r of rows) {
+        if (r.tmFc !== latestFc) continue;
+        const code = REG_TO_SIDO[r.regId];
+        if (!code) continue;
+        levels[code] = Math.max(levels[code] ?? 0, r.ilvl);
+    }
+
+    // 발효 구역이 없으면(비시즌·미발표) 빈 levels → active=false
     const active = Object.keys(levels).length > 0;
 
-    return Response.json({ asOf, levels, active });
+    return Response.json({ asOf: latestFc || null, levels, active });
 }
