@@ -11,7 +11,7 @@ const translations = {
 };
 
 const GA_ID = 'G-GFLHHYT04D';
-const SITE_URL = 'https://easycheck-landing.netlify.app';
+const SITE_URL = 'https://themendbio.com';
 const OG_IMAGE = `${SITE_URL}/images/og-image.png`;
 const SITE_TITLE = 'EASYCHECK | 스마트워치로 확인하는 체내 수분 지수';
 const SITE_DESCRIPTION =
