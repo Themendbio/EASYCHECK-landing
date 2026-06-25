@@ -35,7 +35,7 @@
     },
     "heatmap": {
         "title": "How hot is your region right now?",
-        "description": "Live heat-wave impact forecast from the Korea Meteorological Administration, mapped across all 17 regions. Darker shades mean higher heat risk. Tap a region for details.",
+        "description": "The latest heat-wave impact forecast from the Korea Meteorological Administration, mapped across all 17 regions. Darker shades mean higher heat risk. Tap a region for details.",
         "ariaLabel": "Heat-wave impact forecast risk-level map of South Korea's 17 regions",
         "live": "KMA forecast",
         "hottest": "Highest-risk region",
@@ -43,7 +43,7 @@
         "legendTitle": "Heat risk level",
         "noAlertTitle": "No active heat-wave advisory",
         "noAlertDesc": "Heat risk is low nationwide right now. Still, remember to stay hydrated.",
-        "note": "KMA heat-wave impact forecast (health) · next 2 days · highest level per region",
+        "note": "KMA heat-wave impact forecast (health) · latest publication · highest level per region",
         "level": {
             "none": "None",
             "interest": "Concern",
