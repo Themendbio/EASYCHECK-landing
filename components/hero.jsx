@@ -1,23 +1,20 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { IconMenu, IconPlay, IconCheck } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ContactModal } from './contact-modal';
 
-// Easycheck — Nav + Hero section
-// React component using design-system tokens (Tailwind extended in index <script>).
-
-const { useState } = React;
-
-/* ─────────────── NAV ─────────────── */
+// Nav
 function Nav() {
     const [open, setOpen] = useState(false);
+    const [contactOpen, setContactOpen] = useState(false);
     const { locale, setLocale, t } = useLanguage();
 
     return (
         <header className="sticky top-0 z-30 nav-blur border-b border-border">
             <div className="mx-auto max-w-8xl container-x flex items-center justify-between h-16 lg:h-[72px]">
                 {/* Wordmark */}
-                <a href="#" className="focus-ring rounded-md" aria-label="Easycheck 홈으로">
+                <a href="#" className="focus-ring rounded-md" aria-label="EASYCHECK 홈으로">
                     <img
                         src="/images/easycheck-logo.webp"
                         alt="EASYCHECK"
@@ -53,13 +50,14 @@ function Nav() {
                         </button>
                     </div>
 
-                    <a
-                        href="#"
+                    <button
+                        type="button"
+                        onClick={() => setContactOpen(true)}
                         className="inline-flex items-center gap-2 bg-brand-accent text-white font-semibold text-[14px] px-4 py-2.5 rounded-lg shadow-sm hover:bg-brand-accent-hover hover:-translate-y-px hover:shadow-md transition-all duration-200 focus-ring"
-                        aria-label={t('nav.download')}
+                        aria-label={t('nav.contact')}
                     >
-                        {t('nav.download')}
-                    </a>
+                        {t('nav.contact')}
+                    </button>
                 </nav>
 
                 {/* Mobile hamburger */}
@@ -73,11 +71,13 @@ function Nav() {
                     <IconMenu size={22} />
                 </button>
             </div>
+
+            <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
         </header>
     );
 }
 
-/* ─────────────── HERO ─────────────── */
+// Hero
 function Hero() {
     const { t } = useLanguage();
 
@@ -98,7 +98,7 @@ function Hero() {
                 data-screen-label="01 Hero"
                 className="relative overflow-hidden hero-video-section"
             >
-                {/* ─── 배경 영상 ─── */}
+                {/* 배경 영상 */}
                 <video
                     className="hero-video"
                     autoPlay
@@ -110,7 +110,7 @@ function Hero() {
                 >
                     <source src={'/video/hero-video.mp4'} type="video/mp4" />
                 </video>
-                {/* ─── 반투명 검정 오버레이 ─── */}
+                {/* 반투명 검정 오버레이 */}
                 <div className="hero-video-overlay" aria-hidden="true" />
 
                 <div
@@ -121,7 +121,7 @@ function Hero() {
             flex flex-col items-start justify-center
           "
                 >
-                    {/* ─── 텍스트 + CTA + 인증 ─── */}
+                    {/* 텍스트 + CTA + 인증 */}
                     <div className="w-full max-w-[820px] flex flex-col lg:pl-8 xl:pl-12">
                         {/* Headline */}
                         <h1
@@ -186,7 +186,7 @@ function Hero() {
                 </div>
             </section>
 
-            {/* ─── Hero 하단 신뢰 정보 띠지 (정적 한 줄) ─── */}
+            {/* Hero 하단 신뢰 정보 띠지 */}
             <div className="trust-band" aria-label="인증 및 연구 정보">
                 <div className="mx-auto max-w-8xl px-6 lg:px-12 py-5">
                     <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:gap-x-9">

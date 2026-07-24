@@ -1,11 +1,11 @@
 'use client';
+import Link from 'next/link';
 import { IconInfo } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Easycheck — Footer (섹션 7) · 단일 페이지용 단순 버전
-// React. Tailwind (extended via index <script>). lucide-equivalent icons (icons.jsx). 정적, 모션 없음.
+// Footer — 단일 페이지용 단순 버전 (정적, 모션 없음)
 
-/* ────────────────── 면책 박스 ────────────────── */
+// 면책 박스
 function FooterDisclaimer() {
     const { t } = useLanguage();
 
@@ -45,7 +45,7 @@ function FooterDisclaimer() {
     );
 }
 
-/* ────────────────── 푸터 본체 ────────────────── */
+// 푸터 본체
 function Footer() {
     const { t } = useLanguage();
 
@@ -85,7 +85,7 @@ function Footer() {
                     </span>
                 </div>
 
-                {/* 3. 하단 영역 — 저작권 + 사업자 정보 */}
+                {/* 3. 하단 영역 — 정책 링크 + 저작권 + 사업자 정보 */}
                 <div
                     className="
                         mt-10 lg:mt-12 pt-6 lg:pt-8
@@ -93,6 +93,35 @@ function Footer() {
                         flex flex-col gap-2
                     "
                 >
+                    <nav
+                        aria-label="약관"
+                        className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2"
+                    >
+                        <Link
+                            href="/policy/privacy"
+                            className="text-[12px] lg:text-[13px] font-medium text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            {t('footer.privacy')}
+                        </Link>
+                        <span aria-hidden="true" className="text-text-disabled">
+                            ·
+                        </span>
+                        <Link
+                            href="/policy/account-deletion"
+                            className="text-[12px] lg:text-[13px] font-medium text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            {t('footer.dataDeletion')}
+                        </Link>
+                    </nav>
+                    <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
+                        {t('footer.contact')}:{' '}
+                        <a
+                            href="mailto:themend_contact@mendbiosim.com"
+                            className="text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            themend_contact@mendbiosim.com
+                        </a>
+                    </p>
                     <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
                         {t('footer.copyright')}
                     </p>

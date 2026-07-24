@@ -1,27 +1,59 @@
 'use client';
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     IconChevronRight,
     IconHardHat,
     IconSun,
     IconUsers,
     IconHeart,
+    IconTarget,
     IconBuilding2,
 } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
 
-// Easycheck — Section 2 "Problem / Personas"
-// React component using design-system tokens.
-// Entry animations: IntersectionObserver-driven, fade + slide-up.
-// Carousel — desktop(lg+): prev/next buttons. mobile(<lg): native horizontal swipe (scroll-snap).
+// Section 2 — Problem / Personas
+// 데스크탑(lg+)은 버튼 제어 가로 캐러셀, 모바일은 네이티브 스와이프(scroll-snap).
 
-const { useEffect, useRef, useState } = React;
-
-/* ─── small helpers ─── */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-/* ─── Persona card — 모바일 가로 스와이프 트랙용 카드 ─── */
+// 페르소나 카드 공통 조각 — 모바일/데스크탑 카드가 동일하게 렌더하는 부분만 추출.
+// 두 카드의 래퍼·라벨 레이아웃은 서로 달라 유지하고, 차이나는 토큰만 props로 받는다.
+
+// 이미지 — 4:3 (이미지 또는 줄무늬 placeholder)
+function PersonaImage({ image, imageCaption, Icon, iconSize, iconStroke, captionClassName }) {
+    return image ? (
+        <img
+            src={image}
+            alt={imageCaption}
+            loading="lazy"
+            className="w-full aspect-[4/3] object-cover"
+        />
+    ) : (
+        <div
+            className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
+            role="img"
+            aria-label={imageCaption}
+        >
+            <Icon size={iconSize} strokeWidth={iconStroke} aria-hidden="true" />
+            <span className={captionClassName}>{imageCaption}</span>
+        </div>
+    );
+}
+
+// 인용 — 좌측 보더 강조
+function PersonaQuote({ quote, className }) {
+    return (
+        <blockquote
+            className={className}
+            style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
+        >
+            {quote}
+        </blockquote>
+    );
+}
+
+// Persona card — 모바일 가로 스와이프 트랙용 카드
 function PersonaCard({ persona }) {
     const { ImageIcon, LabelIcon, image, imageCaption, label, title, body, quote } = persona;
 
@@ -32,24 +64,15 @@ function PersonaCard({ persona }) {
         flex flex-col bg-white border border-border rounded-xl shadow-sm overflow-hidden
       "
         >
-            {/* A. Image — 4:3, full card width */}
-            {image ? (
-                <img
-                    src={image}
-                    alt={imageCaption}
-                    loading="lazy"
-                    className="w-full aspect-[4/3] object-cover"
-                />
-            ) : (
-                <div
-                    className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
-                    role="img"
-                    aria-label={imageCaption}
-                >
-                    <ImageIcon size={32} strokeWidth={1.6} aria-hidden="true" />
-                    <span className="text-[12px] font-medium tracking-normal">{imageCaption}</span>
-                </div>
-            )}
+            {/* 이미지 — 4:3 */}
+            <PersonaImage
+                image={image}
+                imageCaption={imageCaption}
+                Icon={ImageIcon}
+                iconSize={32}
+                iconStroke={1.6}
+                captionClassName="text-[12px] font-medium tracking-normal"
+            />
 
             {/* Body */}
             <div className="flex flex-col p-6">
@@ -73,21 +96,18 @@ function PersonaCard({ persona }) {
                 >
                     {body}
                 </p>
-                <blockquote
+                <PersonaQuote
+                    quote={quote}
                     className="mt-6 pl-4 text-[14px] leading-[1.6] italic text-text-tertiary"
-                    style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
-                >
-                    {quote}
-                </blockquote>
+                />
             </div>
         </article>
     );
 }
 
-/* ─── 모바일/태블릿(<lg): 가로 스와이프 캐러셀 ─── */
+// 모바일/태블릿(<lg): 가로 스와이프 캐러셀
 function PersonaSwipe({ personas }) {
     const { t } = useLanguage();
-    const trackRef = useRef(null);
 
     return (
         <section
@@ -114,7 +134,6 @@ function PersonaSwipe({ personas }) {
 
                 {/* 가로 스와이프 트랙 — 네이티브 터치 스크롤 + 스냅 */}
                 <div
-                    ref={trackRef}
                     className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 pb-2 scroll-smooth"
                     style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
                     role="group"
@@ -129,7 +148,7 @@ function PersonaSwipe({ personas }) {
     );
 }
 
-/* ─── 데스크탑 페르소나 카드 (세로형 — 가로 스크롤 트랙 내부) ─── */
+// 데스크탑 페르소나 카드 (세로형 — 가로 스크롤 트랙 내부)
 // Apple Health 스타일: 화면 너비보다 작은 카드 → 옆 카드가 살짝 걸쳐 보임(peek).
 function PersonaCardLg({ persona, index, total }) {
     const { ImageIcon: Img, LabelIcon, image, imageCaption, label, title, body, quote } = persona;
@@ -143,23 +162,14 @@ function PersonaCardLg({ persona, index, total }) {
             aria-label={`${index + 1} / ${total} — ${label}`}
         >
             {/* 이미지 — 4:3 */}
-            {image ? (
-                <img
-                    src={image}
-                    alt={imageCaption}
-                    loading="lazy"
-                    className="w-full aspect-[4/3] object-cover"
-                />
-            ) : (
-                <div
-                    className="ph-stripes w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 text-text-tertiary"
-                    role="img"
-                    aria-label={imageCaption}
-                >
-                    <Img size={48} strokeWidth={1.4} aria-hidden="true" />
-                    <span className="text-[13px] font-medium">{imageCaption}</span>
-                </div>
-            )}
+            <PersonaImage
+                image={image}
+                imageCaption={imageCaption}
+                Icon={Img}
+                iconSize={48}
+                iconStroke={1.4}
+                captionClassName="text-[13px] font-medium"
+            />
 
             {/* 본문 */}
             <div className="flex flex-col flex-1 p-7 xl:p-8">
@@ -199,19 +209,16 @@ function PersonaCardLg({ persona, index, total }) {
                 </p>
 
                 {/* 인용 — 카드 하단 고정 */}
-                <blockquote
+                <PersonaQuote
+                    quote={quote}
                     className="mt-auto pl-4 text-[15px] leading-[1.6] italic text-text-tertiary"
-                    style={{ borderLeft: '4px solid rgba(0,104,183,0.5)', wordBreak: 'keep-all' }}
-                >
-                    {quote}
-                </blockquote>
+                />
             </div>
         </article>
     );
 }
 
-/* ─── 데스크탑(lg+): 버튼 제어 가로 스크롤 캐러셀 ─── */
-// Apple Health 스타일 — 작은 세로 카드들이 가로로 스냅 스크롤. 옆 카드 peek.
+// 데스크탑(lg+): 버튼 제어 가로 스크롤 캐러셀 — 작은 세로 카드들이 스냅 스크롤
 function PersonaCarousel({ personas }) {
     const { t } = useLanguage();
     const N = personas.length;
@@ -229,13 +236,15 @@ function PersonaCarousel({ personas }) {
             raf = 0;
             const cards = el.children;
             if (!cards.length) return;
-            const center = el.scrollLeft + el.clientWidth / 2;
+            // 카드는 snap-start + scroll-padding-left 기준으로 정렬되므로
+            // 좌측 패딩만큼 들어온 스냅 기준선에 가장 가까운 카드가 활성 카드다.
+            const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+            const snapLine = el.scrollLeft + padLeft;
             let best = 0;
             let bestDist = Infinity;
             for (let i = 0; i < cards.length; i++) {
-                const c = cards[i];
-                const cCenter = c.offsetLeft + c.offsetWidth / 2;
-                const d = Math.abs(cCenter - center);
+                const cStart = cards[i].offsetLeft - el.offsetLeft;
+                const d = Math.abs(cStart - snapLine);
                 if (d < bestDist) {
                     bestDist = d;
                     best = i;
@@ -265,7 +274,9 @@ function PersonaCarousel({ personas }) {
         const idx = clamp(i, 0, N - 1);
         const card = el.children[idx];
         if (!card) return;
-        el.scrollTo({ left: card.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+        // scroll-padding-left만큼 빼야 카드가 스냅 시작선에 정확히 정렬된다.
+        const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+        el.scrollTo({ left: card.offsetLeft - el.offsetLeft - padLeft, behavior: 'smooth' });
     };
 
     const prev = () => scrollToCard(active - 1);
@@ -356,8 +367,18 @@ function PersonaCarousel({ personas }) {
                 {/* ─── 컨트롤: 이전·다음 버튼 ─── */}
                 <div className="mx-auto max-w-8xl px-20">
                     <div className="mt-12 flex items-center justify-end gap-3">
-                        <ArrowBtn dir="prev" onClick={prev} disabled={atStart} label={t('problem.controls.prev')} />
-                        <ArrowBtn dir="next" onClick={next} disabled={atEnd} label={t('problem.controls.next')} />
+                        <ArrowBtn
+                            dir="prev"
+                            onClick={prev}
+                            disabled={atStart}
+                            label={t('problem.controls.prev')}
+                        />
+                        <ArrowBtn
+                            dir="next"
+                            onClick={next}
+                            disabled={atEnd}
+                            label={t('problem.controls.next')}
+                        />
                     </div>
                 </div>
             </div>
@@ -365,15 +386,39 @@ function PersonaCarousel({ personas }) {
     );
 }
 
-/* ─── Section ─── */
+// Section
 function ProblemSection() {
-    const { t } = useLanguage();
+    const { t, locale } = useLanguage();
+
+    // 로케일별 이미지 경로 — en 버전이 없는 경우 hasEn=false로 두면 placeholder가 렌더됨
+    const localeImage = (base, hasEn = true) =>
+        locale === 'en' && !hasEn ? null : `/images/persona-${base}-${locale}.png`;
 
     const personas = [
         {
+            ImageIcon: IconHeart,
+            LabelIcon: IconHeart,
+            image: localeImage('athlete'),
+            imageCaption: t('problem.personas.athlete.label'),
+            label: t('problem.personas.athlete.label'),
+            title: t('problem.personas.athlete.title'),
+            body: t('problem.personas.athlete.body'),
+            quote: t('problem.personas.athlete.quote'),
+        },
+        {
+            ImageIcon: IconTarget,
+            LabelIcon: IconTarget,
+            image: localeImage('dieter'),
+            imageCaption: t('problem.personas.dieter.label'),
+            label: t('problem.personas.dieter.label'),
+            title: t('problem.personas.dieter.title'),
+            body: t('problem.personas.dieter.body'),
+            quote: t('problem.personas.dieter.quote'),
+        },
+        {
             ImageIcon: IconHardHat,
             LabelIcon: IconSun,
-            image: '/images/persona-outdoor.webp',
+            image: localeImage('outdoor'),
             imageCaption: t('problem.personas.outdoor.label'),
             label: t('problem.personas.outdoor.label'),
             title: t('problem.personas.outdoor.title'),
@@ -383,7 +428,7 @@ function ProblemSection() {
         {
             ImageIcon: IconHeart,
             LabelIcon: IconUsers,
-            image: '/images/persona-elderly.webp',
+            image: localeImage('elderly'),
             imageCaption: t('problem.personas.elderly.label'),
             label: t('problem.personas.elderly.label'),
             title: t('problem.personas.elderly.title'),
@@ -393,7 +438,7 @@ function ProblemSection() {
         {
             ImageIcon: IconBuilding2,
             LabelIcon: IconBuilding2,
-            image: '/images/persona-office.webp',
+            image: localeImage('office', false),
             imageCaption: t('problem.personas.office.label'),
             label: t('problem.personas.office.label'),
             title: t('problem.personas.office.title'),

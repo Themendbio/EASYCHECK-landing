@@ -45,13 +45,11 @@ const IconMenu = (props) => (
     </Icon>
 );
 
-// lucide Watch (rounded square w/ ticks)
-const IconWatch = (props) => (
+// lucide X
+const IconX = (props) => (
     <Icon {...props}>
-        <circle cx="12" cy="12" r="6" />
-        <polyline points="12 10 12 12 13.5 13.5" />
-        <path d="M16.51 17.35 16 22h-8l-.51-4.65" />
-        <path d="M7.49 6.65 8 2h8l.51 4.65" />
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
     </Icon>
 );
 
@@ -142,7 +140,7 @@ export {
     IconPlay,
     IconCheck,
     IconMenu,
-    IconWatch,
+    IconX,
     IconHardHat,
     IconHeart,
     IconSun,

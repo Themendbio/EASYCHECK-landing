@@ -1,7 +1,10 @@
 {
     "nav": {
-        "download": "Download",
+        "contact": "Contact",
         "menuOpen": "Open menu"
+    },
+    "contact": {
+        "close": "Close"
     },
     "hero": {
         "headline1": "What you don't feel",
@@ -21,18 +24,50 @@
         "title": "The hottest summer on record is coming.",
         "description": "Record heat is becoming the new normal worldwide. This summer is projected to be the hottest yet — and your body will feel it before you do.",
         "chart": {
-            "ariaLabel": "Summer average temperature trend from 2019 to 2026 — 2026 is the highest at 26.4°C",
-            "temp": "26.4°C",
+            "ariaLabel": "Seoul summer daily-high temperature trend from 2019 to 2026 — 2026 is the highest at a projected 31.5°C",
+            "temp": "31.5°C",
             "headline": "Hottest summer in 8 years",
             "comparison": "Above average",
-            "comparisonValue": "+2.3°C",
-            "message": "Time to manage hydration"
+            "comparisonValue": "+2.6°C",
+            "message": "Time to manage hydration",
+            "source": "Source: Korea Meteorological Administration (ASOS), Seoul · summer (Jun–Aug) daily-high average · 2026 projected"
+        }
+    },
+    "heatmap": {
+        "title": "How hot is your region right now?",
+        "description": "The latest heat-wave impact forecast from the Korea Meteorological Administration, mapped across all 17 regions. Darker shades mean higher heat risk. Tap a region for details.",
+        "ariaLabel": "Heat-wave impact forecast risk-level map of South Korea's 17 regions",
+        "live": "KMA forecast",
+        "hottest": "Highest-risk region",
+        "selected": "Selected region",
+        "legendTitle": "Heat risk level",
+        "noAlertTitle": "No active heat-wave advisory",
+        "noAlertDesc": "Heat risk is low nationwide right now. Still, remember to stay hydrated.",
+        "note": "KMA heat-wave impact forecast (health) · latest publication · highest level per region",
+        "level": {
+            "none": "None",
+            "interest": "Concern",
+            "caution": "Caution",
+            "warning": "Warning",
+            "danger": "Danger"
         }
     },
     "problem": {
         "title": "Dehydration doesn't treat everyone equally.",
         "description": "Anyone can get dehydrated. For some, it happens faster — and quieter.",
         "personas": {
+            "athlete": {
+                "label": "Athletes & Active",
+                "title": "Off your game? Start with hydration.",
+                "body": "Intense training drains fluids and electrolytes fast. Just 2% down is enough to sap your strength, endurance, and focus.",
+                "quote": "“I pushed harder when my times slipped. I just needed water.”"
+            },
+            "dieter": {
+                "label": "Dieters & Wellness",
+                "title": "That craving? It might be thirst.",
+                "body": "Thirst is easy to mistake for hunger. When you're low on fluids, your metabolism slows and the snacking creeps in.",
+                "quote": "“I kept reaching for snacks. Turns out I just needed water.”"
+            },
             "outdoor": {
                 "label": "Outdoor Workers",
                 "title": "We sweat the small stuff. So you don't have to.",
@@ -73,8 +108,8 @@
             },
             "step3": {
                 "label": "STEP 3",
-                "title": "Know before thirst",
-                "body": "When your index hits the threshold, you get an instant alert — with trends and intake guidance in the app."
+                "title": "See your score",
+                "body": "When the measurement finishes, your hydration score is ready — with trends and intake guidance in the app."
             }
         },
         "highlight": {
@@ -85,51 +120,11 @@
     },
     "tech": {
         "title": "Why EASYCHECK is different",
-        "description": "Other wearables count your steps. EASYCHECK reads what's inside.",
-        "stats": {
-            "accuracy": {
-                "value": "89.5%",
-                "label": "Hydration index accuracy",
-                "caption": "research-validated"
-            },
-            "data": {
-                "value": "36,000+",
-                "label": "Multi-center clinical PPG records",
-                "caption": "accumulated data"
-            },
-            "severance": {
-                "value": "195",
-                "label": "Severance Hospital study participants",
-                "caption": "clinical research"
-            },
-            "participants": {
-                "value": "600+",
-                "label": "Total research participants",
-                "caption": "cumulative subjects"
-            }
-        },
-        "cards": {
-            "ai": {
-                "pill": "Accuracy 0.895",
-                "title": "PPG-to-spectrogram AI",
-                "body": "A multi-model deep learning ensemble using time-frequency transforms (STFT/CWT) — not simple waveform analysis."
-            },
-            "severance": {
-                "pill": "Hospital Research",
-                "title": "Built on hospital research",
-                "body": "Developed and validated with the Department of Emergency Medicine at Severance Hospital, Seoul."
-            },
-            "watch": {
-                "pill": "Smartwatch-only",
-                "title": "Optimized for smartwatches",
-                "body": "A signal pipeline tuned for wrist-worn PPG sensors. Accurate readings during everyday wear."
-            },
-            "alert": {
-                "pill": "Proactive Alert",
-                "title": "Alerts that come first",
-                "body": "An alert-driven algorithm that notifies you the moment your index crosses the threshold — before thirst does."
-            }
-        }
+        "description": "Other wearables count your steps. EASYCHECK reads what's inside."
+    },
+    "download": {
+        "title": "It’s what’s inside that counts. Now you can count it.",
+        "description": "All you need is a smartwatch. EASYCHECK alerts you before thirst ever kicks in."
     },
     "footer": {
         "disclaimer": {
@@ -138,6 +133,9 @@
         },
         "company": "The M.E.N.D. BioSimulator",
         "copyright": "© 2026 EASYCHECK. The M.E.N.D. BioSimulator Co., Ltd. All rights reserved.",
-        "businessInfo": "Business Registration: 170-87-02647 · CEO: Junsang Lee · Address: 404, 29 Sinchon-yeok-ro, Seoul, South Korea"
+        "businessInfo": "Business Registration: 170-87-02647 · CEO: Junsang Lee · Address: 404, 29 Sinchon-yeok-ro, Seoul, South Korea",
+        "contact": "Contact",
+        "privacy": "Privacy Policy",
+        "dataDeletion": "Account & Data Deletion"
     }
 }
