@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { IconInfo } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -84,7 +85,7 @@ function Footer() {
                     </span>
                 </div>
 
-                {/* 3. 하단 영역 — 저작권 + 사업자 정보 */}
+                {/* 3. 하단 영역 — 정책 링크 + 저작권 + 사업자 정보 */}
                 <div
                     className="
                         mt-10 lg:mt-12 pt-6 lg:pt-8
@@ -92,6 +93,26 @@ function Footer() {
                         flex flex-col gap-2
                     "
                 >
+                    <nav
+                        aria-label="약관"
+                        className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2"
+                    >
+                        <Link
+                            href="/policy/privacy"
+                            className="text-[12px] lg:text-[13px] font-medium text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            {t('footer.privacy')}
+                        </Link>
+                        <span aria-hidden="true" className="text-text-disabled">
+                            ·
+                        </span>
+                        <Link
+                            href="/policy/account-deletion"
+                            className="text-[12px] lg:text-[13px] font-medium text-text-secondary hover:text-text-primary hover:underline focus-ring rounded-sm"
+                        >
+                            {t('footer.dataDeletion')}
+                        </Link>
+                    </nav>
                     <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
                         {t('footer.contact')}:{' '}
                         <a

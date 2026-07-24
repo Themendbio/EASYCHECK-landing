@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import PolicyNav from '../policy-nav';
 
-const CONTACT_EMAIL = 'joonlee@yonsei.ac.kr';
+const CONTACT_EMAIL = 'themend_contact@mendbiosim.com';
 
 export default function AccountDeletionPage() {
     useEffect(() => {
