@@ -262,7 +262,7 @@ export function KoreaHeatMap({ t, locale }) {
                                 </div>
                             ))}
                     </div>
-                    <p className="mt-4 text-[12px] leading-relaxed text-text-disabled">
+                    <p className="mt-4 whitespace-pre-line text-[12px] leading-relaxed text-text-disabled">
                         {t('heatmap.note')}
                     </p>
                 </div>
