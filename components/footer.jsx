@@ -125,8 +125,9 @@ function Footer() {
                     <p className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0">
                         {t('footer.copyright')}
                     </p>
+                    {/* 전자상거래법 표시사항 — 상호·대표·사업자등록번호·통신판매업 신고번호·주소·전화. 줄바꿈(\n) 유지 필요. */}
                     <p
-                        className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0"
+                        className="text-[12px] lg:text-[13px] font-normal text-text-tertiary leading-[1.6] m-0 whitespace-pre-line"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         {t('footer.businessInfo')}
