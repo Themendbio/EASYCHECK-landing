@@ -293,18 +293,22 @@ function PersonaCarousel({ personas }) {
         }
     };
 
+    // 트랙 양옆에 절대배치 — 평소엔 숨고 트랙 호버/포커스 시 나타남
     const ArrowBtn = ({ dir, onClick, disabled, label }) => (
         <button
             type="button"
             onClick={onClick}
             disabled={disabled}
             aria-label={label}
-            className="
-        focus-ring grid place-items-center rounded-full bg-white border border-border
-        text-text-primary shadow-sm transition-all duration-200 ease-out
-        hover:border-brand-primary hover:text-brand-primary hover:shadow-md
-        disabled:opacity-35 disabled:pointer-events-none
-      "
+            className={`
+        focus-ring absolute top-1/2 -translate-y-1/2 z-10
+        grid place-items-center rounded-full bg-white border border-border
+        text-text-primary shadow-lg transition-all duration-200 ease-out
+        hover:border-brand-primary hover:text-brand-primary
+        disabled:opacity-0 disabled:pointer-events-none
+        opacity-0 group-hover:opacity-100 group-focus-within:opacity-100
+        ${dir === 'prev' ? 'left-[14px]' : 'right-[14px]'}
+      `}
             style={{ width: '52px', height: '52px' }}
         >
             <IconChevronRight
@@ -346,7 +350,7 @@ function PersonaCarousel({ personas }) {
 
                 {/* ─── 가로 스크롤 트랙 — 작은 카드들, 옆 카드 peek ─── */}
                 {/* 좌우 px-20 패딩이 첫/마지막 카드의 스냅 정렬 기준이 됨 */}
-                <Reveal y={28} delay={80}>
+                <Reveal y={28} delay={80} className="group relative">
                     <div
                         ref={trackRef}
                         className="flex gap-6 xl:gap-7 overflow-x-auto snap-x snap-mandatory px-20 pb-3 scroll-smooth"
@@ -362,25 +366,21 @@ function PersonaCarousel({ personas }) {
                             <PersonaCardLg key={p.label} persona={p} index={i} total={N} />
                         ))}
                     </div>
-                </Reveal>
 
-                {/* ─── 컨트롤: 이전·다음 버튼 ─── */}
-                <div className="mx-auto max-w-8xl px-20">
-                    <div className="mt-12 flex items-center justify-end gap-3">
-                        <ArrowBtn
-                            dir="prev"
-                            onClick={prev}
-                            disabled={atStart}
-                            label={t('problem.controls.prev')}
-                        />
-                        <ArrowBtn
-                            dir="next"
-                            onClick={next}
-                            disabled={atEnd}
-                            label={t('problem.controls.next')}
-                        />
-                    </div>
-                </div>
+                    {/* ─── 컨트롤: 트랙 양옆 이전·다음 버튼 (호버 시 노출) ─── */}
+                    <ArrowBtn
+                        dir="prev"
+                        onClick={prev}
+                        disabled={atStart}
+                        label={t('problem.controls.prev')}
+                    />
+                    <ArrowBtn
+                        dir="next"
+                        onClick={next}
+                        disabled={atEnd}
+                        label={t('problem.controls.next')}
+                    />
+                </Reveal>
             </div>
         </section>
     );
