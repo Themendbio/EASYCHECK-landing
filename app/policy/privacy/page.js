@@ -396,7 +396,6 @@ export default function PrivacyPolicyPage() {
                     rows={[
                         ['성명', '이준상'],
                         ['직책', '대표'],
-                        ['전화', '010-4658-7357'],
                         ['이메일', 'joonlee@yonsei.ac.kr'],
                         ['담당부서', '주식회사 더멘드바이오시뮬레이터'],
                     ]}

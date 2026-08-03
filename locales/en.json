@@ -129,11 +129,11 @@
     "footer": {
         "disclaimer": {
             "title": "Disclaimer",
-            "text": "EASYCHECK is a wellness device, not a medical device. The hydration index is provided for general wellness reference only and is not intended to diagnose, treat, cure, or prevent any disease."
+            "text": "EASYCHECK is a wellness device, not a medical device. All health indices it provides — hydration, vascular condition, blood circulation, and pulse — are for general wellness reference only and are not intended to diagnose, treat, cure, or prevent any disease."
         },
         "company": "The M.E.N.D. BioSimulator",
         "copyright": "© 2026 EASYCHECK. The M.E.N.D. BioSimulator Co., Ltd. All rights reserved.",
-        "businessInfo": "Business Registration: 170-87-02647 · CEO: Junsang Lee · Address: 404, 29 Sinchon-yeok-ro, Seoul, South Korea",
+        "businessInfo": "The M.E.N.D. BioSimulator Co., Ltd. · CEO: Junsang Lee\nBusiness Registration: 170-87-02647 · Mail-Order Business Registration: 2026-Seoul Seodaemun-0792\nAddress: 404, 29 Sinchon-yeok-ro, Seoul, South Korea",
         "contact": "Contact",
         "privacy": "Privacy Policy",
         "dataDeletion": "Account & Data Deletion"
