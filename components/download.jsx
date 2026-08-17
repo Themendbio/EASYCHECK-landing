@@ -1,13 +1,18 @@
 'use client';
-import { IconPlay } from './icons';
+import { IconPlay, IconChevronRight } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Reveal } from './ui/Reveal';
+import { EVENT } from '../lib/event-config';
 
 // EASYCHECK — Final CTA (다운로드 유도) · 마지막 섹션
 // 브랜드 컬러 패널 안에 헤드라인 + Google Play 버튼. 컴팩트.
 
 function DownloadCTA() {
     const { t } = useLanguage();
+
+    // 출시 전에는 Play 대신 사전예약 이벤트로 보낸다
+    const prereg = EVENT.PHASE === 'prereg';
+    const ctaLabel = prereg ? t('hero.preregButton') : t('hero.downloadButton');
 
     return (
         <section
@@ -41,10 +46,10 @@ function DownloadCTA() {
                             {t('download.description')}
                         </p>
 
-                        {/* Google Play 버튼 */}
+                        {/* 사전예약(출시 전) / Google Play(출시 후) 버튼 */}
                         <a
-                            href="#"
-                            aria-label={t('hero.downloadButton')}
+                            href={prereg ? '/event' : EVENT.PLAY_STORE_URL}
+                            aria-label={ctaLabel}
                             className="
                 mt-9 inline-flex items-center justify-center gap-2.5
                 w-full max-w-[360px] lg:w-auto
@@ -55,12 +60,25 @@ function DownloadCTA() {
                 transition-all duration-200 focus-ring
               "
                         >
-                            <IconPlay size={20} className="text-brand-primary" aria-hidden="true" />
-                            {t('hero.downloadButton')}
+                            {prereg ? (
+                                <IconChevronRight
+                                    size={20}
+                                    className="text-brand-accent order-last"
+                                    strokeWidth={2.4}
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                <IconPlay
+                                    size={20}
+                                    className="text-brand-primary"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {ctaLabel}
                         </a>
 
                         <p className="mt-4 text-[13px] lg:text-[14px] text-white/90">
-                            {t('hero.caption')}
+                            {prereg ? t('hero.preregCaption') : t('hero.caption')}
                         </p>
                     </div>
                 </Reveal>
