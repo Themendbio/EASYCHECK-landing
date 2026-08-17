@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { EVENT } from '../../lib/event-config';
 import { useKakaoSdk } from '../../hooks/useKakaoSdk';
 import { Reveal } from '../../components/ui/Reveal';
+import { Footer } from '../../components/footer';
 
 // 응모/조회 공용 — 인가 코드를 서버로 보내 상태를 받는다
 async function submitCode(code) {
@@ -19,7 +20,7 @@ async function submitCode(code) {
 
 const STEPS = [
     '아래 버튼을 눌러 카카오 계정으로 사전예약합니다.',
-    '앱이 출시되면 같은 카카오 계정으로 가입을 완료합니다.',
+    '앱이 출시되면 같은 카카오 계정으로 가입하고 기본 정보 입력까지 마칩니다.',
     '가입까지 완료한 분들 중 추첨해 경품을 드립니다.',
 ];
 
@@ -366,7 +367,7 @@ export default function EventPage() {
                                     >
                                         {status.entry_confirmed
                                             ? '앱 가입까지 확인되어 응모가 확정되었습니다.'
-                                            : '앱이 출시되면 같은 카카오 계정으로 가입해 주세요. 가입까지 완료해야 응모가 확정됩니다.'}
+                                            : '앱이 출시되면 같은 카카오 계정으로 가입하고 기본 정보 입력까지 마쳐 주세요. 여기까지 완료해야 응모가 확정됩니다.'}
                                     </p>
                                     {EVENT.KAKAO_CHANNEL_URL && (
                                         <a
@@ -409,10 +410,11 @@ export default function EventPage() {
                             당첨 여부는 이 페이지의 &lsquo;내 응모 결과 확인&rsquo;으로 확인할 수
                             있습니다.
                         </li>
+                        <li>추첨은 응모 확정자를 대상으로 무작위 전산 추첨으로 진행합니다.</li>
                         <li>
                             당첨 시 경품 수령을 위해 별도 안내에 따라 수령 정보를 제출해야 하며,
-                            기한 내 미제출 시 당첨이 취소되고 재추첨할 수 있습니다. 당첨 안내는 가입
-                            시 등록한 연락처로도 이루어질 수 있습니다.
+                            발표일로부터 14일 이내에 제출하지 않으면 당첨이 취소되고 재추첨할 수
+                            있습니다. 당첨 안내는 가입 시 등록한 연락처로도 이루어질 수 있습니다.
                         </li>
                         <li>경품에 부과되는 제세공과금은 당사가 부담합니다.</li>
                         <li>
@@ -433,6 +435,7 @@ export default function EventPage() {
                     </ul>
                 </section>
             </div>
+            <Footer />
         </main>
     );
 }
