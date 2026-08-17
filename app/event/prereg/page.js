@@ -299,7 +299,7 @@ export default function PreregEventPage() {
                                         disabled={!ready}
                                         className="focus-ring rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
                                     >
-                                        내 응모 결과 확인
+                                        내 참여 현황 확인
                                     </button>
                                 </div>
                             </>
@@ -355,8 +355,8 @@ export default function PreregEventPage() {
                                             style={{ wordBreak: 'keep-all' }}
                                         >
                                             {status.entry_confirmed
-                                                ? '앱 가입까지 확인되어 응모가 확정되었습니다.'
-                                                : '출시 후 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 응모가 확정됩니다.'}
+                                                ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
+                                                : '출시 후 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
                                         </p>
                                         {EVENT.KAKAO_CHANNEL_URL && (
                                             <a
@@ -554,7 +554,7 @@ export default function PreregEventPage() {
                             안내합니다.
                         </li>
                         <li>
-                            당첨 여부는 이 페이지의 &lsquo;내 응모 결과 확인&rsquo;으로 확인할 수
+                            당첨 여부는 이 페이지의 &lsquo;내 참여 현황 확인&rsquo;으로 확인할 수
                             있습니다.
                         </li>
                         <li>추첨은 응모 확정자를 대상으로 무작위 전산 추첨으로 진행합니다.</li>
