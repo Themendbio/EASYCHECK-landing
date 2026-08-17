@@ -25,6 +25,13 @@ function Nav() {
 
                 {/* Desktop links */}
                 <nav className="hidden lg:flex items-center gap-4" aria-label="주요 메뉴">
+                    <a
+                        href="/event"
+                        className="text-[14px] font-semibold text-text-secondary hover:text-text-primary transition-colors duration-200 px-1 py-1 rounded focus-ring"
+                    >
+                        {t('nav.event')}
+                    </a>
+
                     {/* Language Switcher */}
                     <div className="flex items-center gap-1 bg-bg-subtle rounded-lg p-1">
                         <button
@@ -72,6 +79,58 @@ function Nav() {
                     <IconMenu size={22} />
                 </button>
             </div>
+
+            {/* Mobile menu — 햄버거로 열리는 패널. 데스크톱 메뉴와 같은 항목을 담는다. */}
+            {open && (
+                <nav
+                    className="lg:hidden border-t border-border bg-white container-x py-4 flex flex-col gap-3"
+                    aria-label="주요 메뉴"
+                >
+                    <a
+                        href="/event"
+                        onClick={() => setOpen(false)}
+                        className="text-[15px] font-semibold text-text-primary py-2 rounded focus-ring"
+                    >
+                        {t('nav.event')}
+                    </a>
+
+                    <div className="flex items-center gap-1 bg-bg-subtle rounded-lg p-1 self-start">
+                        <button
+                            onClick={() => setLocale('ko')}
+                            className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all duration-200 focus-ring ${
+                                locale === 'ko'
+                                    ? 'bg-white text-text-primary shadow-sm'
+                                    : 'text-text-tertiary hover:text-text-secondary'
+                            }`}
+                            aria-label="한국어"
+                        >
+                            한국어
+                        </button>
+                        <button
+                            onClick={() => setLocale('en')}
+                            className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all duration-200 focus-ring ${
+                                locale === 'en'
+                                    ? 'bg-white text-text-primary shadow-sm'
+                                    : 'text-text-tertiary hover:text-text-secondary'
+                            }`}
+                            aria-label="English"
+                        >
+                            English
+                        </button>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setOpen(false);
+                            setContactOpen(true);
+                        }}
+                        className="inline-flex items-center justify-center bg-brand-accent text-white font-semibold text-[15px] px-4 py-3 rounded-lg shadow-sm hover:bg-brand-accent-hover transition-all duration-200 focus-ring"
+                    >
+                        {t('nav.contact')}
+                    </button>
+                </nav>
+            )}
 
             <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
         </header>
@@ -159,7 +218,7 @@ function Hero() {
                             <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-5">
                                 {/* 주 버튼 — 사전예약(출시 전) / Google Play(출시 후) */}
                                 <a
-                                    href={prereg ? '/event' : EVENT.PLAY_STORE_URL}
+                                    href={prereg ? '/event/prereg' : EVENT.PLAY_STORE_URL}
                                     aria-label={ctaLabel}
                                     className="
                     inline-flex items-center justify-center gap-2.5

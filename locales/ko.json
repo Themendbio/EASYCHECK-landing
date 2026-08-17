@@ -1,6 +1,7 @@
 {
     "nav": {
         "contact": "문의하기",
+        "event": "이벤트",
         "menuOpen": "메뉴 열기"
     },
     "contact": {
@@ -11,6 +12,7 @@
         "title": "사전예약하면 추첨으로 경품을 드려요",
         "body": "갤럭시 워치8, 스탠리 텀블러, 보조배터리까지. 카카오 로그인 한 번으로 응모 완료.",
         "cta": "이벤트 자세히 보기",
+        "rank1": "1등",
         "dismissToday": "오늘 그만 보기",
         "close": "닫기"
     },
@@ -19,7 +21,7 @@
         "headline2": "놓치고 계셨나요?",
         "description": "수분 부족은 조용히, 그리고 빠르게 진행됩니다.",
         "downloadButton": "Google Play에서 다운로드",
-        "preregButton": "사전예약하고 경품 응모하기",
+        "preregButton": "사전예약하기",
         "preregCaption": "사전예약 무료 · Android 전용 · 스마트워치 필요",
         "caption": "무료 다운로드 · Android 전용 · 스마트워치 필요",
         "certifications": {

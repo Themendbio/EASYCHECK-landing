@@ -48,7 +48,7 @@ function DownloadCTA() {
 
                         {/* 사전예약(출시 전) / Google Play(출시 후) 버튼 */}
                         <a
-                            href={prereg ? '/event' : EVENT.PLAY_STORE_URL}
+                            href={prereg ? '/event/prereg' : EVENT.PLAY_STORE_URL}
                             aria-label={ctaLabel}
                             className="
                 mt-9 inline-flex items-center justify-center gap-2.5

@@ -1,6 +1,7 @@
 {
     "nav": {
         "contact": "Contact",
+        "event": "Event",
         "menuOpen": "Open menu"
     },
     "contact": {
@@ -11,6 +12,7 @@
         "title": "Pre-register for a chance to win",
         "body": "Galaxy Watch8, Stanley tumbler, power banks. One Kakao login to enter.",
         "cta": "See event details",
+        "rank1": "1st",
         "dismissToday": "Not today",
         "close": "Close"
     },
@@ -19,7 +21,7 @@
         "headline2": "can still hurt you.",
         "description": "By the time you feel thirsty, dehydration has already begun. EASYCHECK reads your hydration in real time — straight from your wrist.",
         "downloadButton": "Get it on Google Play",
-        "preregButton": "Pre-register & enter the giveaway",
+        "preregButton": "Pre-register",
         "preregCaption": "Free to pre-register · Android only · Smartwatch required",
         "caption": "Free download · Android only · Smartwatch required",
         "certifications": {
