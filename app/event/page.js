@@ -40,30 +40,37 @@ export default function EventPage() {
     // idle | loading | done | error
     const [phase, setPhase] = useState('idle');
     const [status, setStatus] = useState(null);
+    // 카카오 동의 화면에서 취소하고 돌아온 경우
+    const [cancelled, setCancelled] = useState(false);
 
     useEffect(() => {
         document.title = 'EASYCHECK 사전예약 경품 이벤트';
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
-        if (!code) return;
+        if (!code) {
+            // 동의를 취소하면 code 없이 ?error=access_denied 로 돌아온다 — URL 을 정리하고 상황을 알린다
+            if (params.get('error')) {
+                window.history.replaceState(null, '', '/event');
+                setCancelled(true);
+            }
+            return;
+        }
         // 코드는 일회용 — URL 에서 즉시 제거해 새로고침 재제출을 막는다
         window.history.replaceState(null, '', '/event');
         setPhase('loading');
-        // 카카오에서 돌아오면 화면은 최상단이라 결과가 안 보인다 — 결과가 나오면 그 영역으로 이동시킨다
-        const showResult = () => {
-            document.getElementById('entry')?.scrollIntoView({ block: 'center' });
-        };
         submitCode(code)
             .then((s) => {
                 setStatus(s);
                 setPhase('done');
-                showResult();
             })
-            .catch(() => {
-                setPhase('error');
-                showResult();
-            });
+            .catch(() => setPhase('error'));
     }, []);
+
+    // 카카오에서 돌아오면 화면은 최상단이라 결과가 폴드 아래에 있다 — 결과가 그려진 뒤 그 영역으로 이동시킨다
+    useEffect(() => {
+        if (phase !== 'done' && phase !== 'error') return;
+        document.getElementById('entry')?.scrollIntoView({ block: 'center' });
+    }, [phase]);
 
     const startKakao = () => {
         if (!ready) return;
@@ -238,6 +245,18 @@ export default function EventPage() {
                 >
                     {phase === 'idle' && (
                         <>
+                            {cancelled && (
+                                <p
+                                    role="alert"
+                                    className="mb-4 rounded-lg border border-brand-accent/35 bg-[#FFF9F0] px-4 py-3 text-[13px] leading-[1.7] text-text-secondary"
+                                    style={{ wordBreak: 'keep-all' }}
+                                >
+                                    <strong className="font-semibold text-text-primary">
+                                        동의를 취소하셨습니다.
+                                    </strong>{' '}
+                                    아래 버튼으로 다시 시도해 주세요.
+                                </p>
+                            )}
                             {error && (
                                 <p
                                     role="alert"
@@ -288,16 +307,32 @@ export default function EventPage() {
                         </p>
                     )}
                     {phase === 'error' && (
-                        <p
+                        <div
                             role="alert"
-                            className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-[15px] leading-[1.7] text-red-600"
-                            style={{ wordBreak: 'keep-all' }}
+                            className="rounded-xl border border-red-200 bg-red-50 px-5 py-4"
                         >
-                            처리에 실패했습니다. 잠시 후 다시 시도해 주세요.
-                        </p>
+                            <p
+                                className="text-[15px] leading-[1.7] text-red-600"
+                                style={{ wordBreak: 'keep-all' }}
+                            >
+                                처리에 실패했습니다. 잠시 후 다시 시도해 주세요.
+                            </p>
+                            <button
+                                type="button"
+                                onClick={startKakao}
+                                disabled={!ready}
+                                className="mt-4 inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#FEE500] px-6 py-3.5 text-[15px] font-bold text-[#191919] shadow-sm transition-all duration-200 hover:-translate-y-px hover:shadow-md focus-ring disabled:translate-y-0 disabled:opacity-50 disabled:shadow-sm lg:w-auto"
+                            >
+                                <KakaoMark />
+                                다시 시도하기
+                            </button>
+                        </div>
                     )}
                     {phase === 'done' && status && (
-                        <div className="rounded-xl border border-border bg-white px-5 py-5 lg:px-6">
+                        <div
+                            role="status"
+                            className="rounded-xl border border-border bg-white px-5 py-5 lg:px-6"
+                        >
                             {!status.registered && status.closed ? (
                                 <p className="text-[15px] font-semibold text-text-primary">
                                     사전예약 접수가 마감되었습니다.
