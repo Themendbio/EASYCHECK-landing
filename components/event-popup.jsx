@@ -89,7 +89,7 @@ function EventPopup() {
                         />
                         <PrizeShot
                             src="/images/prize-battery.jpg"
-                            alt="보조배터리"
+                            alt="워치 겸용 보조배터리"
                             className="h-[60px] lg:h-[64px]"
                         />
                     </div>

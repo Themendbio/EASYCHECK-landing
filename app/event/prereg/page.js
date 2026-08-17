@@ -24,12 +24,6 @@ async function submitCode(code) {
     return res.json();
 }
 
-const STEPS = [
-    '카카오 계정으로 사전예약합니다.',
-    '출시 후 같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
-    '가입까지 마친 분들 중 추첨합니다.',
-];
-
 // 경품 사진 — 등수로 매칭. 원본 비율이 제각각이라 고정 박스 + object-contain 으로 담는다.
 const PRIZE_IMAGES = {
     1: '/images/prize-watch.webp',
@@ -157,6 +151,7 @@ export default function PreregEventPage() {
         {
             no: '1단계',
             title: '사전예약',
+            desc: '카카오 계정으로 접수합니다.',
             state: registered ? 'done' : 'active',
             // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
             chip: registered ? '완료' : '지금 가능',
@@ -164,6 +159,7 @@ export default function PreregEventPage() {
         {
             no: '2단계',
             title: '출시 후 앱 가입',
+            desc: '같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
             state: confirmed ? 'done' : 'pending',
             chip: confirmed ? '완료' : '대기',
         },
@@ -206,7 +202,7 @@ export default function PreregEventPage() {
                         className="anim-up text-[13px] font-semibold lg:text-[14px]"
                         style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
                     >
-                        기간 · 2026.8.19 ~ 출시 후 2주
+                        기간 · 2026.8.19 ~ 출시 후 한 달
                     </p>
 
                     <h1
@@ -230,7 +226,7 @@ export default function PreregEventPage() {
                 </div>
             </section>
 
-            {/* A. 사전예약 — 지금 할 수 있는 것. 참여 방법·CTA·결과가 모두 이 섹션 안에만 있다. */}
+            {/* A. 사전예약 — 지금 할 수 있는 것만. 경품·추첨 이야기는 B 섹션이 맡는다. */}
             <div className="mx-auto max-w-[960px] container-x">
                 <Reveal
                     as="section"
@@ -252,33 +248,8 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        카카오 로그인으로 접수합니다.
+                        정식 출시 전에 카카오 계정으로 접수합니다.
                     </p>
-
-                    {/* 참여 방법 */}
-                    <h3 className="mt-8 text-[15px] font-bold text-text-primary">참여 방법</h3>
-                    <ol className="relative mt-4 space-y-6">
-                        <span
-                            aria-hidden="true"
-                            className="absolute top-4 bottom-4 left-[15px] w-px bg-border"
-                        />
-                        {STEPS.map((text, i) => (
-                            <li key={i} className="relative flex gap-4">
-                                <span
-                                    aria-hidden="true"
-                                    className="relative z-10 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-primary-soft text-[14px] font-bold text-brand-primary ring-4 ring-white"
-                                >
-                                    {i + 1}
-                                </span>
-                                <p
-                                    className="pt-[5px] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
-                                    style={{ wordBreak: 'keep-all' }}
-                                >
-                                    {text}
-                                </p>
-                            </li>
-                        ))}
-                    </ol>
 
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
                     <div
@@ -321,13 +292,6 @@ export default function PreregEventPage() {
                                     <KakaoMark />
                                     카카오로 사전예약하기
                                 </button>
-                                <p
-                                    className="mt-3 text-[13px] leading-[1.7] text-text-tertiary"
-                                    style={{ wordBreak: 'keep-all' }}
-                                >
-                                    중복 응모 방지를 위해 본인 확인만 합니다. 연락처는 받지
-                                    않습니다.
-                                </p>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
                                         type="button"
@@ -413,7 +377,7 @@ export default function PreregEventPage() {
                 </Reveal>
             </div>
 
-            {/* B. 경품 응모 — 보상을 크게 보여주고, 응모가 2단계임을 진행도로 못 박는다. */}
+            {/* B. 경품 이벤트 — 사전예약의 연장선. 보상을 크게 보여주고 절차·진행도를 여기서 설명한다. */}
             <section
                 aria-labelledby="prizes-heading"
                 className="mt-16 bg-brand-deep lg:mt-24"
@@ -424,8 +388,14 @@ export default function PreregEventPage() {
                         className="text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        경품
+                        앱 가입까지 마치면 경품 추첨
                     </h2>
+                    <p
+                        className="mt-3 max-w-[32em] text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
+                        style={{ wordBreak: 'keep-all' }}
+                    >
+                        사전예약을 마친 뒤 출시된 앱에 설치·가입까지 하면 추첨 대상이 됩니다.
+                    </p>
 
                     {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
                     <Reveal
@@ -480,7 +450,7 @@ export default function PreregEventPage() {
                         ))}
                     </Reveal>
 
-                    {/* 응모 2단계 진행 표시 — '예약 = 응모 완료' 오해를 막는 핵심 장치 */}
+                    {/* 응모 절차 겸 진행 표시 — 두 단계를 설명하면서 로그인 상태로 진행도까지 보여준다 */}
                     <div className="mt-12 border-t border-white/15 pt-10 lg:mt-16 lg:pt-12">
                         <h3
                             className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[24px]"
@@ -496,7 +466,7 @@ export default function PreregEventPage() {
                         >
                             {confirmed
                                 ? '추첨 결과는 카카오톡 채널과 이 페이지로 안내합니다.'
-                                : '사전예약만으로는 응모가 확정되지 않습니다.'}
+                                : '두 단계를 모두 마친 분들 중 추첨합니다.'}
                         </p>
 
                         <div className="relative mt-9 max-w-[560px]">
@@ -541,8 +511,14 @@ export default function PreregEventPage() {
                                             >
                                                 {s.title}
                                             </p>
+                                            <p
+                                                className="mt-2 text-[13px] leading-[1.6] text-white/60"
+                                                style={{ wordBreak: 'keep-all' }}
+                                            >
+                                                {s.desc}
+                                            </p>
                                             <span
-                                                className="mt-2.5 inline-flex items-center rounded-sm px-2.5 py-1 text-[12px] font-bold"
+                                                className="mt-3 inline-flex items-center rounded-sm px-2.5 py-1 text-[12px] font-bold"
                                                 style={style.chip}
                                             >
                                                 {s.chip}
@@ -567,9 +543,9 @@ export default function PreregEventPage() {
                     </h2>
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
-                        <li>응모 기간: 2026년 8월 19일 ~ 정식 출시일로부터 2주.</li>
+                        <li>응모 기간: 2026년 8월 19일 ~ 정식 출시일로부터 한 달.</li>
                         <li>
-                            응모 확정 조건: 사전예약 후, 앱 출시일로부터 2주 이내에 같은 카카오
+                            응모 확정 조건: 사전예약 후, 앱 출시일로부터 한 달 이내에 같은 카카오
                             계정으로 앱 가입(회원가입·기본 정보 입력)을 완료해야 합니다.
                         </li>
                         <li>EASYCHECK 앱은 Android 전용이며 측정에는 스마트워치가 필요합니다.</li>

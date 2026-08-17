@@ -11,7 +11,7 @@ const EVENTS = [
     {
         slug: '/event/prereg',
         state: '진행중',
-        period: '2026.8.19 ~ 출시 후 2주',
+        period: '2026.8.19 ~ 출시 후 한 달',
         title: '사전예약 경품 이벤트',
         summary: '예약 후 출시된 앱에 가입하면 추첨 대상이 됩니다.',
         image: '/images/prize-watch.webp',
