@@ -1,8 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { IconMenu, IconPlay, IconCheck } from './icons';
+import { IconMenu, IconPlay, IconCheck, IconChevronRight } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ContactModal } from './contact-modal';
+import { EVENT } from '../lib/event-config';
 
 // Nav
 function Nav() {
@@ -81,6 +82,10 @@ function Nav() {
 function Hero() {
     const { t } = useLanguage();
 
+    // 출시 전에는 Play 대신 사전예약 이벤트로 보낸다
+    const prereg = EVENT.PHASE === 'prereg';
+    const ctaLabel = prereg ? t('hero.preregButton') : t('hero.downloadButton');
+
     const certifications = [
         t('hero.certifications.cert1'),
         t('hero.certifications.cert2'),
@@ -152,10 +157,10 @@ function Hero() {
                         {/* CTA 버튼 영역 */}
                         <div className="anim-up" style={stagger(3)}>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-5">
-                                {/* 주 버튼 — Google Play */}
+                                {/* 주 버튼 — 사전예약(출시 전) / Google Play(출시 후) */}
                                 <a
-                                    href="#"
-                                    aria-label={t('hero.downloadButton')}
+                                    href={prereg ? '/event' : EVENT.PLAY_STORE_URL}
+                                    aria-label={ctaLabel}
                                     className="
                     inline-flex items-center justify-center gap-2.5
                     w-full max-w-[360px] lg:w-auto lg:max-w-none
@@ -165,12 +170,21 @@ function Hero() {
                     transition-all duration-200 focus-ring cta-primary-btn
                   "
                                 >
-                                    <IconPlay
-                                        size={20}
-                                        className="text-brand-primary"
-                                        aria-hidden="true"
-                                    />
-                                    {t('hero.downloadButton')}
+                                    {prereg ? (
+                                        <IconChevronRight
+                                            size={20}
+                                            className="text-brand-accent order-last"
+                                            strokeWidth={2.4}
+                                            aria-hidden="true"
+                                        />
+                                    ) : (
+                                        <IconPlay
+                                            size={20}
+                                            className="text-brand-primary"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                    {ctaLabel}
                                 </a>
                             </div>
 

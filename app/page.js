@@ -8,6 +8,7 @@ import { SolutionSection } from '../components/solution';
 import { TechSection } from '../components/tech';
 import { DownloadCTA } from '../components/download';
 import { Footer } from '../components/footer';
+import { EventPopup } from '../components/event-popup';
 
 export default function Home() {
     return (
@@ -31,6 +32,7 @@ export default function Home() {
             <TechSection />
             <DownloadCTA />
             <Footer />
+            <EventPopup />
         </div>
     );
 }

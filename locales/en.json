@@ -6,12 +6,21 @@
     "contact": {
         "close": "Close"
     },
+    "eventPopup": {
+        "badge": "Giveaway",
+        "title": "Pre-register for a chance to win",
+        "body": "Galaxy Watch8, Stanley tumbler, power banks. One Kakao login to enter.",
+        "cta": "See event details",
+        "dismissToday": "Not today",
+        "close": "Close"
+    },
     "hero": {
         "headline1": "What you don't feel",
         "headline2": "can still hurt you.",
         "description": "By the time you feel thirsty, dehydration has already begun. EASYCHECK reads your hydration in real time — straight from your wrist.",
         "downloadButton": "Get it on Google Play",
-        "caption": "Free download · Smartwatch required",
+        "preregButton": "Pre-register & enter the giveaway",
+        "caption": "Free download · Android only · Smartwatch required",
         "certifications": {
             "cert1": "Developed with Severance Hospital, Seoul",
             "cert2": "Published in SCI-indexed journals",
