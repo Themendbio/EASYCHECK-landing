@@ -231,6 +231,37 @@ html[lang="en"] .leading-\[1\.7\] {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
 }
 
+/* 이벤트 팝업 등장 — 배경은 페이드, 카드는 한 박자 늦게 떠오른다 */
+@keyframes eventPopupBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes eventPopupCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.event-popup-backdrop {
+  opacity: 0;
+  animation: eventPopupBackdropIn 0.26s ease-out forwards;
+}
+
+.event-popup-card {
+  opacity: 0;
+  animation: eventPopupCardIn 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.07s forwards;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -365,7 +396,9 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-up {
+  .anim-up,
+  .event-popup-backdrop,
+  .event-popup-card {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
