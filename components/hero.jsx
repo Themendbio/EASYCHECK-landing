@@ -193,7 +193,7 @@ function Hero() {
                                 className="mt-4 text-[13px] leading-snug"
                                 style={{ color: 'rgba(255,255,255,0.7)' }}
                             >
-                                {t('hero.caption')}
+                                {prereg ? t('hero.preregCaption') : t('hero.caption')}
                             </p>
                         </div>
                     </div>

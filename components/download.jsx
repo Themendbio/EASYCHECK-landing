@@ -78,7 +78,7 @@ function DownloadCTA() {
                         </a>
 
                         <p className="mt-4 text-[13px] lg:text-[14px] text-white/90">
-                            {t('hero.caption')}
+                            {prereg ? t('hero.preregCaption') : t('hero.caption')}
                         </p>
                     </div>
                 </Reveal>
