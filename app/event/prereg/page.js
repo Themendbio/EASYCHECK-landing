@@ -213,9 +213,9 @@ export default function PreregEventPage() {
                         className="anim-up hero-headline mt-4 text-[38px] leading-[1.14] font-bold tracking-[-0.03em] text-white lg:mt-5 lg:text-[56px]"
                         style={{ ...stagger(1), wordBreak: 'keep-all' }}
                     >
-                        사전예약하고
+                        사전예약
                         <br />
-                        <span className="text-brand-accent">경품 응모하세요</span>
+                        <span className="text-brand-accent">경품 이벤트</span>
                     </h1>
                     <p
                         className="anim-up mt-5 max-w-[26em] text-[16px] leading-[1.7] lg:text-[18px]"
@@ -225,7 +225,7 @@ export default function PreregEventPage() {
                             wordBreak: 'keep-all',
                         }}
                     >
-                        사전예약하면 추첨을 통해 경품을 드립니다.
+                        예약 후 출시된 앱에 가입하면 추첨 대상이 됩니다.
                     </p>
                 </div>
             </section>
@@ -252,7 +252,7 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        카카오 로그인 한 번으로 접수됩니다.
+                        카카오 로그인으로 접수합니다.
                     </p>
 
                     {/* 참여 방법 */}
@@ -319,7 +319,7 @@ export default function PreregEventPage() {
                                     className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto lg:text-[17px]"
                                 >
                                     <KakaoMark />
-                                    카카오로 사전예약하고 응모하기
+                                    카카오로 사전예약하기
                                 </button>
                                 <p
                                     className="mt-3 text-[13px] leading-[1.7] text-text-tertiary"
@@ -335,7 +335,7 @@ export default function PreregEventPage() {
                                         disabled={!ready}
                                         className="focus-ring rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
                                     >
-                                        이미 예약하셨나요? 내 응모 결과 확인
+                                        내 응모 결과 확인
                                     </button>
                                 </div>
                             </>
@@ -392,7 +392,7 @@ export default function PreregEventPage() {
                                         >
                                             {status.entry_confirmed
                                                 ? '앱 가입까지 확인되어 응모가 확정되었습니다.'
-                                                : '앱이 출시되면 같은 카카오 계정으로 가입하고 기본 정보 입력까지 마쳐 주세요. 여기까지 완료해야 응모가 확정됩니다.'}
+                                                : '출시 후 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 응모가 확정됩니다.'}
                                         </p>
                                         {EVENT.KAKAO_CHANNEL_URL && (
                                             <a
@@ -402,7 +402,7 @@ export default function PreregEventPage() {
                                                 className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
                                             >
                                                 <KakaoMark />
-                                                카카오톡 채널 추가하고 소식 받기
+                                                카카오톡 채널 추가
                                             </a>
                                         )}
                                     </>
@@ -424,7 +424,7 @@ export default function PreregEventPage() {
                         className="text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        추첨으로 드리는 경품
+                        경품
                     </h2>
 
                     {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
@@ -495,7 +495,7 @@ export default function PreregEventPage() {
                             style={{ wordBreak: 'keep-all' }}
                         >
                             {confirmed
-                                ? '추첨 결과는 카카오톡 채널과 이 페이지로 안내드립니다.'
+                                ? '추첨 결과는 카카오톡 채널과 이 페이지로 안내합니다.'
                                 : '사전예약만으로는 응모가 확정되지 않습니다.'}
                         </p>
 
