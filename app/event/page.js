@@ -11,10 +11,9 @@ const EVENTS = [
     {
         slug: '/event/prereg',
         state: '진행중',
-        period: '2026년 8월 19일 ~ 정식 출시일로부터 2주',
+        period: '2026.8.19 ~ 출시 후 2주',
         title: '사전예약하고 경품 응모하세요',
-        summary:
-            'EASYCHECK 출시를 카카오 로그인 한 번으로 사전예약하면 추첨을 통해 경품을 드립니다.',
+        summary: '카카오 로그인 한 번으로 사전예약하면 추첨을 통해 경품을 드립니다.',
         image: '/images/prize-watch.webp',
         imageAlt: '갤럭시 워치8',
         prizes: EVENT.PRIZES,
@@ -41,33 +40,15 @@ export default function EventListPage() {
                 </div>
             </div>
 
-            {/* 목록 헤더 — 상세 페이지 히어로와 같은 딥 패널·광원으로 두 화면을 한 흐름으로 묶는다 */}
-            <section className="relative overflow-hidden bg-brand-deep">
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background:
-                            'radial-gradient(120% 90% at 88% 0%, rgba(0,174,235,0.30) 0%, rgba(0,174,235,0) 60%), radial-gradient(80% 70% at 0% 100%, rgba(243,152,0,0.20) 0%, rgba(243,152,0,0) 65%)',
-                    }}
-                />
-                <div className="relative mx-auto max-w-[960px] container-x py-11 lg:py-16">
+            {/* 목록 헤더 — 상세 페이지 히어로와 같은 딥 패널로 두 화면을 한 흐름으로 묶는다 */}
+            <section className="bg-brand-deep">
+                <div className="mx-auto max-w-[960px] container-x py-11 lg:py-16">
                     <h1
                         className="anim-up text-[32px] leading-[1.16] font-bold tracking-[-0.03em] text-white lg:text-[44px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         이벤트
                     </h1>
-                    <p
-                        className="anim-up mt-3 max-w-[28em] text-[15px] leading-[1.7] lg:text-[17px]"
-                        style={{
-                            animationDelay: '90ms',
-                            color: 'rgba(255,255,255,0.75)',
-                            wordBreak: 'keep-all',
-                        }}
-                    >
-                        EASYCHECK가 진행 중인 이벤트입니다. 카드를 눌러 자세한 내용을 확인하세요.
-                    </p>
                 </div>
             </section>
 
@@ -77,15 +58,16 @@ export default function EventListPage() {
                         <Reveal as="li" y={16} key={e.slug}>
                             <Link
                                 href={e.slug}
-                                className="focus-ring group grid gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:shadow-lg lg:grid-cols-[260px_1fr] lg:gap-7 lg:p-6"
+                                className="focus-ring group grid gap-5 rounded-2xl border border-border bg-white p-5 transition-colors duration-150 hover:border-border-strong lg:grid-cols-[260px_1fr] lg:gap-7 lg:p-6"
                             >
-                                {/* 썸네일 — 흰 배경 제품 사진이라 카드와 같은 흰 타일에 담아 경계를 없앤다 */}
-                                <div className="flex h-[150px] items-center justify-center overflow-hidden rounded-xl border border-border bg-white p-4 lg:h-[170px]">
+                                {/* 썸네일 — 흰 배경 제품 사진이라 카드와 같은 흰 타일에 담아 경계를 없앤다.
+                                    바깥 24px · 패딩 20px 이므로 안쪽 반경은 작게(6px) 잡아 모서리를 동심원으로 맞춘다 */}
+                                <div className="flex h-[150px] items-center justify-center rounded-sm border border-border bg-white p-4 lg:h-[170px]">
                                     <img
                                         src={e.image}
                                         alt={e.imageAlt}
                                         loading="lazy"
-                                        className="h-full w-full object-contain text-[12px] text-text-tertiary transition-transform duration-300 group-hover:scale-[1.03]"
+                                        className="h-full w-full object-contain text-[12px] text-text-tertiary"
                                     />
                                 </div>
 
@@ -116,7 +98,7 @@ export default function EventListPage() {
                                         {e.prizes.map((p) => (
                                             <li
                                                 key={p.rank}
-                                                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-subtle px-3 py-1.5 text-[12.5px] text-text-secondary"
+                                                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-bg-subtle px-3 py-1.5 text-[12.5px] text-text-secondary"
                                             >
                                                 <span className="font-bold text-brand-primary">
                                                     {p.rank}등

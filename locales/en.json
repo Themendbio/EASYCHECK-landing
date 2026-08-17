@@ -8,10 +8,9 @@
         "close": "Close"
     },
     "eventPopup": {
-        "badge": "Giveaway",
         "title": "Pre-register for a chance to win",
-        "body": "Galaxy Watch8, Stanley tumbler, power banks. One Kakao login to enter.",
-        "cta": "See event details",
+        "body": "Galaxy Watch8 · Stanley tumbler · Power bank",
+        "cta": "Enter the draw",
         "rank1": "1st",
         "dismissToday": "Not today",
         "close": "Close"

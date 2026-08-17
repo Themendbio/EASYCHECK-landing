@@ -25,9 +25,9 @@ async function submitCode(code) {
 }
 
 const STEPS = [
-    '아래 버튼을 눌러 카카오 계정으로 사전예약합니다.',
-    '앱이 출시되면 같은 카카오 계정으로 가입하고 기본 정보 입력까지 마칩니다.',
-    '가입까지 완료한 분들 중 추첨해 경품을 드립니다.',
+    '카카오 계정으로 사전예약합니다.',
+    '출시 후 같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
+    '가입까지 마친 분들 중 추첨합니다.',
 ];
 
 // 경품 사진 — 등수로 매칭. 원본 비율이 제각각이라 고정 박스 + object-contain 으로 담는다.
@@ -40,11 +40,19 @@ const PRIZE_IMAGES = {
 // 어두운 패널 위 단계 상태 팔레트 — 완료(녹색) · 지금 가능(오렌지) · 대기(무채색)
 const STAGE_STYLE = {
     done: {
-        node: { background: '#16A34A', color: '#FFFFFF', border: '1px solid #16A34A' },
+        node: {
+            background: 'var(--success)',
+            color: '#FFFFFF',
+            border: '1px solid var(--success)',
+        },
         chip: { background: 'rgba(22,163,74,0.20)', color: '#8FE9B4' },
     },
     active: {
-        node: { background: '#F39800', color: '#FFFFFF', border: '1px solid #F39800' },
+        node: {
+            background: 'var(--brand-accent)',
+            color: '#FFFFFF',
+            border: '1px solid var(--brand-accent)',
+        },
         chip: { background: 'rgba(243,152,0,0.20)', color: '#FFC96B' },
     },
     pending: {
@@ -70,12 +78,12 @@ function KakaoMark() {
 }
 
 // 완료 체크 — 단계 노드와 결과 카드에서 공용
-function CheckMark({ size = 18, stroke = 'currentColor' }) {
+function CheckMark({ size = 18 }) {
     return (
         <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">
             <path
                 d="m5 12.5 4.5 4.5L19 7.5"
-                stroke={stroke}
+                stroke="currentColor"
                 strokeWidth="2.6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -87,7 +95,7 @@ function CheckMark({ size = 18, stroke = 'currentColor' }) {
 // 흰 배경 제품 사진을 흰 타일에 담아 어두운 패널 위에서 사각형 경계가 드러나지 않게 한다
 function PrizePhoto({ src, alt, className }) {
     return (
-        <div className={`overflow-hidden rounded-xl bg-white p-3 lg:p-4 ${className}`}>
+        <div className={`rounded-lg bg-white p-3 lg:p-4 ${className}`}>
             <img
                 src={src}
                 alt={alt}
@@ -150,14 +158,13 @@ export default function PreregEventPage() {
             no: '1단계',
             title: '사전예약',
             state: registered ? 'done' : 'active',
-            note: registered ? '접수되었습니다.' : '지금 하실 수 있습니다.',
+            // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
             chip: registered ? '완료' : '지금 가능',
         },
         {
             no: '2단계',
             title: '출시 후 앱 가입',
             state: confirmed ? 'done' : 'pending',
-            note: confirmed ? '가입이 확인되었습니다.' : '앱 출시 후에 하실 수 있습니다.',
             chip: confirmed ? '완료' : '대기',
         },
     ];
@@ -194,25 +201,16 @@ export default function PreregEventPage() {
                     }}
                 />
                 <div className="relative mx-auto max-w-[960px] container-x pt-9 pb-24 lg:pt-14 lg:pb-32">
-                    {/* 고지 배너 — 전단지의 7월 일정·"지금 다운로드" 문구와의 차이를 최상단에서 정정 */}
-                    <div
-                        className="anim-up rounded-r-xl border-l-[3px] border-brand-accent bg-white/[0.08] py-4 pr-5 pl-4 text-[14px] leading-[1.7]"
-                        style={{ ...stagger(0), color: 'rgba(255,255,255,0.82)' }}
+                    {/* 기간 — 전단지에 인쇄된 7월 일정이 이미 지났으므로 날짜 정정 표시는 남긴다 */}
+                    <p
+                        className="anim-up text-[13px] font-semibold lg:text-[14px]"
+                        style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
                     >
-                        <p className="font-bold text-brand-accent">이벤트 기간이 연장되었습니다.</p>
-                        <p className="mt-1" style={{ wordBreak: 'keep-all' }}>
-                            전단지에 안내된 7월 일정은 연장 전 안내입니다. 앱은 현재 출시 준비
-                            중이며, 지금은{' '}
-                            <strong className="font-semibold text-white">사전예약으로 응모</strong>
-                            하실 수 있습니다.
-                        </p>
-                        <p className="mt-2 text-[13px] text-white/70">
-                            기간 — 2026년 8월 19일 ~ 정식 출시일로부터 2주
-                        </p>
-                    </div>
+                        기간 · 2026.8.19 ~ 출시 후 2주
+                    </p>
 
                     <h1
-                        className="anim-up hero-headline mt-9 text-[38px] leading-[1.14] font-bold tracking-[-0.03em] text-white lg:mt-12 lg:text-[56px]"
+                        className="anim-up hero-headline mt-4 text-[38px] leading-[1.14] font-bold tracking-[-0.03em] text-white lg:mt-5 lg:text-[56px]"
                         style={{ ...stagger(1), wordBreak: 'keep-all' }}
                     >
                         사전예약하고
@@ -227,8 +225,7 @@ export default function PreregEventPage() {
                             wordBreak: 'keep-all',
                         }}
                     >
-                        오늘 내 컨디션, 가볍게 체크. EASYCHECK 출시를 사전예약하면 추첨을 통해
-                        경품을 드립니다.
+                        사전예약하면 추첨을 통해 경품을 드립니다.
                     </p>
                 </div>
             </section>
@@ -239,7 +236,7 @@ export default function PreregEventPage() {
                     as="section"
                     y={16}
                     aria-labelledby="prereg-heading"
-                    className="relative z-10 -mt-16 rounded-2xl border border-border bg-white p-6 shadow-lg lg:-mt-20 lg:p-9"
+                    className="relative z-10 -mt-16 rounded-xl border border-border bg-white p-6 shadow-lg lg:-mt-20 lg:p-9"
                 >
                     <p className="text-[13px] font-semibold tracking-[0.1em] text-brand-primary uppercase">
                         지금 가능
@@ -255,8 +252,7 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        카카오 로그인 한 번으로 사전예약이 접수됩니다. 앱은 아직 출시 전이라 지금은
-                        여기까지 하시면 됩니다.
+                        카카오 로그인 한 번으로 접수됩니다.
                     </p>
 
                     {/* 참여 방법 */}
@@ -287,39 +283,40 @@ export default function PreregEventPage() {
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
                     <div
                         id="entry"
-                        className="mt-8 scroll-mt-8 rounded-2xl border border-border bg-bg-subtle px-5 py-7 lg:px-7"
+                        className="mt-8 scroll-mt-8 rounded-md border border-border bg-bg-subtle px-5 py-7 lg:px-7"
                     >
                         {phase === 'idle' && (
                             <>
+                                {/* 상태 고지 — 상자나 색이 아니라 굵은 첫 문장으로 상황을 알린다 */}
                                 {cancelled && (
                                     <p
                                         role="alert"
-                                        className="mb-4 rounded-lg border border-brand-accent/35 bg-[#FFF9F0] px-4 py-3 text-[13px] leading-[1.7] text-text-secondary"
+                                        className="mb-5 text-[13px] leading-[1.7] text-text-secondary"
                                         style={{ wordBreak: 'keep-all' }}
                                     >
-                                        <strong className="font-semibold text-text-primary">
+                                        <strong className="font-bold text-text-primary">
                                             동의를 취소하셨습니다.
                                         </strong>{' '}
-                                        아래 버튼으로 다시 시도해 주세요.
+                                        다시 시도해 주세요.
                                     </p>
                                 )}
                                 {error && (
                                     <p
                                         role="alert"
-                                        className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] leading-[1.7] text-red-700"
+                                        className="mb-5 text-[13px] leading-[1.7] text-text-secondary"
                                         style={{ wordBreak: 'keep-all' }}
                                     >
-                                        <strong className="font-semibold">
+                                        <strong className="font-bold text-text-primary">
                                             카카오 로그인을 불러오지 못했습니다.
                                         </strong>{' '}
-                                        네트워크 연결을 확인한 뒤 페이지를 새로고침해 주세요.
+                                        새로고침해 주세요.
                                     </p>
                                 )}
                                 <button
                                     type="button"
                                     onClick={startKakao}
                                     disabled={!ready}
-                                    className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-md transition-all duration-200 hover:-translate-y-px hover:shadow-lg disabled:translate-y-0 disabled:opacity-50 disabled:shadow-md lg:w-auto lg:text-[17px]"
+                                    className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto lg:text-[17px]"
                                 >
                                     <KakaoMark />
                                     카카오로 사전예약하고 응모하기
@@ -329,7 +326,7 @@ export default function PreregEventPage() {
                                     style={{ wordBreak: 'keep-all' }}
                                 >
                                     중복 응모 방지를 위해 본인 확인만 합니다. 연락처는 받지
-                                    않습니다. 로그인하면 응모가 접수됩니다.
+                                    않습니다.
                                 </p>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
@@ -344,30 +341,24 @@ export default function PreregEventPage() {
                             </>
                         )}
                         {phase === 'loading' && (
-                            <p className="flex items-center gap-3 text-[15px] text-text-secondary">
-                                <span
-                                    aria-hidden="true"
-                                    className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-border-strong border-t-brand-primary"
-                                />
-                                확인 중입니다…
-                            </p>
+                            <p className="text-[15px] text-text-secondary">확인 중입니다…</p>
                         )}
                         {phase === 'error' && (
-                            <div
-                                role="alert"
-                                className="rounded-xl border border-red-200 bg-red-50 px-5 py-4"
-                            >
+                            <div role="alert">
                                 <p
-                                    className="text-[15px] leading-[1.7] text-red-600"
+                                    className="text-[15px] leading-[1.7] text-text-secondary"
                                     style={{ wordBreak: 'keep-all' }}
                                 >
-                                    처리에 실패했습니다. 잠시 후 다시 시도해 주세요.
+                                    <strong className="font-bold text-text-primary">
+                                        처리에 실패했습니다.
+                                    </strong>{' '}
+                                    잠시 후 다시 시도해 주세요.
                                 </p>
                                 <button
                                     type="button"
                                     onClick={startKakao}
                                     disabled={!ready}
-                                    className="focus-ring mt-4 inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#FEE500] px-6 py-3.5 text-[15px] font-bold text-[#191919] shadow-sm transition-all duration-200 hover:-translate-y-px hover:shadow-md disabled:translate-y-0 disabled:opacity-50 disabled:shadow-sm lg:w-auto"
+                                    className="focus-ring mt-4 inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-6 py-3.5 text-[15px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto"
                                 >
                                     <KakaoMark />
                                     다시 시도하기
@@ -384,9 +375,9 @@ export default function PreregEventPage() {
                                     <>
                                         <span
                                             aria-hidden="true"
-                                            className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-success/10 text-success"
+                                            className="mb-2 inline-flex text-success"
                                         >
-                                            <CheckMark stroke="#16A34A" />
+                                            <CheckMark size={22} />
                                         </span>
                                         <p
                                             className="text-[17px] font-bold text-text-primary lg:text-[19px]"
@@ -408,10 +399,10 @@ export default function PreregEventPage() {
                                                 href={EVENT.KAKAO_CHANNEL_URL}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-all duration-200 hover:-translate-y-px hover:shadow-md lg:w-auto"
+                                                className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
                                             >
                                                 <KakaoMark />
-                                                카카오톡 채널 추가하고 출시·당첨 소식 받기
+                                                카카오톡 채널 추가하고 소식 받기
                                             </a>
                                         )}
                                     </>
@@ -425,32 +416,21 @@ export default function PreregEventPage() {
             {/* B. 경품 응모 — 보상을 크게 보여주고, 응모가 2단계임을 진행도로 못 박는다. */}
             <section
                 aria-labelledby="prizes-heading"
-                className="relative mt-16 overflow-hidden bg-brand-deep lg:mt-24"
+                className="mt-16 bg-brand-deep lg:mt-24"
             >
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background:
-                            'radial-gradient(90% 70% at 12% 0%, rgba(243,152,0,0.22) 0%, rgba(243,152,0,0) 62%), radial-gradient(90% 80% at 100% 100%, rgba(0,174,235,0.26) 0%, rgba(0,174,235,0) 60%)',
-                    }}
-                />
-                <div className="relative mx-auto max-w-[960px] container-x py-14 lg:py-20">
-                    <p className="text-[13px] font-semibold tracking-[0.1em] text-brand-accent uppercase">
-                        경품 응모
-                    </p>
+                <div className="mx-auto max-w-[960px] container-x py-14 lg:py-20">
                     <h2
                         id="prizes-heading"
-                        className="mt-2 text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
+                        className="text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         추첨으로 드리는 경품
                     </h2>
 
-                    {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일에 담아 제품 배경이 패널과 충돌하지 않게 한다. */}
+                    {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
                     <Reveal
                         y={16}
-                        className="mt-8 grid gap-5 rounded-2xl border border-white/15 bg-white/[0.06] p-5 lg:mt-10 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:p-7"
+                        className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-7"
                     >
                         <PrizePhoto
                             src={PRIZE_IMAGES[1]}
@@ -458,7 +438,7 @@ export default function PreregEventPage() {
                             className="h-[190px] lg:h-[240px]"
                         />
                         <div>
-                            <span className="inline-flex items-center rounded-lg bg-brand-accent px-3 py-1.5 text-[13px] font-bold text-white">
+                            <span className="inline-flex items-center rounded-md bg-brand-accent px-3 py-1.5 text-[13px] font-bold text-white">
                                 1등
                             </span>
                             <p
@@ -476,10 +456,7 @@ export default function PreregEventPage() {
                     {/* 2·3등 */}
                     <Reveal as="ul" y={16} className="mt-5 grid gap-5 sm:grid-cols-2">
                         {EVENT.PRIZES.slice(1).map((p) => (
-                            <li
-                                key={p.rank}
-                                className="rounded-2xl border border-white/15 bg-white/[0.06] p-5"
-                            >
+                            <li key={p.rank}>
                                 <PrizePhoto
                                     src={PRIZE_IMAGES[p.rank]}
                                     alt={p.name}
@@ -518,8 +495,8 @@ export default function PreregEventPage() {
                             style={{ wordBreak: 'keep-all' }}
                         >
                             {confirmed
-                                ? '두 단계를 모두 마치셨습니다. 추첨 결과는 카카오톡 채널과 이 페이지로 안내드립니다.'
-                                : '사전예약만으로는 응모가 확정되지 않습니다. 앱 출시 후 같은 카카오 계정으로 가입까지 마쳐야 추첨 대상이 됩니다.'}
+                                ? '추첨 결과는 카카오톡 채널과 이 페이지로 안내드립니다.'
+                                : '사전예약만으로는 응모가 확정되지 않습니다.'}
                         </p>
 
                         <div className="relative mt-9 max-w-[560px]">
@@ -529,10 +506,10 @@ export default function PreregEventPage() {
                                 className="absolute top-[23px] right-[calc(25%+30px)] left-[calc(25%+30px)] h-[2px] rounded-full bg-white/15"
                             >
                                 <div
-                                    className="h-full rounded-full transition-all duration-700"
+                                    className="h-full rounded-full transition-[width] duration-200 ease-out"
                                     style={{
                                         width: registered ? '100%' : '0%',
-                                        background: '#16A34A',
+                                        background: 'var(--success)',
                                     }}
                                 />
                             </div>
@@ -550,7 +527,7 @@ export default function PreregEventPage() {
                                                 style={style.node}
                                             >
                                                 {s.state === 'done' ? (
-                                                    <CheckMark size={20} stroke="#FFFFFF" />
+                                                    <CheckMark size={20} />
                                                 ) : (
                                                     s.no.charAt(0)
                                                 )}
@@ -565,17 +542,11 @@ export default function PreregEventPage() {
                                                 {s.title}
                                             </p>
                                             <span
-                                                className="mt-2.5 inline-flex items-center rounded-full px-3 py-1 text-[12px] font-bold"
+                                                className="mt-2.5 inline-flex items-center rounded-sm px-2.5 py-1 text-[12px] font-bold"
                                                 style={style.chip}
                                             >
                                                 {s.chip}
                                             </span>
-                                            <p
-                                                className="mt-2 text-[13px] leading-[1.6] text-white/60"
-                                                style={{ wordBreak: 'keep-all' }}
-                                            >
-                                                {s.note}
-                                            </p>
                                         </li>
                                     );
                                 })}
