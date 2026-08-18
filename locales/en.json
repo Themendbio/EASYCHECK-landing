@@ -31,6 +31,10 @@
             "cert5": "UNIST Heat Wave Research Center partner"
         }
     },
+    "video": {
+        "sectionLabel": "EASYCHECK intro video",
+        "playLabel": "Play the EASYCHECK intro video"
+    },
     "stats": {
         "title": "The hottest summer on record is coming.",
         "description": "Record heat is becoming the new normal worldwide. This summer is projected to be the hottest yet — and your body will feel it before you do.",

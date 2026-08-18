@@ -1,6 +1,7 @@
 'use client';
 
 import { Nav, Hero } from '../components/hero';
+import { CfVideoSection } from '../components/cf-video';
 import { StatsSection } from '../components/stats';
 import { HeatmapSection } from '../components/heatmap';
 import { ProblemSection } from '../components/problem';
@@ -15,6 +16,7 @@ export default function Home() {
         <div className="min-h-screen bg-white">
             <Nav />
             <Hero />
+            <CfVideoSection />
             <div className="relative isolate">
                 {/* 두 섹션 높이에 딱 맞는 배경 레이어 (다음 섹션 침범 방지) */}
                 <div aria-hidden className="pointer-events-none absolute inset-0 z-0">

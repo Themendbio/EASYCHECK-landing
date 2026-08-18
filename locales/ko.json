@@ -31,6 +31,10 @@
             "cert5": "SCI 논문 게재"
         }
     },
+    "video": {
+        "sectionLabel": "EASYCHECK 소개 영상",
+        "playLabel": "EASYCHECK 소개 영상 재생"
+    },
     "stats": {
         "title": "올여름, 역대급 폭염이 예고됩니다",
         "description": "기상청 서울 관측 기준 여름철(6~8월) 한낮 최고기온 평균은 평년 28.9℃에서 2025년 31.1℃로 꾸준히 올랐고, 올여름은 역대 가장 뜨거울 전망입니다.",
