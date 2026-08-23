@@ -6,6 +6,7 @@ import { EVENT } from '../../../lib/event-config';
 import { useKakaoSdk } from '../../../hooks/useKakaoSdk';
 import { Reveal } from '../../../components/ui/Reveal';
 import { Footer } from '../../../components/footer';
+import { IconPlay } from '../../../components/icons';
 
 // 카카오 인가 코드 발급·교환에 쓰는 리다이렉트 주소 — 두 곳이 반드시 같아야 교환이 성공한다
 const REDIRECT_PATH = '/event/prereg';
@@ -158,10 +159,11 @@ export default function PreregEventPage() {
         },
         {
             no: '2단계',
-            title: '출시 후 앱 가입',
+            title: '앱 가입',
             desc: '같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
-            state: confirmed ? 'done' : 'pending',
-            chip: confirmed ? '완료' : '대기',
+            // 앱이 출시됐으므로 접수를 마친 사람에게는 2단계도 '지금 가능'이 된다
+            state: confirmed ? 'done' : registered ? 'active' : 'pending',
+            chip: confirmed ? '완료' : registered ? '지금 가능' : '대기',
         },
     ];
 
@@ -197,12 +199,12 @@ export default function PreregEventPage() {
                     }}
                 />
                 <div className="relative mx-auto max-w-[960px] container-x pt-9 pb-24 lg:pt-14 lg:pb-32">
-                    {/* 기간 — 전단지에 인쇄된 7월 일정이 이미 지났으므로 날짜 정정 표시는 남긴다 */}
+                    {/* 기간 — 출시일(2026.8.20)이 확정되어 '출시 후 한 달'을 실제 날짜로 표기 */}
                     <p
                         className="anim-up text-[13px] font-semibold lg:text-[14px]"
                         style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
                     >
-                        기간 · 2026.8.19 ~ 출시 후 한 달
+                        기간 · 2026.8.19 ~ 9.20
                     </p>
 
                     <h1
@@ -248,7 +250,8 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        정식 출시 전에 카카오 계정으로 접수합니다.
+                        카카오 계정으로 접수합니다. 앱이 출시된 지금도 마감 전까지 접수할 수
+                        있습니다.
                     </p>
 
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
@@ -356,19 +359,33 @@ export default function PreregEventPage() {
                                         >
                                             {status.entry_confirmed
                                                 ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
-                                                : '출시 후 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
+                                                : '출시된 앱에 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
                                         </p>
-                                        {EVENT.KAKAO_CHANNEL_URL && (
-                                            <a
-                                                href={EVENT.KAKAO_CHANNEL_URL}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
-                                            >
-                                                <KakaoMark />
-                                                카카오톡 채널 추가
-                                            </a>
-                                        )}
+                                        <div className="mt-5 flex flex-col gap-3 lg:flex-row">
+                                            {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
+                                            {!status.entry_confirmed && (
+                                                <a
+                                                    href={EVENT.PLAY_STORE_URL}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-primary px-5 py-3.5 text-[14px] font-bold text-white shadow-sm transition-colors duration-150 hover:bg-brand-primary-hover lg:w-auto"
+                                                >
+                                                    <IconPlay size={18} aria-hidden="true" />
+                                                    Google Play에서 앱 설치
+                                                </a>
+                                            )}
+                                            {EVENT.KAKAO_CHANNEL_URL && (
+                                                <a
+                                                    href={EVENT.KAKAO_CHANNEL_URL}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
+                                                >
+                                                    <KakaoMark />
+                                                    카카오톡 채널 추가
+                                                </a>
+                                            )}
+                                        </div>
                                     </>
                                 )}
                             </div>
@@ -543,10 +560,12 @@ export default function PreregEventPage() {
                     </h2>
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
-                        <li>응모 기간: 2026년 8월 19일 ~ 정식 출시일로부터 한 달.</li>
                         <li>
-                            응모 확정 조건: 사전예약 후, 앱 출시일로부터 한 달 이내에 같은 카카오
-                            계정으로 앱 가입(회원가입·기본 정보 입력)을 완료해야 합니다.
+                            응모 기간: 2026년 8월 19일 ~ 2026년 9월 20일(정식 출시일로부터 한 달).
+                        </li>
+                        <li>
+                            응모 확정 조건: 사전예약 후, 2026년 9월 20일까지 같은 카카오 계정으로 앱
+                            가입(회원가입·기본 정보 입력)을 완료해야 합니다.
                         </li>
                         <li>EASYCHECK 앱은 Android 전용이며 측정에는 스마트워치가 필요합니다.</li>
                         <li>
