@@ -351,15 +351,23 @@ export default function PreregEventPage() {
                                             style={{ wordBreak: 'keep-all' }}
                                         >
                                             {status.nickname ? `${status.nickname}님, ` : ''}
-                                            사전예약이 접수되었습니다.
+                                            {status.prize_rank
+                                                ? `${status.prize_rank}등에 당첨되었습니다.`
+                                                : '사전예약이 접수되었습니다.'}
                                         </p>
                                         <p
                                             className="mt-2 text-[14px] leading-[1.7] text-text-secondary"
                                             style={{ wordBreak: 'keep-all' }}
                                         >
-                                            {status.entry_confirmed
-                                                ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
-                                                : '출시된 앱에 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
+                                            {status.prize_rank
+                                                ? `경품은 ${
+                                                      EVENT.PRIZES.find(
+                                                          (p) => p.rank === status.prize_rank,
+                                                      )?.name ?? '경품'
+                                                  }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
+                                                : status.entry_confirmed
+                                                  ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
+                                                  : '출시된 앱에 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
                                         </p>
                                         <div className="mt-5 flex flex-col gap-3 lg:flex-row">
                                             {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
