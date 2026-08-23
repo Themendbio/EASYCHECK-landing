@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IconX, IconChevronRight } from './icons';
+import { EVENT } from '../lib/event-config';
 
 const DISMISS_KEY = 'event-popup-dismissed';
 // 로컬 기준 당일 날짜. toISOString 은 UTC 라 KST 자정~오전 9시에 전날로 기록돼,
@@ -35,6 +36,8 @@ function EventPopup() {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        // 응모 마감 후에는 끝난 이벤트를 홍보하지 않는다
+        if (Date.now() > new Date(EVENT.PREREG_DEADLINE).getTime()) return;
         if (localStorage.getItem(DISMISS_KEY) !== today()) setOpen(true);
     }, []);
 

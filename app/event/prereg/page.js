@@ -108,9 +108,12 @@ export default function PreregEventPage() {
     const [status, setStatus] = useState(null);
     // 카카오 동의 화면에서 취소하고 돌아온 경우
     const [cancelled, setCancelled] = useState(false);
+    // 마감 판정 — 정적 export 는 접수 UI 로 프리렌더되므로 hydration 이후에 계산한다
+    const [pastDeadline, setPastDeadline] = useState(false);
 
     useEffect(() => {
         document.title = 'EASYCHECK 사전예약 경품 이벤트';
+        setPastDeadline(Date.now() > new Date(EVENT.PREREG_DEADLINE).getTime());
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (!code) {
@@ -153,9 +156,9 @@ export default function PreregEventPage() {
             no: '1단계',
             title: '사전예약',
             desc: '카카오 계정으로 접수합니다.',
-            state: registered ? 'done' : 'active',
+            state: registered ? 'done' : pastDeadline ? 'pending' : 'active',
             // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
-            chip: registered ? '완료' : '지금 가능',
+            chip: registered ? '완료' : pastDeadline ? '마감' : '지금 가능',
         },
         {
             no: '2단계',
@@ -237,7 +240,7 @@ export default function PreregEventPage() {
                     className="relative z-10 -mt-16 rounded-xl border border-border bg-white p-6 shadow-lg lg:-mt-20 lg:p-9"
                 >
                     <p className="text-[13px] font-semibold tracking-[0.1em] text-brand-primary uppercase">
-                        지금 가능
+                        {pastDeadline ? '접수 마감' : '지금 가능'}
                     </p>
                     <h2
                         id="prereg-heading"
@@ -250,8 +253,9 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        카카오 계정으로 접수합니다. 앱이 출시된 지금도 마감 전까지 접수할 수
-                        있습니다.
+                        {pastDeadline
+                            ? '사전예약 접수가 마감되었습니다.'
+                            : '카카오 계정으로 접수합니다. 앱이 출시된 지금도 마감 전까지 접수할 수 있습니다.'}
                     </p>
 
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
@@ -259,7 +263,28 @@ export default function PreregEventPage() {
                         id="entry"
                         className="mt-8 scroll-mt-8 rounded-md border border-border bg-bg-subtle px-5 py-7 lg:px-7"
                     >
-                        {phase === 'idle' && (
+                        {phase === 'idle' && pastDeadline && (
+                            <>
+                                {/* 마감 후 — 접수 버튼 대신 발표 안내. 기존 예약자의 현황 확인은 계속 열어 둔다 */}
+                                <p
+                                    className="text-[15px] leading-[1.7] text-text-secondary"
+                                    style={{ wordBreak: 'keep-all' }}
+                                >
+                                    당첨자 발표는 본 페이지와 카카오톡 채널로 안내합니다.
+                                </p>
+                                <div className="mt-5 border-t border-border pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={startKakao}
+                                        disabled={!ready}
+                                        className="focus-ring rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
+                                    >
+                                        내 참여 현황 확인
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                        {phase === 'idle' && !pastDeadline && (
                             <>
                                 {/* 상태 고지 — 상자나 색이 아니라 굵은 첫 문장으로 상황을 알린다 */}
                                 {cancelled && (
