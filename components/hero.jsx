@@ -185,7 +185,7 @@ function Hero() {
             flex flex-col items-start justify-center
           "
                 >
-                    {/* 텍스트 + CTA + 인증 */}
+                    {/* 텍스트 + CTA + 연구 정보 */}
                     <div className="w-full max-w-[820px] flex flex-col lg:pl-8 xl:pl-12">
                         {/* Headline */}
                         <h1
@@ -260,7 +260,7 @@ function Hero() {
             </section>
 
             {/* Hero 하단 신뢰 정보 띠지 */}
-            <div className="trust-band" aria-label="인증 및 연구 정보">
+            <div className="trust-band" aria-label="서비스 및 연구 정보">
                 <div className="mx-auto max-w-8xl px-6 lg:px-12 py-5">
                     <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:gap-x-9">
                         {certifications.map((c, i) => (

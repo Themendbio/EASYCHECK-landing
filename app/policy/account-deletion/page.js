@@ -93,7 +93,7 @@ export default function AccountDeletionPage() {
                         </thead>
                         <tbody>
                             <Tr>
-                                <Td>생체신호 및 탈수 분석 결과</Td>
+                                <Td>생체신호 및 수분 지수 분석 결과</Td>
                                 <Td>측정일로부터 90일(회원 탈퇴 시 지체 없이 파기)</Td>
                                 <Td>「개인정보 보호법」 제21조</Td>
                             </Tr>

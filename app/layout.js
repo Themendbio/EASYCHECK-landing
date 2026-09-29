@@ -13,9 +13,9 @@ const translations = {
 const GA_ID = 'G-GFLHHYT04D';
 const SITE_URL = 'https://themendbio.com';
 const OG_IMAGE = `${SITE_URL}/images/og-image.png`;
-const SITE_TITLE = 'EASYCHECK | 스마트워치로 확인하는 체내 수분 지수';
+const SITE_TITLE = 'EASYCHECK | 스마트워치로 확인하는 수분 참고지수';
 const SITE_DESCRIPTION =
-    '몸이 보내는 SOS, 놓치고 계셨나요? EASYCHECK는 스마트워치의 PPG 신호를 AI로 분석해 체내 수분 지수를 즉각적으로 확인합니다.';
+    'EASYCHECK는 스마트워치의 PPG 신호를 AI로 분석해 일상적 수분 관리에 참고할 수 있는 수분 지수를 제공합니다.';
 
 export default function RootLayout({ children }) {
     return (
@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
                 <meta name="description" content={SITE_DESCRIPTION} />
                 <meta
                     name="keywords"
-                    content="EASYCHECK, 이지체크, 수분 지수, 탈수, 수분 부족, 스마트워치, PPG, 폭염, 건강관리"
+                    content="EASYCHECK, 이지체크, 수분 지수, 수분 관리, 스마트워치, PPG, 폭염, 건강관리"
                 />
                 <meta name="robots" content="index, follow" />
                 <meta name="theme-color" content="#0068B7" />
@@ -41,7 +41,10 @@ export default function RootLayout({ children }) {
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
                 <meta property="og:image:type" content="image/png" />
-                <meta property="og:image:alt" content="EASYCHECK — 스마트워치로 확인하는 체내 수분 지수" />
+                <meta
+                    property="og:image:alt"
+                    content="EASYCHECK — 스마트워치로 확인하는 수분 참고지수"
+                />
                 <meta property="og:locale" content="ko_KR" />
                 <meta property="og:locale:alternate" content="en_US" />
 

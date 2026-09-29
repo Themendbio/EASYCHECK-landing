@@ -8,11 +8,7 @@ import { Reveal } from './ui/Reveal';
 function TechSection() {
     const { t } = useLanguage();
 
-    const patents = [
-        '/images/patent-contactless-biosignal.webp',
-        '/images/patent-watch-vascular.webp',
-        '/images/patent-cardiovascular-risk.webp',
-    ];
+    const patents = ['/images/patent-contactless-biosignal.webp'];
 
     return (
         <section
@@ -76,7 +72,7 @@ function TechSection() {
                 </Reveal>
 
                 {/* 특허증 */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+                <div className="mx-auto max-w-sm">
                     {patents.map((src, i) => (
                         <Reveal key={src} delay={200 + i * 100} y={16}>
                             <img

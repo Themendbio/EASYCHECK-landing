@@ -18,7 +18,7 @@
     "hero": {
         "headline1": "What you don't feel",
         "headline2": "can still hurt you.",
-        "description": "By the time you feel thirsty, dehydration has already begun. EASYCHECK reads your hydration in real time — straight from your wrist.",
+        "description": "Track changes in your hydration reference index and build a better everyday routine.",
         "downloadButton": "Get it on Google Play",
         "preregButton": "Pre-register",
         "preregCaption": "Free to pre-register · Android only · Smartwatch required",
@@ -26,8 +26,8 @@
         "certifications": {
             "cert1": "Developed with Severance Hospital, Seoul",
             "cert2": "Published in SCI-indexed journals",
-            "cert3": "36,000+ clinical PPG records",
-            "cert4": "Certified wellness device",
+            "cert3": "48,000+ research PPG records",
+            "cert4": "General wellness reference index",
             "cert5": "UNIST Heat Wave Research Center partner"
         }
     },
@@ -68,8 +68,8 @@
         }
     },
     "problem": {
-        "title": "Dehydration doesn't treat everyone equally.",
-        "description": "Anyone can get dehydrated. For some, it happens faster — and quieter.",
+        "title": "Hydration needs look different for everyone.",
+        "description": "Daily routines, activity, and the weather can all change how consistently you manage hydration.",
         "personas": {
             "athlete": {
                 "label": "Athletes & Active",
@@ -87,18 +87,18 @@
                 "label": "Outdoor Workers",
                 "title": "We sweat the small stuff. So you don't have to.",
                 "body": "Construction crews, delivery riders, farm workers — when you sweat for a living, fluid loss outpaces what you feel.",
-                "quote": "“I thought I could push through. It was dehydration.”"
+                "quote": "“I should have paused and reached for water.”"
             },
             "elderly": {
                 "label": "Seniors & Caregivers",
                 "title": "“I'm fine” is not a measurement.",
-                "body": "With age, the sense of thirst fades. Many seniors are dehydrated without ever feeling it — and without anyone knowing.",
+                "body": "With age, the sense of thirst can fade. A simple hydration routine can make daily care easier to keep up with.",
                 "quote": "“She always said she was fine. Now I can actually check.”"
             },
             "office": {
                 "label": "Office Workers",
                 "title": "That's not fatigue. That's thirst.",
-                "body": "Sitting all day, running on coffee — chronic mild dehydration looks a lot like burnout. The dry throat, the afternoon fog: your body asking for water.",
+                "body": "Sitting all day and running on coffee can make it easy to forget water. When your focus dips, check in on your hydration routine too.",
                 "quote": "“I was tired, so I drank more coffee. Turns out I needed water.”"
             }
         },
@@ -108,8 +108,8 @@
         }
     },
     "solution": {
-        "title": "One watch. Your hydration, in real time.",
-        "description": "EASYCHECK analyzes PPG signals from your smartwatch using AI to instantly check your body's hydration index.",
+        "title": "One watch. A hydration trend you can follow.",
+        "description": "EASYCHECK analyzes PPG signals from your smartwatch to provide a reference index for everyday hydration management.",
         "steps": {
             "step1": {
                 "label": "STEP 1",
@@ -128,18 +128,18 @@
             }
         },
         "highlight": {
-            "badge": "Smart Alert System",
-            "title": "You can lead yourself to water. We'll tell you when.",
-            "description": "While other wearables record what already happened, EASYCHECK alerts you before dehydration sets in."
+            "badge": "Hydration Reference Index",
+            "title": "See your hydration trend at a glance.",
+            "description": "EASYCHECK shows changes in your hydration reference index and offers reminders that support everyday hydration habits."
         }
     },
     "tech": {
         "title": "Why EASYCHECK is different",
-        "description": "Other wearables count your steps. EASYCHECK reads what's inside."
+        "description": "EASYCHECK turns smartwatch PPG signals into a reference index for everyday hydration management."
     },
     "download": {
-        "title": "It’s what’s inside that counts. Now you can count it.",
-        "description": "All you need is a smartwatch. EASYCHECK alerts you before thirst ever kicks in."
+        "title": "Build a better hydration routine.",
+        "description": "Use your smartwatch to follow hydration index trends and receive everyday hydration reminders."
     },
     "footer": {
         "disclaimer": {
