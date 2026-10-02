@@ -20,7 +20,7 @@ export default function AccountDeletionPage() {
             <h1 className="text-[26px] lg:text-[32px] font-bold text-text-primary leading-[1.3] mb-2">
                 계정 및 데이터 삭제 안내
             </h1>
-            <p className="text-[13px] text-text-tertiary mb-10">90일 보관 개정안 · 시행일 확정 전</p>
+            <p className="text-[13px] text-text-tertiary mb-10">개정 사전고지 · 버전 1.3 · 고지일 2026년 10월 2일 · 시행일 2026년 10월 9일</p>
 
             <p
                 className="text-[15px] text-text-secondary leading-[1.7] mb-10"
