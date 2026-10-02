@@ -77,7 +77,8 @@ export default function AccountDeletionPage() {
                 </ul>
                 <p className="mt-3 text-[15px] text-text-secondary leading-[1.7]">
                     측정 원신호, 분석 결과·점수 및 관련 건강정보가 포함된 알림·집계는
-                    회원 탈퇴 시 익명 보존하지 않고 즉시 삭제합니다.
+                    회원 탈퇴 시 익명 보존하지 않고 즉시 삭제합니다. 복구용 백업에는 이러한
+                    측정자료를 포함하지 않으며, 삭제된 측정자료를 백업에서 복원하지 않습니다.
                 </p>
             </Section>
 
