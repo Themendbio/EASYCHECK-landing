@@ -20,7 +20,7 @@ export default function AccountDeletionPage() {
             <h1 className="text-[26px] lg:text-[32px] font-bold text-text-primary leading-[1.3] mb-2">
                 계정 및 데이터 삭제 안내
             </h1>
-            <p className="text-[13px] text-text-tertiary mb-10">최종 업데이트: 2026년 7월 24일</p>
+            <p className="text-[13px] text-text-tertiary mb-10">개정 사전고지 · 버전 1.3 · 고지일 2026년 10월 2일 · 시행일 2026년 10월 9일</p>
 
             <p
                 className="text-[15px] text-text-secondary leading-[1.7] mb-10"
@@ -36,7 +36,7 @@ export default function AccountDeletionPage() {
                     <li>EASYCHECK 앱을 실행하고 로그인합니다.</li>
                     <li>하단 <b>프로필(내 정보)</b> 탭으로 이동합니다.</li>
                     <li><b>회원 탈퇴</b>를 선택합니다.</li>
-                    <li>안내에 따라 확인하면 계정과 개인정보가 즉시 삭제·파기됩니다.</li>
+                    <li>안내에 따라 확인하면 계정 식별정보와 측정자료가 즉시 삭제됩니다.</li>
                 </ol>
                 <Note>
                     앱을 삭제(제거)하는 것만으로는 서버에 저장된 데이터가 삭제되지 않습니다. 완전한
@@ -66,21 +66,27 @@ export default function AccountDeletionPage() {
 
             <Section title="3. 삭제되는 데이터">
                 <p className="text-[15px] text-text-secondary leading-[1.7] mb-3">
-                    회원 탈퇴 시 아래 개인정보가 <b>즉시 파기 또는 익명화</b>됩니다.
+                    회원 탈퇴 시 아래 계정 식별정보와 측정자료를 즉시 삭제합니다. 법령상 보존이 필요한
+                    결제 기록 등은 아래 기간에 따라 별도로 처리합니다.
                 </p>
                 <ul className="list-disc pl-5 space-y-1.5 text-[15px] text-text-secondary leading-[1.7]">
-                    <li>이름(닉네임), 이메일, 전화번호, 카카오 계정 연결 정보, 프로필 이미지 URL</li>
+                    <li>닉네임, 이메일, 카카오 계정 연결 정보, 프로필 이미지 URL</li>
                     <li>성별, 출생연도, 키, 몸무게</li>
-                    <li>보호자 전화번호</li>
-                    <li>연결된 기기 정보(모델명·MAC 주소) 및 푸시 알림 토큰(FCM)</li>
+                    <li>연결된 기기 정보 및 푸시 알림 토큰(FCM)</li>
                     <li>모든 로그인 세션</li>
                 </ul>
+                <p className="mt-3 text-[15px] text-text-secondary leading-[1.7]">
+                    측정 원신호, 분석 결과·점수 및 관련 건강정보가 포함된 알림·집계는
+                    회원 탈퇴 시 익명 보존하지 않고 즉시 삭제합니다. 복구용 백업에는 이러한
+                    측정자료를 포함하지 않으며, 삭제된 측정자료를 백업에서 복원하지 않습니다.
+                </p>
             </Section>
 
             <Section title="4. 보관되는 데이터 및 보관 기간">
                 <p className="text-[15px] text-text-secondary leading-[1.7] mb-3">
-                    관계 법령 준수를 위해, 아래 데이터는 개인을 식별할 수 없도록 처리하거나 법정 보관
-                    기간 동안만 보관된 뒤 지체 없이 파기됩니다.
+                    측정 데이터는 아래 기간 동안 보관하며, 회원 탈퇴 시 즉시 삭제합니다. 분석·알림·집계가
+                    생성되는 시점에 보관 기간이 새로 시작되거나 연장되지 않습니다. 그 밖의
+                    데이터는 아래에 기재된 기간 동안 보관합니다.
                 </p>
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse text-[14px]">
@@ -93,8 +99,8 @@ export default function AccountDeletionPage() {
                         </thead>
                         <tbody>
                             <Tr>
-                                <Td>생체신호 및 수분 지수 분석 결과</Td>
-                                <Td>측정일로부터 90일(회원 탈퇴 시 지체 없이 파기)</Td>
+                                <Td>측정 원신호, 분석 결과·점수 및 관련 건강정보가 포함된 알림·집계</Td>
+                                <Td>측정 시점부터 최대 90일(그 전에 회원 탈퇴 시 즉시 삭제)</Td>
                                 <Td>「개인정보 보호법」 제21조</Td>
                             </Tr>
                             <Tr>
