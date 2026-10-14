@@ -12,8 +12,8 @@ const EVENTS = [
     {
         slug: '/event/prereg',
         period: `2026.8.19 ~ ${EVENT.DEADLINE_LABEL}`,
-        title: 'EASYCHECK 경품 이벤트 · 기간 연장',
-        summary: `기존 유효 신청은 유지되며 재신청은 필요 없습니다. 신규 이용자도 접수와 앱 가입을 마치면 참여할 수 있습니다. 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
+        title: 'EASYCHECK 경품 이벤트',
+        summary: `이벤트 접수와 같은 카카오 계정의 앱 가입을 마치면 경품 추첨에 참여할 수 있습니다. 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
         image: '/images/prize-watch.webp',
         imageAlt: '갤럭시 워치8',
         prizes: EVENT.PRIZES,

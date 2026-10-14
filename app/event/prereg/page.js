@@ -113,7 +113,7 @@ export default function PreregEventPage() {
     const pastDeadline = useEventClosed() || Boolean(status?.closed);
 
     useEffect(() => {
-        document.title = 'EASYCHECK 경품 이벤트 · 사전예약 이벤트 연장';
+        document.title = 'EASYCHECK 경품 이벤트';
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (!code) {
@@ -202,12 +202,12 @@ export default function PreregEventPage() {
                     }}
                 />
                 <div className="relative mx-auto max-w-[960px] container-x pt-9 pb-24 lg:pt-14 lg:pb-32">
-                    {/* 연장된 접수·발표 일정을 첫 화면에 고지한다. */}
+                    {/* 접수·발표 일정을 첫 화면에 고지한다. */}
                     <p
                         className="anim-up text-[13px] font-semibold lg:text-[14px]"
                         style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
                     >
-                        응모 마감 · {EVENT.DEADLINE_LABEL} · 기간 연장
+                        응모 마감 · {EVENT.DEADLINE_LABEL}
                     </p>
 
                     <h1
@@ -226,13 +226,13 @@ export default function PreregEventPage() {
                             wordBreak: 'keep-all',
                         }}
                     >
-                        기존 사전예약 경품 이벤트를 연장합니다. 출시된 앱의 신규 이용자도 참여할 수
-                        있습니다.
+                        이벤트에 접수하고 같은 카카오 계정으로 앱 가입을 마치면 경품 추첨에 참여할
+                        수 있습니다.
                     </p>
                     <p className="mt-4 text-[14px] leading-[1.7] text-white/80">
                         당첨자 발표 · {EVENT.ANNOUNCEMENT_LABEL}
                         <br />
-                        기존 유효 신청은 그대로 유지되며 재신청할 필요가 없습니다.
+                        접수하신 분은 내 참여 현황에서 응모 상태를 확인할 수 있습니다.
                     </p>
                 </div>
             </section>
@@ -261,7 +261,7 @@ export default function PreregEventPage() {
                     >
                         {pastDeadline
                             ? '이벤트 접수가 마감되었습니다.'
-                            : '카카오 계정으로 접수합니다. 앱이 출시된 지금도 마감 전까지 접수할 수 있습니다.'}
+                            : '카카오 계정으로 이벤트에 접수한 뒤, 같은 계정으로 앱 가입과 기본 정보 입력을 완료해 주세요.'}
                     </p>
 
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
@@ -450,7 +450,7 @@ export default function PreregEventPage() {
                 </Reveal>
             </div>
 
-            {/* B. 경품 이벤트 — 사전예약의 연장선. 보상을 크게 보여주고 절차·진행도를 여기서 설명한다. */}
+            {/* B. 경품 이벤트 — 경품과 응모 절차·진행도를 보여준다. */}
             <section aria-labelledby="prizes-heading" className="mt-16 bg-brand-deep lg:mt-24">
                 <div className="mx-auto max-w-[960px] container-x py-14 lg:py-20">
                     <h2
@@ -615,7 +615,7 @@ export default function PreregEventPage() {
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
                         <li>
-                            기존 유효 신청은 유지됩니다. 재신청 없이 내 참여 현황을 확인할 수
+                            접수 후 내 참여 현황에서 앱 가입 확인 여부와 응모 상태를 확인할 수
                             있습니다.
                         </li>
                         <li>응모 기간: 2026년 8월 19일 ~ {EVENT.DEADLINE_LABEL}.</li>
