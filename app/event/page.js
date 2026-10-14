@@ -11,9 +11,9 @@ import { Footer } from '../../components/footer';
 const EVENTS = [
     {
         slug: '/event/prereg',
-        period: `2026.8.19 ~ ${EVENT.DEADLINE_LABEL}`,
+        period: `2026년 8월 19일 ~ ${EVENT.DEADLINE_LABEL}`,
         title: 'EASYCHECK 경품 이벤트',
-        summary: `이벤트 접수와 같은 카카오 계정의 앱 가입을 마치면 경품 추첨에 참여할 수 있습니다. 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
+        summary: `이벤트에 신청하고 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다. 당첨자 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
         image: '/images/prize-watch.webp',
         imageAlt: '갤럭시 워치8',
         prizes: EVENT.PRIZES,

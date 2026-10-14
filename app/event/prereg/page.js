@@ -154,8 +154,8 @@ export default function PreregEventPage() {
     const stages = [
         {
             no: '1단계',
-            title: '이벤트 접수',
-            desc: '카카오 계정으로 접수합니다.',
+            title: '이벤트 신청',
+            desc: '카카오 계정으로 이벤트에 신청합니다.',
             state: registered ? 'done' : pastDeadline ? 'pending' : 'active',
             // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
             chip: registered ? '완료' : pastDeadline ? '마감' : '지금 가능',
@@ -163,7 +163,7 @@ export default function PreregEventPage() {
         {
             no: '2단계',
             title: '앱 가입',
-            desc: '같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
+            desc: '같은 카카오 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
             // 앱이 출시됐으므로 접수를 마친 사람에게는 2단계도 '지금 가능'이 된다
             state: confirmed ? 'done' : registered && !pastDeadline ? 'active' : 'pending',
             chip: confirmed ? '완료' : pastDeadline ? '마감' : registered ? '지금 가능' : '대기',
@@ -226,13 +226,13 @@ export default function PreregEventPage() {
                             wordBreak: 'keep-all',
                         }}
                     >
-                        이벤트에 접수하고 같은 카카오 계정으로 앱 가입을 마치면 경품 추첨에 참여할
-                        수 있습니다.
+                        이벤트에 신청하고 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면
+                        경품 추첨 대상이 됩니다.
                     </p>
                     <p className="mt-4 text-[14px] leading-[1.7] text-white/80">
                         당첨자 발표 · {EVENT.ANNOUNCEMENT_LABEL}
                         <br />
-                        접수하신 분은 내 참여 현황에서 응모 상태를 확인할 수 있습니다.
+                        신청 후에는 ‘내 참여 현황 확인’에서 응모 상태를 확인할 수 있습니다.
                     </p>
                 </div>
             </section>
@@ -246,22 +246,22 @@ export default function PreregEventPage() {
                     className="relative z-10 -mt-16 rounded-xl border border-border bg-white p-6 shadow-lg lg:-mt-20 lg:p-9"
                 >
                     <p className="text-[13px] font-semibold tracking-[0.1em] text-brand-primary uppercase">
-                        {pastDeadline ? '접수 마감' : '지금 가능'}
+                        {pastDeadline ? '신청 마감' : '신청 가능'}
                     </p>
                     <h2
                         id="prereg-heading"
                         className="mt-2 text-[24px] font-bold tracking-[-0.025em] text-text-primary lg:text-[30px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        이벤트 접수
+                        이벤트 신청
                     </h2>
                     <p
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         {pastDeadline
-                            ? '이벤트 접수가 마감되었습니다.'
-                            : '카카오 계정으로 이벤트에 접수한 뒤, 같은 계정으로 앱 가입과 기본 정보 입력을 완료해 주세요.'}
+                            ? '이벤트 신청이 마감되었습니다.'
+                            : '카카오로 이벤트에 신청한 뒤, 같은 계정으로 앱 가입과 기본 정보 입력을 완료해 주세요.'}
                     </p>
 
                     {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
@@ -276,8 +276,8 @@ export default function PreregEventPage() {
                                     className="text-[15px] leading-[1.7] text-text-secondary"
                                     style={{ wordBreak: 'keep-all' }}
                                 >
-                                    당첨자는 {EVENT.ANNOUNCEMENT_LABEL} 본 페이지와 카카오톡 채널로
-                                    안내합니다.
+                                    당첨 결과는 {EVENT.ANNOUNCEMENT_LABEL} 이 페이지와 카카오톡
+                                    채널에서 확인할 수 있습니다.
                                 </p>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
@@ -301,7 +301,7 @@ export default function PreregEventPage() {
                                         style={{ wordBreak: 'keep-all' }}
                                     >
                                         <strong className="font-bold text-text-primary">
-                                            동의를 취소하셨습니다.
+                                            카카오 로그인 동의를 취소하셨습니다.
                                         </strong>{' '}
                                         다시 시도해 주세요.
                                     </p>
@@ -313,7 +313,7 @@ export default function PreregEventPage() {
                                         style={{ wordBreak: 'keep-all' }}
                                     >
                                         <strong className="font-bold text-text-primary">
-                                            카카오 로그인을 불러오지 못했습니다.
+                                            카카오 로그인 화면을 불러오지 못했습니다.
                                         </strong>{' '}
                                         새로고침해 주세요.
                                     </p>
@@ -325,7 +325,7 @@ export default function PreregEventPage() {
                                     className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto lg:text-[17px]"
                                 >
                                     <KakaoMark />
-                                    카카오로 이벤트 접수하기
+                                    카카오로 신청하기
                                 </button>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
@@ -349,7 +349,7 @@ export default function PreregEventPage() {
                                     style={{ wordBreak: 'keep-all' }}
                                 >
                                     <strong className="font-bold text-text-primary">
-                                        처리에 실패했습니다.
+                                        참여 현황을 확인하지 못했습니다.
                                     </strong>{' '}
                                     잠시 후 다시 시도해 주세요.
                                 </p>
@@ -368,7 +368,7 @@ export default function PreregEventPage() {
                             <div role="status">
                                 {!status.registered && status.closed ? (
                                     <p className="text-[15px] font-semibold text-text-primary">
-                                        이벤트 접수가 마감되었습니다.
+                                        이벤트 신청이 마감되었습니다.
                                     </p>
                                 ) : (
                                     <>
@@ -385,7 +385,7 @@ export default function PreregEventPage() {
                                             {status.nickname ? `${status.nickname}님, ` : ''}
                                             {status.prize_rank
                                                 ? `${status.prize_rank}등에 당첨되었습니다.`
-                                                : '이벤트 접수가 확인되었습니다.'}
+                                                : '이벤트 신청이 확인되었습니다.'}
                                         </p>
                                         <p
                                             className="mt-2 text-[14px] leading-[1.7] text-text-secondary"
@@ -398,12 +398,12 @@ export default function PreregEventPage() {
                                                       )?.name ?? '경품'
                                                   }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
                                                 : status.entry_confirmed
-                                                  ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
+                                                  ? '앱 가입과 기본 정보 입력이 확인되어 추첨 대상이 되었습니다.'
                                                   : status.closed
-                                                    ? '마감일까지 앱 가입과 기본 정보 입력이 확인되지 않아 추첨 대상에 포함되지 않았습니다.'
+                                                    ? '마감일까지 같은 카카오 계정의 앱 가입과 기본 정보 입력이 확인되지 않아 추첨 대상에 포함되지 않았습니다.'
                                                     : pastDeadline
-                                                      ? '접수가 마감되었습니다. 앱 가입 반영 여부는 내 참여 현황을 다시 확인해 주세요.'
-                                                      : `${EVENT.DEADLINE_LABEL}까지 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 마치면 추첨 대상이 됩니다.`}
+                                                      ? '신청이 마감되었습니다. 앱 가입 확인 여부는 ‘내 참여 현황 다시 확인’을 눌러 확인해 주세요.'
+                                                      : `${EVENT.DEADLINE_LABEL}까지 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다.`}
                                         </p>
                                         {!status.entry_confirmed &&
                                             !status.closed &&
@@ -458,14 +458,14 @@ export default function PreregEventPage() {
                         className="text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        앱 가입까지 마치면 경품 추첨
+                        경품 안내
                     </h2>
                     <p
                         className="mt-3 text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        이벤트 접수와 같은 카카오 계정의 앱 가입·기본 정보 입력을 마감까지 마치면
-                        추첨 대상이 됩니다.
+                        마감일까지 이벤트 신청과 앱 가입·기본 정보 입력을 모두 완료한 분 중에서
+                        추첨합니다.
                     </p>
 
                     {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
@@ -527,17 +527,15 @@ export default function PreregEventPage() {
                             className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[24px]"
                             style={{ wordBreak: 'keep-all' }}
                         >
-                            {confirmed
-                                ? '응모가 확정되었습니다.'
-                                : '경품 응모는 2단계로 완료됩니다.'}
+                            {confirmed ? '응모가 확정되었습니다.' : '참여 방법'}
                         </h3>
                         <p
                             className="mt-2.5 max-w-[32em] text-[14px] leading-[1.7] text-white/70 lg:text-[15px]"
                             style={{ wordBreak: 'keep-all' }}
                         >
                             {confirmed
-                                ? '추첨 결과는 카카오톡 채널과 이 페이지로 안내합니다.'
-                                : '두 단계를 모두 마친 분들 중 추첨합니다.'}
+                                ? '추첨 결과는 이 페이지와 카카오톡 채널에서 확인할 수 있습니다.'
+                                : '이벤트 신청과 앱 가입은 같은 카카오 계정으로 진행해 주세요.'}
                         </p>
 
                         <div className="relative mt-9 max-w-[560px]">
@@ -614,26 +612,24 @@ export default function PreregEventPage() {
                     </h2>
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
-                        <li>
-                            접수 후 내 참여 현황에서 앱 가입 확인 여부와 응모 상태를 확인할 수
-                            있습니다.
-                        </li>
                         <li>응모 기간: 2026년 8월 19일 ~ {EVENT.DEADLINE_LABEL}.</li>
                         <li>
-                            응모 확정 조건: {EVENT.DEADLINE_LABEL}까지 이벤트 접수와 같은 카카오
-                            계정의 앱 가입(회원가입·기본 정보 입력)을 완료해야 합니다. 계정당 한
-                            번만 응모됩니다.
+                            응모 조건: {EVENT.DEADLINE_LABEL}까지 이벤트 신청과 앱 가입·기본 정보
+                            입력을 모두 완료해야 합니다. 두 단계는 같은 카카오 계정으로 진행해야
+                            하며, 카카오 계정당 1회만 응모할 수 있습니다.
                         </li>
                         <li>EASYCHECK 앱은 Android 전용이며 측정에는 스마트워치가 필요합니다.</li>
                         <li>
-                            당첨자 발표: {EVENT.ANNOUNCEMENT_LABEL} 본 페이지에 공지하며, 카카오톡
-                            채널로도 안내합니다.
+                            당첨자 발표: {EVENT.ANNOUNCEMENT_LABEL} 이 페이지와 카카오톡 채널에서
+                            안내합니다.
                         </li>
                         <li>
-                            당첨 여부는 이 페이지의 &lsquo;내 참여 현황 확인&rsquo;으로 확인할 수
+                            응모 상태와 당첨 여부는 &lsquo;내 참여 현황 확인&rsquo;에서 확인할 수
                             있습니다.
                         </li>
-                        <li>추첨은 응모 확정자를 대상으로 무작위 전산 추첨으로 진행합니다.</li>
+                        <li>
+                            응모 조건을 충족한 분 중에서 무작위 전산 추첨으로 당첨자를 선정합니다.
+                        </li>
                         <li>
                             당첨 시 경품 수령을 위해 별도 안내에 따라 수령 정보를 제출해야 하며,
                             발표일로부터 14일 이내에 제출하지 않으면 당첨이 취소되고 재추첨할 수
