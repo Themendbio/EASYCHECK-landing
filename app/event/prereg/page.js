@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { EVENT } from '../../../lib/event-config';
+import { useEventClosed } from '../../../hooks/useEventClosed';
 import { useKakaoSdk } from '../../../hooks/useKakaoSdk';
 import { Reveal } from '../../../components/ui/Reveal';
 import { Footer } from '../../../components/footer';
@@ -109,11 +110,10 @@ export default function PreregEventPage() {
     // 카카오 동의 화면에서 취소하고 돌아온 경우
     const [cancelled, setCancelled] = useState(false);
     // 마감 판정 — 정적 export 는 접수 UI 로 프리렌더되므로 hydration 이후에 계산한다
-    const [pastDeadline, setPastDeadline] = useState(false);
+    const pastDeadline = useEventClosed() || Boolean(status?.closed);
 
     useEffect(() => {
-        document.title = 'EASYCHECK 사전예약 경품 이벤트';
-        setPastDeadline(Date.now() > new Date(EVENT.PREREG_DEADLINE).getTime());
+        document.title = 'EASYCHECK 경품 이벤트 · 사전예약 이벤트 연장';
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (!code) {
@@ -154,7 +154,7 @@ export default function PreregEventPage() {
     const stages = [
         {
             no: '1단계',
-            title: '사전예약',
+            title: '이벤트 접수',
             desc: '카카오 계정으로 접수합니다.',
             state: registered ? 'done' : pastDeadline ? 'pending' : 'active',
             // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
@@ -165,8 +165,8 @@ export default function PreregEventPage() {
             title: '앱 가입',
             desc: '같은 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
             // 앱이 출시됐으므로 접수를 마친 사람에게는 2단계도 '지금 가능'이 된다
-            state: confirmed ? 'done' : registered ? 'active' : 'pending',
-            chip: confirmed ? '완료' : registered ? '지금 가능' : '대기',
+            state: confirmed ? 'done' : registered && !pastDeadline ? 'active' : 'pending',
+            chip: confirmed ? '완료' : pastDeadline ? '마감' : registered ? '지금 가능' : '대기',
         },
     ];
 
@@ -202,19 +202,19 @@ export default function PreregEventPage() {
                     }}
                 />
                 <div className="relative mx-auto max-w-[960px] container-x pt-9 pb-24 lg:pt-14 lg:pb-32">
-                    {/* 기간 — 출시일(2026.8.20)이 확정되어 '출시 후 한 달'을 실제 날짜로 표기 */}
+                    {/* 연장된 접수·발표 일정을 첫 화면에 고지한다. */}
                     <p
                         className="anim-up text-[13px] font-semibold lg:text-[14px]"
                         style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
                     >
-                        기간 · 2026.8.19 ~ 9.20
+                        응모 마감 · {EVENT.DEADLINE_LABEL} · 기간 연장
                     </p>
 
                     <h1
                         className="anim-up hero-headline mt-4 text-[38px] leading-[1.14] font-bold tracking-[-0.03em] text-white lg:mt-5 lg:text-[56px]"
                         style={{ ...stagger(1), wordBreak: 'keep-all' }}
                     >
-                        사전예약
+                        EASYCHECK
                         <br />
                         <span className="text-brand-accent">경품 이벤트</span>
                     </h1>
@@ -226,7 +226,13 @@ export default function PreregEventPage() {
                             wordBreak: 'keep-all',
                         }}
                     >
-                        예약 후 출시된 앱에 가입하면 추첨 대상이 됩니다.
+                        기존 사전예약 경품 이벤트를 연장합니다. 출시된 앱의 신규 이용자도 참여할 수
+                        있습니다.
+                    </p>
+                    <p className="mt-4 text-[14px] leading-[1.7] text-white/80">
+                        당첨자 발표 · {EVENT.ANNOUNCEMENT_LABEL}
+                        <br />
+                        기존 유효 신청은 그대로 유지되며 재신청할 필요가 없습니다.
                     </p>
                 </div>
             </section>
@@ -247,14 +253,14 @@ export default function PreregEventPage() {
                         className="mt-2 text-[24px] font-bold tracking-[-0.025em] text-text-primary lg:text-[30px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        사전예약
+                        이벤트 접수
                     </h2>
                     <p
                         className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         {pastDeadline
-                            ? '사전예약 접수가 마감되었습니다.'
+                            ? '이벤트 접수가 마감되었습니다.'
                             : '카카오 계정으로 접수합니다. 앱이 출시된 지금도 마감 전까지 접수할 수 있습니다.'}
                     </p>
 
@@ -270,7 +276,8 @@ export default function PreregEventPage() {
                                     className="text-[15px] leading-[1.7] text-text-secondary"
                                     style={{ wordBreak: 'keep-all' }}
                                 >
-                                    당첨자 발표는 본 페이지와 카카오톡 채널로 안내합니다.
+                                    당첨자는 {EVENT.ANNOUNCEMENT_LABEL} 본 페이지와 카카오톡 채널로
+                                    안내합니다.
                                 </p>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
@@ -318,7 +325,7 @@ export default function PreregEventPage() {
                                     className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto lg:text-[17px]"
                                 >
                                     <KakaoMark />
-                                    카카오로 사전예약하기
+                                    카카오로 이벤트 접수하기
                                 </button>
                                 <div className="mt-5 border-t border-border pt-4">
                                     <button
@@ -361,7 +368,7 @@ export default function PreregEventPage() {
                             <div role="status">
                                 {!status.registered && status.closed ? (
                                     <p className="text-[15px] font-semibold text-text-primary">
-                                        사전예약 접수가 마감되었습니다.
+                                        이벤트 접수가 마감되었습니다.
                                     </p>
                                 ) : (
                                     <>
@@ -378,7 +385,7 @@ export default function PreregEventPage() {
                                             {status.nickname ? `${status.nickname}님, ` : ''}
                                             {status.prize_rank
                                                 ? `${status.prize_rank}등에 당첨되었습니다.`
-                                                : '사전예약이 접수되었습니다.'}
+                                                : '이벤트 접수가 확인되었습니다.'}
                                         </p>
                                         <p
                                             className="mt-2 text-[14px] leading-[1.7] text-text-secondary"
@@ -392,11 +399,27 @@ export default function PreregEventPage() {
                                                   }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
                                                 : status.entry_confirmed
                                                   ? '앱 가입까지 확인되어 추첨 대상이 되었습니다.'
-                                                  : '출시된 앱에 같은 카카오 계정으로 가입(기본 정보 입력)까지 마치면 추첨 대상이 됩니다.'}
+                                                  : status.closed
+                                                    ? '마감일까지 앱 가입과 기본 정보 입력이 확인되지 않아 추첨 대상에 포함되지 않았습니다.'
+                                                    : pastDeadline
+                                                      ? '접수가 마감되었습니다. 앱 가입 반영 여부는 내 참여 현황을 다시 확인해 주세요.'
+                                                      : `${EVENT.DEADLINE_LABEL}까지 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 마치면 추첨 대상이 됩니다.`}
                                         </p>
+                                        {!status.entry_confirmed &&
+                                            !status.closed &&
+                                            pastDeadline && (
+                                                <button
+                                                    type="button"
+                                                    onClick={startKakao}
+                                                    disabled={!ready}
+                                                    className="focus-ring mt-4 rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
+                                                >
+                                                    내 참여 현황 다시 확인
+                                                </button>
+                                            )}
                                         <div className="mt-5 flex flex-col gap-3 lg:flex-row">
                                             {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
-                                            {!status.entry_confirmed && (
+                                            {!status.entry_confirmed && !pastDeadline && (
                                                 <a
                                                     href={EVENT.PLAY_STORE_URL}
                                                     target="_blank"
@@ -428,10 +451,7 @@ export default function PreregEventPage() {
             </div>
 
             {/* B. 경품 이벤트 — 사전예약의 연장선. 보상을 크게 보여주고 절차·진행도를 여기서 설명한다. */}
-            <section
-                aria-labelledby="prizes-heading"
-                className="mt-16 bg-brand-deep lg:mt-24"
-            >
+            <section aria-labelledby="prizes-heading" className="mt-16 bg-brand-deep lg:mt-24">
                 <div className="mx-auto max-w-[960px] container-x py-14 lg:py-20">
                     <h2
                         id="prizes-heading"
@@ -444,7 +464,8 @@ export default function PreregEventPage() {
                         className="mt-3 max-w-[32em] text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
-                        사전예약을 마친 뒤 출시된 앱에 설치·가입까지 하면 추첨 대상이 됩니다.
+                        이벤트 접수와 같은 카카오 계정의 앱 가입·기본 정보 입력을 마감까지 마치면
+                        추첨 대상이 됩니다.
                     </p>
 
                     {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
@@ -594,16 +615,19 @@ export default function PreregEventPage() {
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
                         <li>
-                            응모 기간: 2026년 8월 19일 ~ 2026년 9월 20일(정식 출시일로부터 한 달).
+                            기존 유효 신청은 유지됩니다. 재신청 없이 내 참여 현황을 확인할 수
+                            있습니다.
                         </li>
+                        <li>응모 기간: 2026년 8월 19일 ~ {EVENT.DEADLINE_LABEL}.</li>
                         <li>
-                            응모 확정 조건: 사전예약 후, 2026년 9월 20일까지 같은 카카오 계정으로 앱
-                            가입(회원가입·기본 정보 입력)을 완료해야 합니다.
+                            응모 확정 조건: {EVENT.DEADLINE_LABEL}까지 이벤트 접수와 같은 카카오
+                            계정의 앱 가입(회원가입·기본 정보 입력)을 완료해야 합니다. 계정당 한
+                            번만 응모됩니다.
                         </li>
                         <li>EASYCHECK 앱은 Android 전용이며 측정에는 스마트워치가 필요합니다.</li>
                         <li>
-                            당첨자 발표: 응모 마감 후 본 페이지에 공지하며, 카카오톡 채널로도
-                            안내합니다.
+                            당첨자 발표: {EVENT.ANNOUNCEMENT_LABEL} 본 페이지에 공지하며, 카카오톡
+                            채널로도 안내합니다.
                         </li>
                         <li>
                             당첨 여부는 이 페이지의 &lsquo;내 참여 현황 확인&rsquo;으로 확인할 수

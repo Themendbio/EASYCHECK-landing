@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IconX, IconChevronRight } from './icons';
-import { EVENT } from '../lib/event-config';
+import { useEventClosed } from '../hooks/useEventClosed';
 
 const DISMISS_KEY = 'event-popup-dismissed';
 // 로컬 기준 당일 날짜. toISOString 은 UTC 라 KST 자정~오전 9시에 전날로 기록돼,
@@ -33,12 +33,14 @@ function PrizeShot({ src, alt, className }) {
 
 function EventPopup() {
     const { t } = useLanguage();
+    const closed = useEventClosed();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        // 응모 마감 후에는 끝난 이벤트를 홍보하지 않는다
-        if (Date.now() > new Date(EVENT.PREREG_DEADLINE).getTime()) return;
-        if (localStorage.getItem(DISMISS_KEY) !== today()) setOpen(true);
+        const timer = window.setTimeout(() => {
+            if (localStorage.getItem(DISMISS_KEY) !== today()) setOpen(true);
+        }, 0);
+        return () => window.clearTimeout(timer);
     }, []);
 
     const dismissToday = () => {
@@ -46,7 +48,7 @@ function EventPopup() {
         setOpen(false);
     };
 
-    if (!open || typeof document === 'undefined') return null;
+    if (!open || closed || typeof document === 'undefined') return null;
 
     // 고정 위치 기준을 viewport 로 잡기 위해 body 로 portal (헤더의 backdrop-filter 회피)
     return createPortal(
