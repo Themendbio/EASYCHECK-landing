@@ -5,6 +5,7 @@ Next.js App Router 기반 소개·응모·정책 사이트다. [next.config.js](
 ```sh
 npm ci
 npm run dev
+npm test
 npm run lint
 npm run build
 ```

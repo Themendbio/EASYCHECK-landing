@@ -2,6 +2,7 @@
 // 이벤트 목록 — 진행 중인 이벤트를 카드로 보여주고 상세 페이지로 연결한다.
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { useEventClosed } from '../../hooks/useEventClosed';
 import { EVENT } from '../../lib/event-config';
 import { Reveal } from '../../components/ui/Reveal';
 import { Footer } from '../../components/footer';
@@ -10,10 +11,9 @@ import { Footer } from '../../components/footer';
 const EVENTS = [
     {
         slug: '/event/prereg',
-        state: '진행중',
-        period: '2026.8.19 ~ 9.20',
-        title: '사전예약 경품 이벤트',
-        summary: '예약 후 출시된 앱에 가입하면 추첨 대상이 됩니다.',
+        period: `2026년 8월 19일 ~ ${EVENT.DEADLINE_LABEL}`,
+        title: 'EASYCHECK 경품 이벤트',
+        summary: `이벤트에 신청하고 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다. 당첨자 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
         image: '/images/prize-watch.webp',
         imageAlt: '갤럭시 워치8',
         prizes: EVENT.PRIZES,
@@ -21,6 +21,7 @@ const EVENTS = [
 ];
 
 export default function EventListPage() {
+    const closed = useEventClosed();
     useEffect(() => {
         document.title = 'EASYCHECK 이벤트';
     }, []);
@@ -74,7 +75,7 @@ export default function EventListPage() {
                                 <div className="min-w-0">
                                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                                         <span className="inline-flex items-center rounded-md bg-success/10 px-2.5 py-1 text-[12px] font-bold text-success">
-                                            {e.state}
+                                            {closed ? '접수 마감' : '접수 중'}
                                         </span>
                                         <span className="text-[13px] font-medium text-text-tertiary">
                                             {e.period}
