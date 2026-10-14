@@ -461,7 +461,7 @@ export default function PreregEventPage() {
                         앱 가입까지 마치면 경품 추첨
                     </h2>
                     <p
-                        className="mt-3 max-w-[32em] text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
+                        className="mt-3 text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
                         style={{ wordBreak: 'keep-all' }}
                     >
                         이벤트 접수와 같은 카카오 계정의 앱 가입·기본 정보 입력을 마감까지 마치면
