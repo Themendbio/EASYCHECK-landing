@@ -1,0 +1,737 @@
+/* 승인된 경품 이벤트 시안의 반응형 화면을 다른 페이지와 분리한다. */
+
+.page * {
+    box-sizing: border-box;
+}
+.page {
+    font-family: var(--font-sans);
+    color-scheme: light;
+    --ec-ink: #061c46;
+    --ec-blue: #0068b7;
+    --ec-sky: #e8f5ff;
+    --ec-muted: #53627a;
+    --ec-line: #dce5ee;
+    width: 100%;
+    margin: auto;
+    color: var(--ec-ink);
+    background: #fff;
+    container: ecsite / inline-size;
+}
+.nav {
+    height: 62px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--ec-line);
+}
+.logo {
+    width: 144px;
+    height: auto;
+    display: block;
+}
+.nav a {
+    padding: 12px 0;
+    border: 0;
+    background: none;
+    color: var(--ec-muted);
+    font: inherit;
+    font-size: 13px;
+}
+.hero {
+    background: var(--ec-sky);
+    padding: 46px 40px 30px;
+}
+.heroGrid {
+    max-width: 920px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.15fr;
+    align-items: center;
+    gap: 10px;
+}
+.page h1 {
+    margin: 0;
+    font-size: clamp(42px, 6.5cqi, 64px);
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.055em;
+    word-break: keep-all;
+}
+.page h1 span {
+    display: block;
+}
+.intro {
+    max-width: 320px;
+    margin: 20px 0 0;
+    font-size: 16px;
+    line-height: 1.65;
+    word-break: keep-all;
+}
+.art {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.actionBlock {
+    max-width: 920px;
+    margin: 26px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 32px;
+}
+.dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.dates div + div {
+    padding-left: 24px;
+    border-left: 1px solid #c0d9ed;
+}
+.dates span {
+    display: block;
+    font-size: 13px;
+    color: var(--ec-muted);
+}
+.dates strong {
+    display: block;
+    font-size: 34px;
+    font-weight: 850;
+    line-height: 1.1;
+    margin: 5px 0;
+    letter-spacing: -0.03em;
+}
+.dates small {
+    display: block;
+    font-size: 12px;
+    color: var(--ec-muted);
+}
+.mainAction {
+    width: 100%;
+    min-height: 56px;
+    border: 0;
+    background: #fee500;
+    color: #191919;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 750;
+}
+.mainAction[data-style='blue'] {
+    background: var(--ec-blue);
+    color: #fff;
+}
+.mainAction svg {
+    width: 20px;
+    height: 20px;
+}
+.secondary {
+    display: block;
+    margin: 9px auto 0;
+    padding: 7px 10px;
+    min-height: 36px;
+    border: 0;
+    background: transparent;
+    color: var(--ec-ink);
+    font: inherit;
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.accountNote {
+    grid-column: 1/-1;
+    margin: -12px 0 0;
+    font-size: 12px;
+    color: var(--ec-muted);
+    text-align: center;
+    word-break: keep-all;
+}
+.status {
+    background: #fff;
+    border: 1px solid #bbd9ee;
+    border-radius: 12px;
+    margin: 20px auto 0;
+    padding: 18px 20px;
+    max-width: 920px;
+}
+.status h2 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 750;
+}
+.status p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ec-muted);
+    word-break: keep-all;
+}
+.body {
+    max-width: 1000px;
+    margin: auto;
+    padding: 32px 40px 34px;
+}
+.sectionHeading {
+    margin: 0 0 20px;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+.prizeHeading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+.prizeHeading p {
+    margin: 0;
+    color: var(--ec-muted);
+    font-size: 13px;
+}
+.prizes {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+}
+.prize {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    align-items: center;
+    gap: 10px;
+    padding: 22px;
+    border-radius: 18px;
+    background: #f5f7fa;
+}
+.prizeCopy {
+    min-width: 0;
+}
+.rank {
+    display: block;
+    color: var(--ec-blue);
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+.prize h3 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 750;
+    word-break: keep-all;
+}
+.prize .count {
+    margin: 12px 0 0;
+    font-size: 14px;
+    color: var(--ec-muted);
+}
+.count strong {
+    color: var(--ec-ink);
+    font-size: 25px;
+    font-weight: 850;
+    margin-right: 3px;
+}
+.product {
+    display: block;
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+.prizeFirst {
+    grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 28px;
+    background: #e8f5ff;
+    border: 1px solid #c3e0f5;
+}
+.prizeFirst .prizeCopy {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+}
+.prizeFirst .rank {
+    grid-column: 1/-1;
+    font-size: 29px;
+    line-height: 1;
+    margin-bottom: 12px;
+    color: var(--ec-blue);
+}
+.prizeFirst h3 {
+    font-size: 29px;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+}
+.prizeFirst .count {
+    margin: 0 0 2px;
+    white-space: nowrap;
+}
+.prizeFirst .count strong {
+    font-size: 32px;
+}
+.prizeFirst .product {
+    height: 280px;
+    object-fit: cover;
+}
+.how {
+    border-top: 1px solid var(--ec-line);
+    margin-top: 40px;
+    padding-top: 36px;
+}
+.how .sectionHeading {
+    margin-bottom: 8px;
+}
+.howIntro {
+    margin: 0 0 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ec-muted);
+    word-break: keep-all;
+}
+.howIntro strong {
+    color: var(--ec-ink);
+    font-weight: 750;
+}
+.steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    padding: 0;
+    margin: 0;
+}
+.step {
+    min-width: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--ec-line);
+    border-radius: 16px;
+    background: #fff;
+}
+.stepTop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+.stepNumber {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--ec-ink);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+}
+.stepPlace {
+    font-size: 13px;
+    color: var(--ec-muted);
+}
+.step h3 {
+    margin: 0 0 9px;
+    font-size: 22px;
+    line-height: 1.35;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    word-break: keep-all;
+}
+.step p {
+    margin: 0 0 22px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ec-muted);
+    word-break: keep-all;
+}
+.step p strong {
+    color: var(--ec-ink);
+    font-weight: 650;
+}
+.stepAction {
+    margin-top: auto;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 0;
+    border-radius: 9px;
+    color: #191919;
+    background: #fee500;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 750;
+}
+.stepInstall {
+    background: var(--ec-ink);
+    color: #fff;
+}
+.stepAction:disabled {
+    background: #eef4f8;
+    color: var(--ec-muted);
+}
+.stepFootnote {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ec-muted);
+}
+.completion {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
+    padding: 22px 24px;
+    background: var(--ec-sky);
+    border-radius: 14px;
+}
+.completionMark {
+    width: 40px;
+    height: 40px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ec-blue);
+    color: #fff;
+}
+.completionMark svg {
+    width: 22px;
+    height: 22px;
+}
+.completion h3 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 800;
+    word-break: keep-all;
+}
+.completion p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ec-muted);
+    line-height: 1.6;
+    word-break: keep-all;
+}
+.howStatus {
+    flex: none;
+    margin-left: auto;
+    border: 0;
+    background: none;
+    color: var(--ec-blue);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 44px;
+    padding: 8px 0;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.joinedNote {
+    margin: 20px 0 0;
+    font-size: 13px;
+    color: var(--ec-muted);
+    line-height: 1.7;
+    word-break: keep-all;
+}
+.joinedNote strong {
+    display: block;
+    color: var(--ec-ink);
+    font-size: 14px;
+    font-weight: 750;
+    margin-bottom: 3px;
+}
+.terms {
+    margin-top: 28px;
+    border-top: 1px solid var(--ec-line);
+    padding-top: 24px;
+}
+.terms summary {
+    color: var(--ec-ink);
+    font-size: 15px;
+    font-weight: 650;
+    padding: 4px 0 10px;
+}
+.terms ul {
+    padding-left: 18px;
+    margin: 8px 0;
+    color: var(--ec-muted);
+    font-size: 12px;
+    line-height: 1.8;
+    word-break: keep-all;
+}
+.terms li {
+    margin: 7px 0;
+}
+.legal {
+    font-size: 12px;
+    color: var(--ec-muted);
+    line-height: 1.6;
+    margin: 16px 0 0;
+}
+.page [hidden] {
+    display: none !important;
+}
+@container ecsite (min-width:601px) and (max-width:850px) {
+    .prize {
+        grid-template-columns: minmax(0, 1fr) 90px;
+        gap: 8px;
+        padding: 18px;
+    }
+    .prizeFirst {
+        padding: 28px;
+    }
+}
+@container ecsite (max-width:600px) {
+    .nav {
+        height: 54px;
+        padding: 0 22px;
+    }
+    .logo {
+        width: 126px;
+    }
+    .hero {
+        padding: 26px 22px 24px;
+    }
+    .heroGrid {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+    .page h1 {
+        font-size: clamp(38px, 12.2cqi, 48px);
+        line-height: 1.08;
+    }
+    .intro {
+        margin: 13px auto 0;
+        font-size: 14px;
+        max-width: 290px;
+        line-height: 1.55;
+    }
+    .art {
+        width: calc(100% + 10px);
+        max-width: 370px;
+        margin: 5px -5px 0;
+    }
+    .actionBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+        margin-top: 14px;
+    }
+    .dates {
+        width: 100%;
+        max-width: 330px;
+        gap: 18px;
+        text-align: left;
+    }
+    .dates strong {
+        font-size: 29px;
+    }
+    .dates div + div {
+        padding-left: 20px;
+    }
+    .actionWrap {
+        width: 100%;
+    }
+    .accountNote {
+        margin: 0;
+        font-size: 11px;
+    }
+    .body {
+        padding: 27px 22px 30px;
+    }
+    .sectionHeading {
+        font-size: 21px;
+        margin-bottom: 18px;
+    }
+    .prizes {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .prize {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 12px;
+        border-radius: 14px;
+    }
+    .rank {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    .prize h3 {
+        font-size: 15px;
+        min-height: 42px;
+    }
+    .prize .count {
+        margin: 6px 0 0;
+        font-size: 12px;
+    }
+    .count strong {
+        font-size: 22px;
+    }
+    .product {
+        height: 135px;
+    }
+    .prizeFirst {
+        grid-column: 1/-1;
+        grid-row: auto;
+        padding: 22px;
+        gap: 8px;
+    }
+    .prizeFirst .rank {
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
+    .prizeFirst h3 {
+        font-size: 27px;
+        min-height: 0;
+    }
+    .prizeFirst .count {
+        margin: 0 0 2px;
+    }
+    .prizeFirst .count strong {
+        font-size: 29px;
+    }
+    .prizeFirst .product {
+        height: 225px;
+    }
+    .how {
+        margin-top: 26px;
+        padding-top: 26px;
+    }
+    .howIntro {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .steps {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+    }
+    .step {
+        padding: 16px 12px;
+        border-radius: 12px;
+    }
+    .stepTop {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+    .stepNumber {
+        width: 26px;
+        height: 26px;
+        font-size: 14px;
+    }
+    .stepPlace {
+        flex-basis: 100%;
+        font-size: 11px;
+        line-height: 1.5;
+        word-break: keep-all;
+    }
+    .step h3 {
+        font-size: 17px;
+        min-height: 69px;
+    }
+    .step p {
+        font-size: 12px;
+        line-height: 1.65;
+        margin-bottom: 16px;
+    }
+    .step p br {
+        display: none;
+    }
+    .stepAction {
+        padding: 10px 6px;
+        font-size: 12px;
+        line-height: 1.5;
+        min-height: 56px;
+        word-break: keep-all;
+    }
+    .stepFootnote {
+        font-size: 11px;
+        min-height: 33px;
+        word-break: keep-all;
+    }
+    .completion {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 12px;
+        padding: 20px;
+    }
+    .completionMark {
+        width: 32px;
+        height: 32px;
+    }
+    .completion h3 {
+        font-size: 17px;
+    }
+    .howStatus {
+        grid-column: 2;
+        margin: 0;
+        text-align: left;
+        padding: 0;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .page button {
+        transition: filter 0.15s;
+    }
+    .page button:hover {
+        filter: brightness(0.96);
+    }
+}
+.page button,
+.page summary {
+    cursor: pointer;
+}
+.page button:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+.page button:focus-visible,
+.page a:focus-visible,
+.page summary:focus-visible {
+    outline: 3px solid var(--ec-blue);
+    outline-offset: 4px;
+}
+.mainAction,
+.stepAction {
+    text-decoration: none;
+}
+.stepAction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.status {
+    scroll-margin-top: 24px;
+}
+.status:empty {
+    display: none;
+}
+.notice {
+    margin: 16px auto 0;
+    max-width: 920px;
+    font-size: 14px;
+    line-height: 1.7;
+    word-break: keep-all;
+}

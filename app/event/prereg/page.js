@@ -1,13 +1,13 @@
 'use client';
-// 사전예약·경품 응모 이벤트 상세 — 카카오 인가 코드 리다이렉트 처리와 2단계 응모 진행 표시 포함
+// 경품 이벤트 상세 화면과 카카오 신청·참여 현황 조회를 연결한다.
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { EVENT } from '../../../lib/event-config';
 import { useEventClosed } from '../../../hooks/useEventClosed';
 import { useKakaoSdk } from '../../../hooks/useKakaoSdk';
-import { Reveal } from '../../../components/ui/Reveal';
 import { Footer } from '../../../components/footer';
 import { IconPlay } from '../../../components/icons';
+import styles from './event.module.css';
 
 // 카카오 인가 코드 발급·교환에 쓰는 리다이렉트 주소 — 두 곳이 반드시 같아야 교환이 성공한다
 const REDIRECT_PATH = '/event/prereg';
@@ -31,34 +31,6 @@ const PRIZE_IMAGES = {
     1: '/images/prize-watch.webp',
     2: '/images/prize-tumbler.webp',
     3: '/images/prize-battery.jpg',
-};
-
-// 어두운 패널 위 단계 상태 팔레트 — 완료(녹색) · 지금 가능(오렌지) · 대기(무채색)
-const STAGE_STYLE = {
-    done: {
-        node: {
-            background: 'var(--success)',
-            color: '#FFFFFF',
-            border: '1px solid var(--success)',
-        },
-        chip: { background: 'rgba(22,163,74,0.20)', color: '#8FE9B4' },
-    },
-    active: {
-        node: {
-            background: 'var(--brand-accent)',
-            color: '#FFFFFF',
-            border: '1px solid var(--brand-accent)',
-        },
-        chip: { background: 'rgba(243,152,0,0.20)', color: '#FFC96B' },
-    },
-    pending: {
-        node: {
-            background: 'rgba(255,255,255,0.07)',
-            color: 'rgba(255,255,255,0.55)',
-            border: '1px solid rgba(255,255,255,0.24)',
-        },
-        chip: { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.62)' },
-    },
 };
 
 // 카카오 말풍선 — 버튼 안 장식
@@ -85,20 +57,6 @@ function CheckMark({ size = 18 }) {
                 strokeLinejoin="round"
             />
         </svg>
-    );
-}
-
-// 흰 배경 제품 사진을 흰 타일에 담아 어두운 패널 위에서 사각형 경계가 드러나지 않게 한다
-function PrizePhoto({ src, alt, className }) {
-    return (
-        <div className={`rounded-lg bg-white p-3 lg:p-4 ${className}`}>
-            <img
-                src={src}
-                alt={alt}
-                loading="lazy"
-                className="h-full w-full object-contain text-[12px] text-text-tertiary"
-            />
-        </div>
     );
 }
 
@@ -146,470 +104,372 @@ export default function PreregEventPage() {
         window.Kakao.Auth.authorize({ redirectUri: `${window.location.origin}${REDIRECT_PATH}` });
     };
 
-    const stagger = (i) => ({ animationDelay: `${i * 90}ms` });
-
-    // 응모 진행도 — 로그인 전에는 1단계가 '지금 가능', 접수되면 1단계 완료·2단계 대기가 된다
     const registered = Boolean(status?.registered);
     const confirmed = Boolean(status?.entry_confirmed);
-    const stages = [
-        {
-            no: '1단계',
-            title: '이벤트 신청',
-            desc: '카카오 계정으로 이벤트에 신청합니다.',
-            state: registered ? 'done' : pastDeadline ? 'pending' : 'active',
-            // 상태는 배지 한 단어로만 말한다 — 같은 말을 문장으로 반복하지 않는다
-            chip: registered ? '완료' : pastDeadline ? '마감' : '지금 가능',
-        },
-        {
-            no: '2단계',
-            title: '앱 가입',
-            desc: '같은 카카오 계정으로 앱에 가입하고 기본 정보를 입력합니다.',
-            // 앱이 출시됐으므로 접수를 마친 사람에게는 2단계도 '지금 가능'이 된다
-            state: confirmed ? 'done' : registered && !pastDeadline ? 'active' : 'pending',
-            chip: confirmed ? '완료' : pastDeadline ? '마감' : registered ? '지금 가능' : '대기',
-        },
-    ];
+    const busy = phase === 'loading';
+    const canCheck = ready && !busy;
+    const showInstall = registered && !confirmed && !pastDeadline;
+    const deadlineDate = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Seoul',
+        month: '2-digit',
+        day: '2-digit',
+    })
+        .format(new Date(EVENT.PREREG_DEADLINE))
+        .replace('/', '.');
+    const announcementDate = EVENT.ANNOUNCEMENT_LABEL.match(/(\d+)월\s*(\d+)일/);
+    const announcementShort = announcementDate
+        ? `${announcementDate[1].padStart(2, '0')}.${announcementDate[2].padStart(2, '0')}`
+        : EVENT.ANNOUNCEMENT_LABEL;
 
     return (
-        <main className="bg-bg-base">
-            {/* 상단 브랜드 바 — 랜딩 내비게이션과 동일한 흰 배경/로고로 사이트 연속성 유지 */}
-            <div className="border-b border-border bg-white">
-                <div className="mx-auto flex h-14 max-w-[960px] items-center justify-between container-x lg:h-16">
-                    <Link href="/" className="focus-ring rounded-md" aria-label="EASYCHECK 홈으로">
-                        <img
-                            src="/images/easycheck-logo.webp"
-                            alt="EASYCHECK"
-                            className="h-[22px] w-auto select-none lg:h-6"
-                        />
-                    </Link>
-                    <Link
-                        href="/event"
-                        className="focus-ring rounded text-[13px] font-medium text-text-secondary hover:text-text-primary lg:text-[14px]"
-                    >
-                        <span aria-hidden="true">←</span> 이벤트 목록
-                    </Link>
+        <main className={styles.page}>
+            <nav className={styles.nav} aria-label="이벤트 페이지 메뉴">
+                <Link href="/" aria-label="EASYCHECK 홈으로">
+                    <img
+                        className={styles.logo}
+                        src="/images/easycheck-logo.webp"
+                        alt="EASYCHECK"
+                        width="144"
+                        height="27"
+                    />
+                </Link>
+                <Link href="/event">이벤트 목록</Link>
+            </nav>
+            <section className={styles.hero} aria-labelledby="event-heading">
+                <div className={styles.heroGrid}>
+                    <div>
+                        <h1 id="event-heading">
+                            <span>이지체크</span>
+                            <span>경품 이벤트</span>
+                        </h1>
+                        <p className={styles.intro}>
+                            앱 가입과 기본 정보 입력을 마치고
+                            <br />
+                            경품 추첨에 참여하세요.
+                        </p>
+                    </div>
+                    <img
+                        className={styles.art}
+                        src="/images/event-prizes-illustration.webp"
+                        alt="갤럭시 워치, 텀블러, 보조배터리와 선물 상자 일러스트"
+                        width="1536"
+                        height="1024"
+                        fetchPriority="high"
+                    />
                 </div>
-            </div>
-
-            {/* 히어로 — 고지 배너와 헤드라인을 브랜드 딥 패널에 얹어 첫 화면을 장악한다 */}
-            <section className="relative overflow-hidden bg-brand-deep">
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background:
-                            'radial-gradient(120% 90% at 88% 0%, rgba(0,174,235,0.30) 0%, rgba(0,174,235,0) 60%), radial-gradient(80% 70% at 0% 100%, rgba(243,152,0,0.20) 0%, rgba(243,152,0,0) 65%)',
-                    }}
-                />
-                <div className="relative mx-auto max-w-[960px] container-x pt-9 pb-24 lg:pt-14 lg:pb-32">
-                    {/* 접수·발표 일정을 첫 화면에 고지한다. */}
-                    <p
-                        className="anim-up text-[13px] font-semibold lg:text-[14px]"
-                        style={{ ...stagger(0), color: 'rgba(255,255,255,0.72)' }}
-                    >
-                        응모 마감 · {EVENT.DEADLINE_LABEL}
+                <div className={styles.actionBlock}>
+                    <div className={styles.dates}>
+                        <div>
+                            <span>응모 마감</span>
+                            <strong aria-label={EVENT.DEADLINE_LABEL}>{deadlineDate}</strong>
+                            <small>23:59 · 한국시간</small>
+                        </div>
+                        <div>
+                            <span>당첨자 발표</span>
+                            <strong aria-label={EVENT.ANNOUNCEMENT_LABEL}>
+                                {announcementShort}
+                            </strong>
+                            <small>이 페이지·카카오톡 채널</small>
+                        </div>
+                    </div>
+                    <div className={styles.actionWrap}>
+                        {showInstall ? (
+                            <a
+                                className={styles.mainAction}
+                                data-style="blue"
+                                href={EVENT.PLAY_STORE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <IconPlay size={20} aria-hidden="true" />
+                                Google Play에서 앱 설치
+                            </a>
+                        ) : (
+                            <button
+                                className={styles.mainAction}
+                                data-style={pastDeadline || confirmed ? 'blue' : 'kakao'}
+                                type="button"
+                                onClick={startKakao}
+                                disabled={!canCheck}
+                            >
+                                {!pastDeadline && !confirmed && <KakaoMark />}
+                                {busy
+                                    ? '확인 중입니다…'
+                                    : pastDeadline || confirmed
+                                      ? '내 참여 현황 확인'
+                                      : phase === 'error'
+                                        ? '다시 시도하기'
+                                        : '카카오로 신청하기'}
+                            </button>
+                        )}
+                        {!pastDeadline && !confirmed && (
+                            <button
+                                className={styles.secondary}
+                                type="button"
+                                onClick={startKakao}
+                                disabled={!canCheck}
+                            >
+                                내 참여 현황 확인
+                            </button>
+                        )}
+                    </div>
+                    <p className={styles.accountNote}>
+                        이벤트 신청과 앱 가입은 같은 카카오 계정으로 진행해 주세요.
                     </p>
-
-                    <h1
-                        className="anim-up hero-headline mt-4 text-[38px] leading-[1.14] font-bold tracking-[-0.03em] text-white lg:mt-5 lg:text-[56px]"
-                        style={{ ...stagger(1), wordBreak: 'keep-all' }}
-                    >
-                        EASYCHECK
-                        <br />
-                        <span className="text-brand-accent">경품 이벤트</span>
-                    </h1>
-                    <p
-                        className="anim-up mt-5 max-w-[26em] text-[16px] leading-[1.7] lg:text-[18px]"
-                        style={{
-                            ...stagger(2),
-                            color: 'rgba(255,255,255,0.78)',
-                            wordBreak: 'keep-all',
-                        }}
-                    >
-                        이벤트에 신청하고 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면
-                        경품 추첨 대상이 됩니다.
+                </div>
+                {cancelled && (
+                    <p className={styles.notice} role="alert">
+                        카카오 로그인 동의를 취소하셨습니다. 다시 시도해 주세요.
                     </p>
-                    <p className="mt-4 text-[14px] leading-[1.7] text-white/80">
-                        당첨자 발표 · {EVENT.ANNOUNCEMENT_LABEL}
-                        <br />
-                        신청 후에는 ‘내 참여 현황 확인’에서 응모 상태를 확인할 수 있습니다.
+                )}
+                {error && (
+                    <p className={styles.notice} role="alert">
+                        카카오 로그인 화면을 불러오지 못했습니다. 새로고침해 주세요.
                     </p>
+                )}
+                <div id="entry" className={styles.status} aria-live="polite" aria-busy={busy}>
+                    {phase === 'idle' && pastDeadline && (
+                        <>
+                            <h2>이벤트 신청이 마감되었습니다.</h2>
+                            <p>
+                                당첨 결과는 {EVENT.ANNOUNCEMENT_LABEL} 이 페이지와 카카오톡 채널에서
+                                확인할 수 있습니다.
+                            </p>
+                        </>
+                    )}
+                    {busy && <p>참여 현황을 확인 중입니다…</p>}
+                    {phase === 'error' && (
+                        <p role="alert">
+                            참여 현황을 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.
+                        </p>
+                    )}
+                    {phase === 'done' && status && (
+                        <div role="status">
+                            {!status.registered && status.closed ? (
+                                <p className="text-[15px] font-semibold text-text-primary">
+                                    이벤트 신청이 마감되었습니다.
+                                </p>
+                            ) : (
+                                <>
+                                    <span
+                                        aria-hidden="true"
+                                        className="mb-2 inline-flex text-success"
+                                    >
+                                        <CheckMark size={22} />
+                                    </span>
+                                    <p
+                                        className="text-[17px] font-bold text-text-primary lg:text-[19px]"
+                                        style={{ wordBreak: 'keep-all' }}
+                                    >
+                                        {status.nickname ? `${status.nickname}님, ` : ''}
+                                        {status.prize_rank
+                                            ? `${status.prize_rank}등에 당첨되었습니다.`
+                                            : '이벤트 신청이 확인되었습니다.'}
+                                    </p>
+                                    <p
+                                        className="mt-2 text-[14px] leading-[1.7] text-text-secondary"
+                                        style={{ wordBreak: 'keep-all' }}
+                                    >
+                                        {status.prize_rank
+                                            ? `경품은 ${
+                                                  EVENT.PRIZES.find(
+                                                      (p) => p.rank === status.prize_rank,
+                                                  )?.name ?? '경품'
+                                              }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
+                                            : status.entry_confirmed
+                                              ? '앱 가입과 기본 정보 입력이 확인되어 추첨 대상이 되었습니다.'
+                                              : status.closed
+                                                ? '마감일까지 같은 카카오 계정의 앱 가입과 기본 정보 입력이 확인되지 않아 추첨 대상에 포함되지 않았습니다.'
+                                                : pastDeadline
+                                                  ? '신청이 마감되었습니다. 앱 가입 확인 여부는 ‘내 참여 현황 다시 확인’을 눌러 확인해 주세요.'
+                                                  : `${EVENT.DEADLINE_LABEL}까지 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다.`}
+                                    </p>
+                                    {!status.entry_confirmed && !status.closed && pastDeadline && (
+                                        <button
+                                            type="button"
+                                            onClick={startKakao}
+                                            disabled={!ready}
+                                            className="focus-ring mt-4 rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
+                                        >
+                                            내 참여 현황 다시 확인
+                                        </button>
+                                    )}
+                                    <div className="mt-5 flex flex-col gap-3 lg:flex-row">
+                                        {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
+                                        {!status.entry_confirmed && !pastDeadline && (
+                                            <a
+                                                href={EVENT.PLAY_STORE_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-primary px-5 py-3.5 text-[14px] font-bold text-white shadow-sm transition-colors duration-150 hover:bg-brand-primary-hover lg:w-auto"
+                                            >
+                                                <IconPlay size={18} aria-hidden="true" />
+                                                Google Play에서 앱 설치
+                                            </a>
+                                        )}
+                                        {EVENT.KAKAO_CHANNEL_URL && (
+                                            <a
+                                                href={EVENT.KAKAO_CHANNEL_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
+                                            >
+                                                <KakaoMark />
+                                                카카오톡 채널 추가
+                                            </a>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </section>
-
-            {/* A. 사전예약 — 지금 할 수 있는 것만. 경품·추첨 이야기는 B 섹션이 맡는다. */}
-            <div className="mx-auto max-w-[960px] container-x">
-                <Reveal
-                    as="section"
-                    y={16}
-                    aria-labelledby="prereg-heading"
-                    className="relative z-10 -mt-16 rounded-xl border border-border bg-white p-6 shadow-lg lg:-mt-20 lg:p-9"
-                >
-                    <p className="text-[13px] font-semibold tracking-[0.1em] text-brand-primary uppercase">
-                        {pastDeadline ? '신청 마감' : '신청 가능'}
-                    </p>
-                    <h2
-                        id="prereg-heading"
-                        className="mt-2 text-[24px] font-bold tracking-[-0.025em] text-text-primary lg:text-[30px]"
-                        style={{ wordBreak: 'keep-all' }}
-                    >
-                        이벤트 신청
+            <div className={styles.body}>
+                <section aria-labelledby="prizes-heading">
+                    <div className={styles.prizeHeading}>
+                        <h2 id="prizes-heading" className={styles.sectionHeading}>
+                            경품 안내
+                        </h2>
+                        <p>총 {EVENT.PRIZES.reduce((sum, prize) => sum + prize.count, 0)}명</p>
+                    </div>
+                    <div className={styles.prizes}>
+                        {EVENT.PRIZES.map((prize) => (
+                            <article
+                                key={prize.rank}
+                                className={`${styles.prize} ${prize.rank === 1 ? styles.prizeFirst : ''}`}
+                            >
+                                <div className={styles.prizeCopy}>
+                                    <span className={styles.rank}>{prize.rank}등</span>
+                                    <h3>{prize.name}</h3>
+                                    <p className={styles.count}>
+                                        <strong>{prize.count}</strong>명
+                                    </p>
+                                </div>
+                                <img
+                                    className={styles.product}
+                                    src={PRIZE_IMAGES[prize.rank]}
+                                    alt={`${prize.name} 상품 이미지`}
+                                    loading="lazy"
+                                />
+                            </article>
+                        ))}
+                    </div>
+                </section>
+                <section className={styles.how} aria-labelledby="how-heading">
+                    <h2 id="how-heading" className={styles.sectionHeading}>
+                        참여 방법
                     </h2>
-                    <p
-                        className="mt-3 max-w-[34em] text-[15px] leading-[1.7] text-text-secondary lg:text-[16px]"
-                        style={{ wordBreak: 'keep-all' }}
-                    >
-                        {pastDeadline
-                            ? '이벤트 신청이 마감되었습니다.'
-                            : '카카오로 이벤트에 신청한 뒤, 같은 계정으로 앱 가입과 기본 정보 입력을 완료해 주세요.'}
+                    <p className={styles.howIntro}>
+                        <strong>같은 카카오 계정으로</strong> 두 가지를 모두 완료해 주세요.
                     </p>
-
-                    {/* CTA / 결과 — 이 페이지의 유일한 신청 버튼 */}
-                    <div
-                        id="entry"
-                        className="mt-8 scroll-mt-8 rounded-md border border-border bg-bg-subtle px-5 py-7 lg:px-7"
-                    >
-                        {phase === 'idle' && pastDeadline && (
-                            <>
-                                {/* 마감 후 — 접수 버튼 대신 발표 안내. 기존 예약자의 현황 확인은 계속 열어 둔다 */}
-                                <p
-                                    className="text-[15px] leading-[1.7] text-text-secondary"
-                                    style={{ wordBreak: 'keep-all' }}
+                    <ol className={styles.steps}>
+                        <li className={styles.step}>
+                            <div className={styles.stepTop}>
+                                <span
+                                    className={styles.stepNumber}
+                                    aria-label={registered ? '1단계 완료' : '1단계'}
                                 >
-                                    당첨 결과는 {EVENT.ANNOUNCEMENT_LABEL} 이 페이지와 카카오톡
-                                    채널에서 확인할 수 있습니다.
-                                </p>
-                                <div className="mt-5 border-t border-border pt-4">
-                                    <button
-                                        type="button"
-                                        onClick={startKakao}
-                                        disabled={!ready}
-                                        className="focus-ring rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
-                                    >
-                                        내 참여 현황 확인
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                        {phase === 'idle' && !pastDeadline && (
-                            <>
-                                {/* 상태 고지 — 상자나 색이 아니라 굵은 첫 문장으로 상황을 알린다 */}
-                                {cancelled && (
-                                    <p
-                                        role="alert"
-                                        className="mb-5 text-[13px] leading-[1.7] text-text-secondary"
-                                        style={{ wordBreak: 'keep-all' }}
-                                    >
-                                        <strong className="font-bold text-text-primary">
-                                            카카오 로그인 동의를 취소하셨습니다.
-                                        </strong>{' '}
-                                        다시 시도해 주세요.
-                                    </p>
-                                )}
-                                {error && (
-                                    <p
-                                        role="alert"
-                                        className="mb-5 text-[13px] leading-[1.7] text-text-secondary"
-                                        style={{ wordBreak: 'keep-all' }}
-                                    >
-                                        <strong className="font-bold text-text-primary">
-                                            카카오 로그인 화면을 불러오지 못했습니다.
-                                        </strong>{' '}
-                                        새로고침해 주세요.
-                                    </p>
-                                )}
-                                <button
-                                    type="button"
-                                    onClick={startKakao}
-                                    disabled={!ready}
-                                    className="focus-ring inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-8 py-4 text-[16px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto lg:text-[17px]"
-                                >
-                                    <KakaoMark />
-                                    카카오로 신청하기
-                                </button>
-                                <div className="mt-5 border-t border-border pt-4">
-                                    <button
-                                        type="button"
-                                        onClick={startKakao}
-                                        disabled={!ready}
-                                        className="focus-ring rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
-                                    >
-                                        내 참여 현황 확인
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                        {phase === 'loading' && (
-                            <p className="text-[15px] text-text-secondary">확인 중입니다…</p>
-                        )}
-                        {phase === 'error' && (
-                            <div role="alert">
-                                <p
-                                    className="text-[15px] leading-[1.7] text-text-secondary"
-                                    style={{ wordBreak: 'keep-all' }}
-                                >
-                                    <strong className="font-bold text-text-primary">
-                                        참여 현황을 확인하지 못했습니다.
-                                    </strong>{' '}
-                                    잠시 후 다시 시도해 주세요.
-                                </p>
-                                <button
-                                    type="button"
-                                    onClick={startKakao}
-                                    disabled={!ready}
-                                    className="focus-ring mt-4 inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#FEE500] px-6 py-3.5 text-[15px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 disabled:opacity-50 lg:w-auto"
-                                >
-                                    <KakaoMark />
-                                    다시 시도하기
-                                </button>
+                                    {registered ? <CheckMark /> : '1'}
+                                </span>
+                                <span className={styles.stepPlace}>이 페이지에서</span>
                             </div>
-                        )}
-                        {phase === 'done' && status && (
-                            <div role="status">
-                                {!status.registered && status.closed ? (
-                                    <p className="text-[15px] font-semibold text-text-primary">
-                                        이벤트 신청이 마감되었습니다.
-                                    </p>
+                            <h3>카카오로 이벤트 신청</h3>
+                            <p>
+                                {registered ? (
+                                    '이벤트 신청이 확인되었습니다.'
+                                ) : pastDeadline ? (
+                                    '이벤트 신청이 마감되었습니다.'
                                 ) : (
                                     <>
-                                        <span
-                                            aria-hidden="true"
-                                            className="mb-2 inline-flex text-success"
-                                        >
-                                            <CheckMark size={22} />
-                                        </span>
-                                        <p
-                                            className="text-[17px] font-bold text-text-primary lg:text-[19px]"
-                                            style={{ wordBreak: 'keep-all' }}
-                                        >
-                                            {status.nickname ? `${status.nickname}님, ` : ''}
-                                            {status.prize_rank
-                                                ? `${status.prize_rank}등에 당첨되었습니다.`
-                                                : '이벤트 신청이 확인되었습니다.'}
-                                        </p>
-                                        <p
-                                            className="mt-2 text-[14px] leading-[1.7] text-text-secondary"
-                                            style={{ wordBreak: 'keep-all' }}
-                                        >
-                                            {status.prize_rank
-                                                ? `경품은 ${
-                                                      EVENT.PRIZES.find(
-                                                          (p) => p.rank === status.prize_rank,
-                                                      )?.name ?? '경품'
-                                                  }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
-                                                : status.entry_confirmed
-                                                  ? '앱 가입과 기본 정보 입력이 확인되어 추첨 대상이 되었습니다.'
-                                                  : status.closed
-                                                    ? '마감일까지 같은 카카오 계정의 앱 가입과 기본 정보 입력이 확인되지 않아 추첨 대상에 포함되지 않았습니다.'
-                                                    : pastDeadline
-                                                      ? '신청이 마감되었습니다. 앱 가입 확인 여부는 ‘내 참여 현황 다시 확인’을 눌러 확인해 주세요.'
-                                                      : `${EVENT.DEADLINE_LABEL}까지 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다.`}
-                                        </p>
-                                        {!status.entry_confirmed &&
-                                            !status.closed &&
-                                            pastDeadline && (
-                                                <button
-                                                    type="button"
-                                                    onClick={startKakao}
-                                                    disabled={!ready}
-                                                    className="focus-ring mt-4 rounded text-[14px] font-medium text-text-secondary underline underline-offset-4 disabled:opacity-50"
-                                                >
-                                                    내 참여 현황 다시 확인
-                                                </button>
-                                            )}
-                                        <div className="mt-5 flex flex-col gap-3 lg:flex-row">
-                                            {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
-                                            {!status.entry_confirmed && !pastDeadline && (
-                                                <a
-                                                    href={EVENT.PLAY_STORE_URL}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-primary px-5 py-3.5 text-[14px] font-bold text-white shadow-sm transition-colors duration-150 hover:bg-brand-primary-hover lg:w-auto"
-                                                >
-                                                    <IconPlay size={18} aria-hidden="true" />
-                                                    Google Play에서 앱 설치
-                                                </a>
-                                            )}
-                                            {EVENT.KAKAO_CHANNEL_URL && (
-                                                <a
-                                                    href={EVENT.KAKAO_CHANNEL_URL}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-5 py-3.5 text-[14px] font-bold text-[#191919] shadow-sm transition-opacity duration-150 hover:opacity-90 lg:w-auto"
-                                                >
-                                                    <KakaoMark />
-                                                    카카오톡 채널 추가
-                                                </a>
-                                            )}
-                                        </div>
+                                        아래 버튼을 눌러 <br />
+                                        이벤트에 신청해 주세요.
                                     </>
                                 )}
+                            </p>
+                            <button
+                                type="button"
+                                className={styles.stepAction}
+                                onClick={startKakao}
+                                disabled={!canCheck || registered || pastDeadline}
+                            >
+                                {pastDeadline
+                                    ? '이벤트 신청 마감'
+                                    : registered
+                                      ? '이벤트 신청 확인됨'
+                                      : busy
+                                        ? '확인 중입니다…'
+                                        : '카카오로 신청하기'}
+                            </button>
+                            <span className={styles.stepFootnote}>카카오 계정당 1회 신청</span>
+                        </li>
+                        <li className={styles.step}>
+                            <div className={styles.stepTop}>
+                                <span
+                                    className={styles.stepNumber}
+                                    aria-label={confirmed ? '2단계 완료' : '2단계'}
+                                >
+                                    {confirmed ? <CheckMark /> : '2'}
+                                </span>
+                                <span className={styles.stepPlace}>EASYCHECK 앱에서</span>
                             </div>
-                        )}
-                    </div>
-                </Reveal>
-            </div>
-
-            {/* B. 경품 이벤트 — 경품과 응모 절차·진행도를 보여준다. */}
-            <section aria-labelledby="prizes-heading" className="mt-16 bg-brand-deep lg:mt-24">
-                <div className="mx-auto max-w-[960px] container-x py-14 lg:py-20">
-                    <h2
-                        id="prizes-heading"
-                        className="text-[26px] font-bold tracking-[-0.025em] text-white lg:text-[34px]"
-                        style={{ wordBreak: 'keep-all' }}
-                    >
-                        경품 안내
-                    </h2>
-                    <p
-                        className="mt-3 text-[15px] leading-[1.7] text-white/70 lg:text-[16px]"
-                        style={{ wordBreak: 'keep-all' }}
-                    >
-                        마감일까지 이벤트 신청과 앱 가입·기본 정보 입력을 모두 완료한 분 중에서
-                        추첨합니다.
-                    </p>
-
-                    {/* 1등 — 사진을 크게 쓰는 홍보 영역. 흰 타일 자체가 면이라 바깥 카드는 두지 않는다. */}
-                    <Reveal
-                        y={16}
-                        className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-7"
-                    >
-                        <PrizePhoto
-                            src={PRIZE_IMAGES[1]}
-                            alt={EVENT.PRIZES[0].name}
-                            className="h-[190px] lg:h-[240px]"
-                        />
+                            <h3>앱 가입·기본 정보 입력</h3>
+                            <p>
+                                이벤트를 신청한 <strong>카카오 계정으로 가입</strong>하고 <br />
+                                <strong>기본 정보 입력</strong>까지 마쳐 주세요.
+                            </p>
+                            <a
+                                className={`${styles.stepAction} ${styles.stepInstall}`}
+                                href={EVENT.PLAY_STORE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Google Play에서 앱 설치
+                            </a>
+                            <span className={styles.stepFootnote}>Android 전용</span>
+                        </li>
+                    </ol>
+                    <div className={styles.completion}>
+                        <span className={styles.completionMark} aria-hidden="true">
+                            <CheckMark size={22} />
+                        </span>
                         <div>
-                            <span className="inline-flex items-center rounded-md bg-brand-accent px-3 py-1.5 text-[13px] font-bold text-white">
-                                1등
-                            </span>
-                            <p
-                                className="mt-3 text-[26px] font-bold tracking-[-0.02em] text-white lg:text-[32px]"
-                                style={{ wordBreak: 'keep-all' }}
-                            >
-                                {EVENT.PRIZES[0].name}
-                            </p>
-                            <p className="mt-1.5 text-[14px] font-medium text-white/60">
-                                {EVENT.PRIZES[0].count}명
+                            <h3>
+                                {confirmed
+                                    ? '응모가 완료되었습니다.'
+                                    : pastDeadline
+                                      ? '이벤트 신청이 마감되었습니다.'
+                                      : '두 가지를 마치면 응모 완료!'}
+                            </h3>
+                            <p>
+                                {pastDeadline
+                                    ? `당첨자 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`
+                                    : `${EVENT.DEADLINE_LABEL}까지 모두 완료하면 추첨 대상이 됩니다.`}
                             </p>
                         </div>
-                    </Reveal>
-
-                    {/* 2·3등 */}
-                    <Reveal as="ul" y={16} className="mt-5 grid gap-5 sm:grid-cols-2">
-                        {EVENT.PRIZES.slice(1).map((p) => (
-                            <li key={p.rank}>
-                                <PrizePhoto
-                                    src={PRIZE_IMAGES[p.rank]}
-                                    alt={p.name}
-                                    className="h-[170px] lg:h-[200px]"
-                                />
-                                <div className="mt-4 flex items-baseline gap-2.5">
-                                    <span className="inline-flex shrink-0 items-center rounded-md bg-white/15 px-2.5 py-1 text-[12px] font-bold text-white/85">
-                                        {p.rank}등
-                                    </span>
-                                    <span
-                                        className="min-w-0 flex-1 text-[17px] font-semibold text-white lg:text-[19px]"
-                                        style={{ wordBreak: 'keep-all' }}
-                                    >
-                                        {p.name}
-                                    </span>
-                                    <span className="shrink-0 text-[13px] font-medium text-white/55">
-                                        {p.count}명
-                                    </span>
-                                </div>
-                            </li>
-                        ))}
-                    </Reveal>
-
-                    {/* 응모 절차 겸 진행 표시 — 두 단계를 설명하면서 로그인 상태로 진행도까지 보여준다 */}
-                    <div className="mt-12 border-t border-white/15 pt-10 lg:mt-16 lg:pt-12">
-                        <h3
-                            className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[24px]"
-                            style={{ wordBreak: 'keep-all' }}
+                        <button
+                            type="button"
+                            className={styles.howStatus}
+                            onClick={startKakao}
+                            disabled={!canCheck}
                         >
-                            {confirmed ? '응모가 확정되었습니다.' : '참여 방법'}
-                        </h3>
-                        <p
-                            className="mt-2.5 max-w-[32em] text-[14px] leading-[1.7] text-white/70 lg:text-[15px]"
-                            style={{ wordBreak: 'keep-all' }}
-                        >
-                            {confirmed
-                                ? '추첨 결과는 이 페이지와 카카오톡 채널에서 확인할 수 있습니다.'
-                                : '이벤트 신청과 앱 가입은 같은 카카오 계정으로 진행해 주세요.'}
-                        </p>
-
-                        <div className="relative mt-9 max-w-[560px]">
-                            {/* 두 단계를 잇는 레일 — 1단계를 마치면 오렌지에서 녹색으로 채워진다 */}
-                            <div
-                                aria-hidden="true"
-                                className="absolute top-[23px] right-[calc(25%+30px)] left-[calc(25%+30px)] h-[2px] rounded-full bg-white/15"
-                            >
-                                <div
-                                    className="h-full rounded-full transition-[width] duration-200 ease-out"
-                                    style={{
-                                        width: registered ? '100%' : '0%',
-                                        background: 'var(--success)',
-                                    }}
-                                />
-                            </div>
-                            <ol className="relative grid grid-cols-2 gap-3">
-                                {stages.map((s) => {
-                                    const style = STAGE_STYLE[s.state];
-                                    return (
-                                        <li
-                                            key={s.no}
-                                            className="flex flex-col items-center text-center"
-                                        >
-                                            <span
-                                                aria-hidden="true"
-                                                className="inline-flex h-12 w-12 items-center justify-center rounded-full text-[15px] font-bold"
-                                                style={style.node}
-                                            >
-                                                {s.state === 'done' ? (
-                                                    <CheckMark size={20} />
-                                                ) : (
-                                                    s.no.charAt(0)
-                                                )}
-                                            </span>
-                                            <p className="mt-3 text-[12px] font-semibold tracking-[0.08em] text-white/50">
-                                                {s.no}
-                                            </p>
-                                            <p
-                                                className="mt-1 text-[16px] font-bold text-white lg:text-[18px]"
-                                                style={{ wordBreak: 'keep-all' }}
-                                            >
-                                                {s.title}
-                                            </p>
-                                            <p
-                                                className="mt-2 text-[13px] leading-[1.6] text-white/60"
-                                                style={{ wordBreak: 'keep-all' }}
-                                            >
-                                                {s.desc}
-                                            </p>
-                                            <span
-                                                className="mt-3 inline-flex items-center rounded-sm px-2.5 py-1 text-[12px] font-bold"
-                                                style={style.chip}
-                                            >
-                                                {s.chip}
-                                            </span>
-                                        </li>
-                                    );
-                                })}
-                            </ol>
-                        </div>
+                            내 참여 현황 확인
+                        </button>
                     </div>
-                </div>
-            </section>
-
-            {/* 유의사항 — 두 섹션 공통 */}
-            <div className="mx-auto max-w-[960px] container-x pb-20 lg:pb-28">
-                <section
-                    aria-labelledby="terms"
-                    className="mt-14 text-[13px] leading-[1.8] text-text-tertiary lg:mt-20"
-                >
-                    <h2 id="terms" className="mb-3 text-[15px] font-bold text-text-secondary">
-                        유의사항
-                    </h2>
+                    {!pastDeadline && (
+                        <p className={styles.joinedNote}>
+                            <strong>이미 앱에 가입하셨나요?</strong>기본 정보 입력까지 마쳤다면,
+                            가입에 사용한 카카오 계정으로 이벤트에 신청해 주세요.
+                        </p>
+                    )}
+                </section>
+                <p className={styles.legal}>
+                    만 14세 이상 · 카카오 계정당 1회 응모
+                    <br />
+                    신청과 앱 가입·기본 정보 입력을 마감일까지 모두 완료해야 합니다.
+                </p>
+                <details className={styles.terms}>
+                    <summary>이벤트 유의사항</summary>
                     <ul className="ml-5 list-disc space-y-1.5" style={{ wordBreak: 'keep-all' }}>
                         <li>응모 자격: 만 14세 이상.</li>
                         <li>응모 기간: 2026년 8월 19일 ~ {EVENT.DEADLINE_LABEL}.</li>
@@ -652,7 +512,7 @@ export default function PreregEventPage() {
                             을 참고하세요.
                         </li>
                     </ul>
-                </section>
+                </details>
             </div>
             <Footer />
         </main>
