@@ -114,6 +114,12 @@ function EventPopup() {
                     {t('eventPopup.cta')}
                     <IconChevronRight size={17} strokeWidth={2.4} aria-hidden="true" />
                 </Link>
+                <p
+                    className="mt-2 text-center text-[11.5px] leading-[1.5] text-white/60"
+                    style={{ wordBreak: 'keep-all' }}
+                >
+                    {t('eventPopup.watchNote')}
+                </p>
 
                 <button
                     type="button"

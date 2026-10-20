@@ -426,7 +426,9 @@ export default function PreregEventPage() {
                             >
                                 Google Play에서 앱 설치
                             </a>
-                            <span className={styles.stepFootnote}>Android 전용</span>
+                            <span className={styles.stepFootnote}>
+                                Android 전용 · 측정에는 갤럭시 워치 필요
+                            </span>
                         </li>
                     </ol>
                     <div className={styles.completion}>
@@ -467,6 +469,9 @@ export default function PreregEventPage() {
                     만 14세 이상 · 카카오 계정당 1회 응모
                     <br />
                     신청과 앱 가입·기본 정보 입력을 마감일까지 모두 완료해야 합니다.
+                </p>
+                <p className={styles.legal} style={{ wordBreak: 'keep-all' }}>
+                    ※ 앱 측정에는 갤럭시 워치가 필요합니다(워치 없이도 응모는 가능).
                 </p>
                 <details className={styles.terms}>
                     <summary>이벤트 유의사항</summary>
