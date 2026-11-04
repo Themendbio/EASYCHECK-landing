@@ -14,6 +14,10 @@ const EVENTS = [
         period: `2026년 8월 19일 ~ ${EVENT.DEADLINE_LABEL}`,
         title: 'EASYCHECK 경품 이벤트',
         summary: `이벤트에 신청하고 같은 카카오 계정으로 앱 가입과 기본 정보 입력을 완료하면 추첨 대상이 됩니다. 당첨자 발표는 ${EVENT.ANNOUNCEMENT_LABEL}입니다.`,
+        // 마감 뒤에는 당첨자 발표 페이지로 잇는다
+        closedSlug: EVENT.WINNERS_PATH,
+        closedSummary:
+            '이벤트가 종료되었습니다. 신청한 카카오 계정으로 로그인해 당첨 여부를 확인하세요.',
         image: '/images/prize-watch.webp',
         imageAlt: '갤럭시 워치8',
         prizes: EVENT.PRIZES,
@@ -58,7 +62,7 @@ export default function EventListPage() {
                     {EVENTS.map((e) => (
                         <Reveal as="li" y={16} key={e.slug}>
                             <Link
-                                href={e.slug}
+                                href={closed ? e.closedSlug : e.slug}
                                 className="focus-ring group grid gap-5 rounded-2xl border border-border bg-white p-5 transition-colors duration-150 hover:border-border-strong lg:grid-cols-[260px_1fr] lg:gap-7 lg:p-6"
                             >
                                 {/* 썸네일 — 흰 배경 제품 사진이라 카드와 같은 흰 타일에 담아 경계를 없앤다.
@@ -75,7 +79,7 @@ export default function EventListPage() {
                                 <div className="min-w-0">
                                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                                         <span className="inline-flex items-center rounded-md bg-success/10 px-2.5 py-1 text-[12px] font-bold text-success">
-                                            {closed ? '접수 마감' : '접수 중'}
+                                            {closed ? '당첨자 발표' : '접수 중'}
                                         </span>
                                         <span className="text-[13px] font-medium text-text-tertiary">
                                             {e.period}
@@ -92,7 +96,7 @@ export default function EventListPage() {
                                         className="mt-2 text-[14px] leading-[1.7] text-text-secondary lg:text-[15px]"
                                         style={{ wordBreak: 'keep-all' }}
                                     >
-                                        {e.summary}
+                                        {closed ? e.closedSummary : e.summary}
                                     </p>
 
                                     <ul className="mt-4 flex flex-wrap gap-2">
