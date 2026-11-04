@@ -85,12 +85,6 @@ function WinnerResult({ status, claimClosed }) {
                     >
                         수령 정보 입력하기
                     </a>
-                    <div
-                        className="mt-2 text-[12px] text-text-tertiary"
-                        style={{ wordBreak: 'keep-all' }}
-                    >
-                        구글 폼으로 이동합니다. 닉네임과 등수는 미리 채워져 있습니다.
-                    </div>
                 </>
             )}
         </div>
