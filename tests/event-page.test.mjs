@@ -133,3 +133,17 @@ test('당첨·취소·오류 안내와 개인정보 링크를 유지한다', () 
     assert.match(render({ error: true, ready: false }).html, /로그인 화면을 불러오지 못/);
     assert.match(render({ phase: 'error' }).html, /다시 시도하기/);
 });
+
+test('마감 후에는 당첨자 발표 페이지로 안내하고, 당첨자에게 수령 안내 위치를 알려 준다', () => {
+    const idle = render({ closed: true });
+    assert.match(idle.html, /href="\/event\/winners"/);
+    assert.match(idle.html, /당첨 확인하기/);
+    const winner = render({
+        closed: true,
+        phase: 'done',
+        status: { registered: true, entry_confirmed: true, closed: true, prize_rank: 2 },
+    });
+    assert.match(winner.html, /2등에 당첨되었습니다/);
+    assert.match(winner.html, /href="\/event\/winners"/);
+    assert.doesNotMatch(winner.html, /가입 시 등록한 연락처로 전달/);
+});

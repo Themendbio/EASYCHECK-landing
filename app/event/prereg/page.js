@@ -2,7 +2,7 @@
 // 경품 이벤트 상세 화면과 카카오 신청·참여 현황 조회를 연결한다.
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { EVENT } from '../../../lib/event-config';
+import { EVENT, winnersForwardUrl } from '../../../lib/event-config';
 import { useEventClosed } from '../../../hooks/useEventClosed';
 import { useKakaoSdk } from '../../../hooks/useKakaoSdk';
 import { Footer } from '../../../components/footer';
@@ -60,6 +60,18 @@ function CheckMark({ size = 18 }) {
     );
 }
 
+// 마감 뒤 당첨 확인과 수령 정보 입력은 당첨자 발표 페이지에서 한다
+function WinnersLink() {
+    return (
+        <Link
+            href={EVENT.WINNERS_PATH}
+            className="focus-ring mt-4 inline-flex w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-3.5 text-[14px] font-bold text-white shadow-sm transition-colors duration-150 hover:bg-brand-primary-hover lg:w-auto"
+        >
+            당첨자 발표 페이지에서 당첨 확인하기
+        </Link>
+    );
+}
+
 export default function PreregEventPage() {
     const { ready, error } = useKakaoSdk();
     // idle | loading | done | error
@@ -72,6 +84,12 @@ export default function PreregEventPage() {
 
     useEffect(() => {
         document.title = 'EASYCHECK 경품 이벤트';
+        // 당첨자 페이지의 카카오 로그인도 등록된 이 주소로 돌아온다 — 코드를 쓰지 않고 그대로 넘긴다
+        const forward = winnersForwardUrl(window.location.search);
+        if (forward) {
+            window.location.replace(forward);
+            return;
+        }
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         if (!code) {
@@ -232,9 +250,10 @@ export default function PreregEventPage() {
                         <>
                             <h2>이벤트 신청이 마감되었습니다.</h2>
                             <p>
-                                당첨 결과는 {EVENT.ANNOUNCEMENT_LABEL} 이 페이지와 카카오톡 채널에서
-                                확인할 수 있습니다.
+                                당첨자 발표가 완료되었습니다. 신청한 카카오 계정으로 당첨 여부를
+                                확인해 주세요.
                             </p>
+                            <WinnersLink />
                         </>
                     )}
                     {busy && <p>참여 현황을 확인 중입니다…</p>}
@@ -275,7 +294,7 @@ export default function PreregEventPage() {
                                                   EVENT.PRIZES.find(
                                                       (p) => p.rank === status.prize_rank,
                                                   )?.name ?? '경품'
-                                              }입니다. 수령 안내는 카카오톡 채널과 가입 시 등록한 연락처로 전달됩니다.`
+                                              }입니다. 수령 정보는 당첨자 발표 페이지에서 입력해 주세요.`
                                             : status.entry_confirmed
                                               ? '앱 가입과 기본 정보 입력이 확인되어 추첨 대상이 되었습니다.'
                                               : status.closed
@@ -294,6 +313,7 @@ export default function PreregEventPage() {
                                             내 참여 현황 다시 확인
                                         </button>
                                     )}
+                                    {status.prize_rank && <WinnersLink />}
                                     <div className="mt-5 flex flex-col gap-3 lg:flex-row">
                                         {/* 가입 미완이면 다음 행동인 앱 설치를 바로 잇는다 — 채널 추가보다 앞 */}
                                         {!status.entry_confirmed && !pastDeadline && (
