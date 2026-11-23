@@ -1,6 +1,7 @@
 'use client';
 import './globals.css';
 import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import ko from '../locales/ko.json';
 import en from '../locales/en.json';
@@ -18,6 +19,9 @@ const SITE_DESCRIPTION =
     'EASYCHECK는 스마트워치의 PPG 신호를 AI로 분석해 일상적 수분 관리에 참고할 수 있는 수분 지수를 제공합니다.';
 
 export default function RootLayout({ children }) {
+    // 페이지마다 자기 주소를 canonical로 선언한다(전부 홈으로 가리키면 하위 페이지가 색인에서 제외됨).
+    const pathname = usePathname() || '/';
+    const pageUrl = pathname === '/' ? `${SITE_URL}/` : `${SITE_URL}${pathname.replace(/\/+$/, '')}`;
     return (
         <html lang="ko">
             <head>
@@ -29,14 +33,14 @@ export default function RootLayout({ children }) {
                 />
                 <meta name="robots" content="index, follow" />
                 <meta name="theme-color" content="#0068B7" />
-                <link rel="canonical" href={`${SITE_URL}/`} />
+                <link rel="canonical" href={pageUrl} />
 
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="EASYCHECK" />
                 <meta property="og:title" content={SITE_TITLE} />
                 <meta property="og:description" content={SITE_DESCRIPTION} />
-                <meta property="og:url" content={`${SITE_URL}/`} />
+                <meta property="og:url" content={pageUrl} />
                 <meta property="og:image" content={OG_IMAGE} />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
